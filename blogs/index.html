@@ -8,6 +8,35 @@
   <!-- 字体 -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Noto+Serif+SC&display=swap" rel="stylesheet">
 
+  <!-- 数学公式支持（优先加载） -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],  // 行内公式：$...$
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],  // 块级公式：$$...$$
+        processEscapes: true,  // 支持转义字符
+        packages: {'[+]': ['noerrors']}  // 忽略公式错误，避免渲染失败
+      },
+      options: {
+        ignoreHtmlClass: 'tex2jax_ignore',
+        processHtmlClass: 'tex2jax_process'
+      },
+      startup: {
+        pageReady: function() {
+          return MathJax.startup.defaultPageReady().then(function() {
+            // 初始页面就绪后执行
+          });
+        }
+      }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+  <!-- Markdown 解析和代码高亮 -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
   <!-- 样式 -->
   <style>
     :root {
@@ -144,6 +173,10 @@
       font-style: italic;
     }
 
+    /* 公式样式优化 */
+    .mjx-chtml { font-size: 1.05em !important; }  /* 公式稍放大，提高可读性 */
+    .MathJax_Display { margin: 1em 0 !important; }  /* 块级公式上下间距 */
+
     /* 粒子背景 */
     .particles {
       position: fixed;
@@ -169,6 +202,9 @@
       justify-content: center;
       font-size: 1.2rem;
     }
+
+    /* 深色模式公式适配 */
+    body.dark .mjx-chtml { color: #f0f0f0 !important; }
   </style>
 </head>
 <body>
@@ -195,62 +231,66 @@
     <div id="post-content"></div>
   </div>
 
-  <!-- 第三方库 -->
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-  <script>hljs.highlightAll();</script>
-
-  <!-- MathJax 支持 $ 和 $$ -->
-  <!-- 在 blogs/index.html 的 <head> 中添加 -->
-  <script>
-    window.MathJax = {
-      tex: {
-        inlineMath: [['$', '$'], ['\\(', '\\)']],  // 支持行内公式 $...$
-        displayMath: [['$$', '$$'], ['\\[', '\\]']],  // 支持块级公式 $$...$$
-        processEscapes: true
-      },
-      options: {
-        ignoreHtmlClass: 'tex2jax_ignore',
-        processHtmlClass: 'tex2jax_process'
-      }
-    };
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
-
   <!-- 主逻辑 -->
   <script>
-    // 加载并渲染 Markdown
-    function loadPost(url) {
-    fetch(url)
-      .then(r => r.text())
-      .then(md => {
-        const el = document.getElementById('post-content');
-        el.innerHTML = marked.parse(md);
-        
-        // 关键：强制 MathJax 重新扫描并渲染公式
-        if (window.MathJax) {
-          MathJax.typesetClear();  // 清除之前的渲染缓存
-          MathJax.typesetPromise([el]).catch(err => console.error('MathJax 渲染失败:', err));
-        }
-        
-        // 代码高亮
-        document.querySelectorAll('pre code').forEach(hljs.highlightElement);
-        document.getElementById('reader').style.display = 'block';
-      });
-}
+    // 初始化代码高亮
+    hljs.highlightAll();
 
+    // 加载并渲染 Markdown 文章
+    function loadPost(url) {
+      // 显示加载状态
+      const contentEl = document.getElementById('post-content');
+      contentEl.innerHTML = '<div style="text-align:center; padding:50px 0;"><p>加载中...</p></div>';
+      
+      fetch(url)
+        .then(response => {
+          if (!response.ok) throw new Error('文章加载失败');
+          return response.text();
+        })
+        .then(mdContent => {
+          // 解析 Markdown 并插入页面
+          contentEl.innerHTML = marked.parse(mdContent);
+          
+          // 代码高亮
+          document.querySelectorAll('pre code').forEach(block => {
+            hljs.highlightElement(block);
+          });
+          
+          // 确保 MathJax 已加载，再渲染公式
+          if (window.MathJax) {
+            // 延迟 100ms 确保 DOM 已更新
+            setTimeout(() => {
+              MathJax.typesetClear(); // 清除缓存
+              MathJax.typesetPromise([contentEl])
+                .then(() => console.log('公式渲染成功'))
+                .catch(err => console.warn('公式渲染警告:', err));
+            }, 100);
+          }
+          
+          // 显示阅读器
+          document.getElementById('reader').style.display = 'block';
+        })
+        .catch(error => {
+          contentEl.innerHTML = `<div style="color:#dc3545; padding:20px;"><p>❌ 文章加载失败：${error.message}</p></div>`;
+          document.getElementById('reader').style.display = 'block';
+        });
+    }
+
+    // 关闭阅读器
     function closeReader() {
       document.getElementById('reader').style.display = 'none';
     }
 
-    // 粒子背景
+    // 粒子背景动画
     const canvas = document.getElementById('particles');
     const ctx = canvas.getContext('2d');
-    canvas.width = innerWidth; canvas.height = innerHeight;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
+    // 创建粒子
     const particles = [];
-    for (let i = 0; i < (innerWidth < 600 ? 30 : 50); i++) {
+    const particleCount = window.innerWidth < 600 ? 30 : 50;
+    for (let i = 0; i < particleCount; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
@@ -261,25 +301,35 @@
       });
     }
 
-    function animate() {
+    // 动画循环
+    function animateParticles() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach(p => {
-        p.x += p.dx; p.y += p.dy;
-        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
-        ctx.fillStyle = p.color;
+      
+      particles.forEach(particle => {
+        // 更新位置
+        particle.x += particle.dx;
+        particle.y += particle.dy;
+        
+        // 边界反弹
+        if (particle.x <= 0 || particle.x >= canvas.width) particle.dx *= -1;
+        if (particle.y <= 0 || particle.y >= canvas.height) particle.dy *= -1;
+        
+        // 绘制粒子
+        ctx.fillStyle = particle.color;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
         ctx.fill();
       });
-
-      // 连线
-      for (let a of particles) {
-        for (let b of particles) {
-          const dx = a.x - b.x, dy = a.y - b.y;
-          const d = Math.sqrt(dx*dx + dy*dy);
-          if (d < 100) {
-            ctx.strokeStyle = `rgba(67, 97, 238, ${0.5 - d/200})`;
+      
+      // 粒子连线
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const a = particles[i];
+          const b = particles[j];
+          const distance = Math.hypot(a.x - b.x, a.y - b.y);
+          
+          if (distance < 100) {
+            ctx.strokeStyle = `rgba(67, 97, 238, ${0.5 - distance / 200})`;
             ctx.lineWidth = 0.5;
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
@@ -288,19 +338,33 @@
           }
         }
       }
-      requestAnimationFrame(animate);
+      
+      requestAnimationFrame(animateParticles);
     }
-    animate();
+    animateParticles();
 
-    // 主题切换
-    document.getElementById('themeToggle').onclick = () => {
+    // 窗口大小变化时重置画布
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+
+    // 主题切换功能
+    document.getElementById('themeToggle').addEventListener('click', () => {
       document.body.classList.toggle('dark');
-      const dark = document.body.classList.contains('dark');
-      document.documentElement.style.setProperty('--primary', dark ? '#4cc9f0' : '#4361ee');
-      document.documentElement.style.setProperty('--text', dark ? '#f8f9fa' : '#2b2d42');
-      document.documentElement.style.setProperty('--bg', dark ? '#121212' : '#f5f7ff');
-      document.documentElement.style.setProperty('--card', dark ? '#1e1e1e' : '#ffffff');
-    };
+      const isDark = document.body.classList.contains('dark');
+      
+      // 更新主题变量
+      document.documentElement.style.setProperty('--primary', isDark ? '#4cc9f0' : '#4361ee');
+      document.documentElement.style.setProperty('--text', isDark ? '#f8f9fa' : '#2b2d42');
+      document.documentElement.style.setProperty('--bg', isDark ? '#121212' : '#f5f7ff');
+      document.documentElement.style.setProperty('--card', isDark ? '#1e1e1e' : '#ffffff');
+      
+      // 重新渲染公式（适配深色模式）
+      if (window.MathJax) {
+        MathJax.typesetPromise();
+      }
+    });
   </script>
 </body>
 </html>
