@@ -1,4 +1,4 @@
 deploy:
   type: git
-  repository: git@github.com:Inlovexy/Inlovexy.github.io.git
+  repository: git@github.com:inlovexy/inlovexy.github.io.git
   branch: main
