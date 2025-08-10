@@ -202,42 +202,43 @@
   <script>hljs.highlightAll();</script>
 
   <!-- MathJax 支持 $ 和 $$ -->
+  <!-- 在 blogs/index.html 的 <head> 中添加 -->
   <script>
     window.MathJax = {
       tex: {
-        inlineMath: [['$', '$'], ['\\(', '\\)']],
-        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        inlineMath: [['$', '$'], ['\\(', '\\)']],  // 支持行内公式 $...$
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],  // 支持块级公式 $$...$$
         processEscapes: true
       },
       options: {
-        processHtmlClass: 'mathjax'
+        ignoreHtmlClass: 'tex2jax_ignore',
+        processHtmlClass: 'tex2jax_process'
       }
     };
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
 
   <!-- 主逻辑 -->
   <script>
     // 加载并渲染 Markdown
     function loadPost(url) {
-      fetch(url)
-        .then(r => r.text())
-        .then(md => {
-          const el = document.getElementById('post-content');
-          el.innerHTML = marked.parse(md);
-          // 重新渲染公式
-          if (window.MathJax && window.MathJax.typesetPromise) {
-            window.MathJax.typesetPromise().catch(console.error);
-          }
-          // 高亮代码
-          document.querySelectorAll('pre code').forEach(hljs.highlightElement);
-          document.getElementById('reader').style.display = 'block';
-        })
-        .catch(() => {
-          document.getElementById('post-content').innerHTML = '<h2>❌ 文章加载失败</h2>';
-          document.getElementById('reader').style.display = 'block';
-        });
-    }
+    fetch(url)
+      .then(r => r.text())
+      .then(md => {
+        const el = document.getElementById('post-content');
+        el.innerHTML = marked.parse(md);
+        
+        // 关键：强制 MathJax 重新扫描并渲染公式
+        if (window.MathJax) {
+          MathJax.typesetClear();  // 清除之前的渲染缓存
+          MathJax.typesetPromise([el]).catch(err => console.error('MathJax 渲染失败:', err));
+        }
+        
+        // 代码高亮
+        document.querySelectorAll('pre code').forEach(hljs.highlightElement);
+        document.getElementById('reader').style.display = 'block';
+      });
+}
 
     function closeReader() {
       document.getElementById('reader').style.display = 'none';
