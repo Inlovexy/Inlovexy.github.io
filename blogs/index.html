@@ -266,7 +266,24 @@
 
   <!-- 数学公式支持（可选，如不需要可删除） -->
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      ignoreHtmlClass: '.*|',
+      processHtmlClass: 'mathjax',
+      renderActions: {
+        addMenu: []
+      }
+    }
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script"></script>
 
   <!-- 主逻辑 -->
   <script>
