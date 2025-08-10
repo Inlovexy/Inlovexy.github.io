@@ -3,175 +3,7 @@
 <head>
   <title>我的博客 - 特效版</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-    
-    :root {
-      --primary-color: #4361ee;
-      --secondary-color: #3f37c9;
-      --text-color: #2b2d42;
-      --light-color: #f8f9fa;
-      --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    
-    body {
-      font-family: 'Poppins', sans-serif;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
-      background-color: #f5f7ff;
-      color: var(--text-color);
-      line-height: 1.6;
-    }
-    
-    h1 {
-      text-align: center;
-      color: var(--primary-color);
-      margin-bottom: 40px;
-      position: relative;
-      padding-bottom: 10px;
-    }
-    
-    h1::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100px;
-      height: 4px;
-      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-      border-radius: 2px;
-    }
-    
-    .post {
-      margin-bottom: 40px;
-      background: white;
-      padding: 25px;
-      border-radius: 8px;
-      box-shadow: var(--shadow);
-      transition: all 0.3s ease;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeIn 0.6s forwards;
-    }
-    
-    .post:nth-child(2) { animation-delay: 0.2s; }
-    .post:nth-child(3) { animation-delay: 0.4s; }
-    
-    @keyframes fadeIn {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    .post:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    }
-    
-    .post-title {
-      color: var(--text-color);
-      text-decoration: none;
-      font-size: 1.5em;
-      font-weight: 600;
-      display: inline-block;
-      position: relative;
-      transition: color 0.3s;
-    }
-    
-    .post-title:hover {
-      color: var(--primary-color);
-    }
-    
-    .post-title::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: var(--primary-color);
-      transition: width 0.3s;
-    }
-    
-    .post-title:hover::after {
-      width: 100%;
-    }
-    
-    .post-date {
-      color: #6c757d;
-      font-size: 0.9em;
-      margin: 8px 0;
-    }
-    
-    .post p {
-      color: #495057;
-      margin-top: 10px;
-    }
-    
-    .back-link {
-      display: inline-block;
-      margin-top: 30px;
-      padding: 10px 20px;
-      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-      color: white;
-      text-decoration: none;
-      border-radius: 50px;
-      transition: all 0.3s;
-      box-shadow: 0 4px 6px rgba(67, 97, 238, 0.2);
-    }
-    
-    .back-link:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 12px rgba(67, 97, 238, 0.3);
-    }
-    
-    /* 粒子背景特效 */
-    .particles {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      pointer-events: none;
-    }
-    
-    /* 滚动指示器 */
-    .scroll-progress {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-      z-index: 100;
-      transition: width 0.1s;
-    }
-    
-    /* 主题切换按钮 */
-    .theme-toggle {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: var(--primary-color);
-      color: white;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-      transition: all 0.3s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-    }
-    
-    .theme-toggle:hover {
-      transform: scale(1.1);
-    }
+    /* [保持你原有的所有CSS样式不变] */
   </style>
 </head>
 <body>
@@ -183,23 +15,11 @@
   
   <h1>文章列表</h1>
   
-  <div class="post">
-    <a href="/posts/hello-world.html" class="post-title">第一篇：Hello World</a>
-    <div class="post-date">2023-10-01</div>
-    <p>这是我的第一篇文章，介绍如何开始...</p>
-  </div>
-
-  <div class="post">
-    <a href="/posts/second-post.html" class="post-title">第二篇：CSS技巧</a>
-    <div class="post-date">2023-10-05</div>
-    <p>分享一些实用的CSS布局技巧...</p>
-  </div>
-  
-  <!-- 添加一个额外的文章示例 -->
-  <div class="post">
-    <a href="/posts/third-post.html" class="post-title">第三篇：JavaScript动画</a>
-    <div class="post-date">2023-10-10</div>
-    <p>探索如何使用JavaScript创建流畅的动画效果...</p>
+  <div id="posts-container">
+    <!-- 文章将通过JavaScript动态加载到这里 -->
+    <div class="post">
+      <div class="post-title">加载文章中...</div>
+    </div>
   </div>
 
   <a href="/" class="back-link">← 返回首页</a>
@@ -208,133 +28,77 @@
   <button class="theme-toggle" id="themeToggle">🌓</button>
   
   <script>
-    // 滚动进度条
-    window.addEventListener('scroll', function() {
-      const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scrollProgress = (scrollTop / scrollHeight) * 100;
-      document.getElementById('scrollProgress').style.width = scrollProgress + '%';
-    });
+    // [保持你原有的所有JavaScript特效代码]
     
-    // 粒子背景
-    const canvas = document.getElementById('particles');
-    const ctx = canvas.getContext('2d');
-    
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    
-    const particles = [];
-    const particleCount = window.innerWidth < 600 ? 30 : 50;
-    
-    class Particle {
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 3 + 1;
-        this.speedX = Math.random() * 1 - 0.5;
-        this.speedY = Math.random() * 1 - 0.5;
-        this.color = `rgba(67, 97, 238, ${Math.random() * 0.5 + 0.1})`;
-      }
-      
-      update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
+    // 新增：从GitHub加载文章列表
+    async function loadPosts() {
+      try {
+        const response = await fetch('https://api.github.com/repos/Inlovexy/Inlovexy.github.io/contents/posts');
+        const files = await response.json();
         
-        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
-        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
-      }
-      
-      draw() {
-        ctx.fillStyle = this.color;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-    
-    function initParticles() {
-      for (let i = 0; i < particleCount; i++) {
-        particles.push(new Particle());
-      }
-    }
-    
-    function animateParticles() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      for (let i = 0; i < particles.length; i++) {
-        particles[i].update();
-        particles[i].draw();
-      }
-      
-      connectParticles();
-      requestAnimationFrame(animateParticles);
-    }
-    
-    function connectParticles() {
-      for (let a = 0; a < particles.length; a++) {
-        for (let b = a; b < particles.length; b++) {
-          const dx = particles[a].x - particles[b].x;
-          const dy = particles[a].y - particles[b].y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
+        const postsContainer = document.getElementById('posts-container');
+        postsContainer.innerHTML = '';
+        
+        // 过滤并排序.md文件
+        const markdownFiles = files
+          .filter(file => file.name.endsWith('.md'))
+          .sort((a, b) => new Date(b.name.split('-').slice(0, 3).join('-')) - new Date(a.name.split('-').slice(0, 3).join('-')));
+        
+        // 为每篇文章创建卡片
+        for (const file of markdownFiles) {
+          const postName = file.name.replace('.md', '');
+          const postDate = postName.split('-').slice(0, 3).join('-');
+          const postTitle = postName.split('-').slice(3).join(' ');
           
-          if (distance < 100) {
-            ctx.strokeStyle = `rgba(67, 97, 238, ${1 - distance / 100})`;
-            ctx.lineWidth = 0.5;
-            ctx.beginPath();
-            ctx.moveTo(particles[a].x, particles[a].y);
-            ctx.lineTo(particles[b].x, particles[b].y);
-            ctx.stroke();
-          }
+          const postElement = document.createElement('div');
+          postElement.className = 'post';
+          postElement.innerHTML = `
+            <a href="/posts/${postName}.html" class="post-title">${postTitle}</a>
+            <div class="post-date">${postDate}</div>
+            <p>加载内容摘要...</p>
+          `;
+          
+          postsContainer.appendChild(postElement);
+          
+          // 可选：加载每篇文章的摘要
+          loadPostExcerpt(postName, postElement);
         }
-      }
-    }
-    
-    initParticles();
-    animateParticles();
-    
-    // 窗口大小调整时重设画布
-    window.addEventListener('resize', function() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    });
-    
-    // 主题切换功能
-    const themeToggle = document.getElementById('themeToggle');
-    themeToggle.addEventListener('click', function() {
-      document.body.classList.toggle('dark-theme');
-      
-      if (document.body.classList.contains('dark-theme')) {
-        document.documentElement.style.setProperty('--primary-color', '#4cc9f0');
-        document.documentElement.style.setProperty('--secondary-color', '#4895ef');
-        document.documentElement.style.setProperty('--text-color', '#f8f9fa');
-        document.documentElement.style.setProperty('--light-color', '#212529');
-        document.body.style.backgroundColor = '#121212';
-      } else {
-        document.documentElement.style.setProperty('--primary-color', '#4361ee');
-        document.documentElement.style.setProperty('--secondary-color', '#3f37c9');
-        document.documentElement.style.setProperty('--text-color', '#2b2d42');
-        document.documentElement.style.setProperty('--light-color', '#f8f9fa');
-        document.body.style.backgroundColor = '#f5f7ff';
-      }
-    });
-    
-    // 滚动动画
-    const posts = document.querySelectorAll('.post');
-    
-    function checkScroll() {
-      posts.forEach(post => {
-        const postTop = post.getBoundingClientRect().top;
-        const windowHeight = window.innerHeight;
         
-        if (postTop < windowHeight - 100) {
-          post.style.opacity = '1';
-          post.style.transform = 'translateY(0)';
-        }
-      });
+        // 重新初始化滚动动画
+        setTimeout(checkScroll, 500);
+      } catch (error) {
+        console.error('加载文章失败:', error);
+        document.getElementById('posts-container').innerHTML = `
+          <div class="post">
+            <div class="post-title">加载文章失败</div>
+            <p>请刷新页面或稍后再试</p>
+          </div>
+        `;
+      }
     }
     
-    window.addEventListener('scroll', checkScroll);
-    checkScroll(); // 初始检查
+    // 加载文章摘要
+    async function loadPostExcerpt(postName, postElement) {
+      try {
+        const response = await fetch(`/posts/${postName}.md`);
+        const text = await response.text();
+        
+        // 提取YAML front matter和内容
+        const content = text.split('---')[2] || text;
+        const excerpt = content.trim().split('\n')[0].substring(0, 100) + '...';
+        
+        postElement.querySelector('p').textContent = excerpt;
+      } catch (error) {
+        console.error('加载摘要失败:', error);
+      }
+    }
+    
+    // 页面加载完成后获取文章列表
+    document.addEventListener('DOMContentLoaded', () => {
+      loadPosts();
+      
+      // [保持你原有的特效初始化代码]
+    });
   </script>
 </body>
 </html>
