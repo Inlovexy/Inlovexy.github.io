@@ -3,3 +3,11 @@ deploy:
   repository: git@github.com:inlovexy/inlovexy.github.io.git
   branch: main
   theme: butterfly
+subtitle:
+  enable: true
+  loop: true  # 循环播放
+  text: 
+    - "牵起手……牵起手。"
+    - "花开于盛夏，凋零于寒冬。"
+    - "香香软软的小哀"
+  align: center
