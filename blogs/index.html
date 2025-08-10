@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <title>我的博客 - 特效版</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
@@ -184,12 +185,66 @@
   
   <h1>文章列表</h1>
   
-  <div class="posts">
-    <a href="/posts/2025-08-10-暑假week3.md" class="post-title">暑假第三周学习记录</a>
-    <div class="posts-date">2025-08-10</div>
-    <p>记录暑假第三周的学习内容和心得体会...</p>
+  <div id="content-container">
+    <!-- 动态内容将在这里渲染 -->
+    <h1>文章列表</h1>
+    
+    <div class="post">
+      <a href="#" onclick="loadPost('2025-08-10-暑假week3')" class="post-title">暑假第三周学习记录</a>
+      <div class="post-date">2025-08-10</div>
+      <p>记录暑假第三周的学习内容和心得体会...</p>
+    </div>
+    
+    <a href="/" class="back-link">← 返回首页</a>
   </div>
 
+  <!-- 原有特效代码保持不变 -->
+
+  <script>
+    // 新增文章加载函数
+    async function loadPost(postId) {
+      try {
+        // 修改浏览器URL但不刷新页面
+        history.pushState({}, '', `/posts/${postId}`);
+        
+        const response = await fetch(`posts/${postId}.md`);
+        const mdContent = await response.text();
+        
+        document.getElementById('content-container').innerHTML = `
+          <div class="post">
+            <h1>${postId.split('-').slice(3).join(' ')}</h1>
+            <div class="post-date">${postId.split('-').slice(0,3).join('-')}</div>
+            <div class="post-content">${marked.parse(mdContent)}</div>
+            <a href="#" onclick="window.location.reload()" class="back-link">← 返回列表</a>
+          </div>
+        `;
+        
+        // 重新应用滚动动画
+        checkScroll();
+      } catch (error) {
+        alert('加载文章失败，请稍后再试');
+        console.error(error);
+      }
+    }
+
+    // 修改URL监听，支持直接访问文章
+    window.addEventListener('popstate', () => {
+      const path = window.location.pathname;
+      if (path.startsWith('/posts/')) {
+        const postId = path.split('/posts/')[1];
+        loadPost(postId);
+      }
+    });
+
+    // 页面加载时检查是否是文章页面
+    document.addEventListener('DOMContentLoaded', () => {
+      const path = window.location.pathname;
+      if (path.startsWith('/posts/')) {
+        const postId = path.split('/posts/')[1];
+        loadPost(postId);
+      }
+    });
+  </script>
 
   <a href="/" class="back-link">← 返回首页</a>
   
