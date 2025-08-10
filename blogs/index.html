@@ -57,6 +57,7 @@
     
     .post:nth-child(2) { animation-delay: 0.2s; }
     .post:nth-child(3) { animation-delay: 0.4s; }
+    .post:nth-child(4) { animation-delay: 0.6s; } /* 新增文章的动画延迟 */
     
     @keyframes fadeIn {
       to {
@@ -195,11 +196,17 @@
     <p>分享一些实用的CSS布局技巧...</p>
   </div>
   
-  <!-- 添加一个额外的文章示例 -->
   <div class="post">
     <a href="/posts/third-post.html" class="post-title">第三篇：JavaScript动画</a>
     <div class="post-date">2023-10-10</div>
     <p>探索如何使用JavaScript创建流畅的动画效果...</p>
+  </div>
+
+  <!-- 新增的文章条目（对应2025-08-10-hello.md） -->
+  <div class="post">
+    <a href="/posts/2025-08-10-hello.html" class="post-title">hello</a>
+    <div class="post-date">2023-10-01</div>
+    <p>This is my first blog.</p>
   </div>
 
   <a href="/" class="back-link">← 返回首页</a>
