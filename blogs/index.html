@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <title>我的博客 - 特效版</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
@@ -185,21 +184,42 @@
   
   <h1>文章列表</h1>
   
-  <!-- 修改列表页中的文章链接 -->
+  <!-- 文章列表 - 关联现有Markdown文件 -->
   <div class="post">
-  <div class="post-details">
-    <div class="post-date">2025-08-10</div>
-    <!-- 链接指向 post.html，并通过 ?post= 传递文章文件名（不含 .md 后缀） -->
-    <h3>
-      <a href="/blogs/post.html?post=2025-08-10-%E6%9A%91%E5%81%87week3" class="post-title">暑假第三周学习记录</a>
-    </h3>
-    <p>记录暑假第三周的学习内容和心得体会...</p>
-  </div>
-</div>
-  
-    <a href="/" class="back-link">← 返回首页</a>
+    <div class="post-details">
+      <div class="post-date">2023-10-01</div>
+      <!-- 链接指向post.html，传递hello.md的文件名（不含后缀） -->
+      <h3>
+        <a href="/blogs/post.html?post=2025-08-10-hello" class="post-title">第一篇：Hello World</a>
+      </h3>
+      <p>这是我的第一篇文章，介绍如何开始...</p>
+    </div>
   </div>
 
+  <div class="post">
+    <div class="post-details">
+      <div class="post-date">2025-08-10</div>
+      <a href="/blogs/post.html?post=2025-08-10-%E6%9A%91%E5%81%87week3" class="post-title">暑假第三周学习记录</a>
+      <p>记录暑假第三周的学习内容和心得体会...</p>
+    </div>
+  </div>
+
+  <div class="post">
+    <div class="post-details">
+      <div class="post-date">2023-10-05</div>
+      <a href="/blogs/post.html?post=second-post" class="post-title">第二篇：CSS技巧</a>
+      <p>分享一些实用的CSS布局技巧...</p>
+    </div>
+  </div>
+  
+  <div class="post">
+    <div class="post-details">
+      <div class="post-date">2023-10-10</div>
+      <a href="/blogs/post.html?post=third-post" class="post-title">第三篇：JavaScript动画</a>
+      <p>探索如何使用JavaScript创建流畅的动画效果...</p>
+    </div>
+  </div>
+  
   <a href="/" class="back-link">← 返回首页</a>
   
   <!-- 主题切换按钮 -->
