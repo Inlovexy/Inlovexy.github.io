@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <title>博客文章 - 特效版</title>
+  <!-- 引入Markdown解析库 -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <title>文章详情 - 我的博客</title>
+  <!-- 代码高亮库 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/github-dark.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/lib/highlight.min.js"></script>
+  
   <style>
-    /* 复用列表页的样式，并添加文章内容的样式 */
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
     
     :root {
@@ -22,7 +26,27 @@
       padding: 20px;
       background-color: #f5f7ff;
       color: var(--text-color);
-      line-height: 1.8;
+      line-height: 1.6;
+    }
+    
+    h1 {
+      text-align: center;
+      color: var(--primary-color);
+      margin: 30px 0 20px;
+      position: relative;
+      padding-bottom: 10px;
+    }
+    
+    h1::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      border-radius: 2px;
     }
     
     .post-container {
@@ -30,88 +54,293 @@
       padding: 30px;
       border-radius: 8px;
       box-shadow: var(--shadow);
-    }
-    
-    .post-title {
-      color: var(--primary-color);
-      border-bottom: 2px solid var(--primary-color);
-      padding-bottom: 10px;
+      margin-bottom: 30px;
     }
     
     .post-date {
       color: #6c757d;
       font-size: 0.9em;
-      margin: 10px 0 20px;
-    }
-    
-    .post-content {
-      margin-top: 20px;
-    }
-    
-    /* Markdown 内容样式（适配标题、列表、代码块等） */
-    .post-content h1 { font-size: 1.8em; margin: 20px 0 10px; }
-    .post-content h2 { font-size: 1.5em; margin: 18px 0 8px; }
-    .post-content p { margin: 10px 0; }
-    .post-content ul, .post-content ol { margin: 10px 0 10px 20px; }
-    .post-content code { background: #f0f0f0; padding: 2px 5px; border-radius: 3px; }
-    .post-content pre { 
-      background: #f0f0f0; 
-      padding: 15px; 
-      border-radius: 5px; 
-      overflow-x: auto; 
-      margin: 15px 0; 
+      text-align: center;
+      margin-bottom: 20px;
     }
     
     .back-link {
       display: inline-block;
-      margin: 20px 0;
+      margin-top: 20px;
       padding: 10px 20px;
       background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
       color: white;
       text-decoration: none;
       border-radius: 50px;
+      transition: all 0.3s;
+      box-shadow: 0 4px 6px rgba(67, 97, 238, 0.2);
+    }
+    
+    .back-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(67, 97, 238, 0.3);
+    }
+    
+    /* Markdown内容样式 */
+    #markdown-content h2, #markdown-content h3 {
+      color: var(--secondary-color);
+      margin-top: 25px;
+    }
+    
+    #markdown-content p {
+      margin: 15px 0;
+    }
+    
+    #markdown-content img {
+      max-width: 100%;
+      border-radius: 6px;
+      margin: 20px 0;
+    }
+    
+    #markdown-content pre {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 20px 0;
+    }
+    
+    #markdown-content code {
+      font-family: monospace;
+      font-size: 0.95em;
+    }
+    
+    #markdown-content blockquote {
+      border-left: 4px solid var(--primary-color);
+      padding-left: 15px;
+      margin-left: 0;
+      color: #6c757d;
+    }
+    
+    /* 粒子背景特效 */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+    
+    /* 滚动指示器 */
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      z-index: 100;
+      transition: width 0.1s;
+    }
+    
+    /* 主题切换按钮 */
+    .theme-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+    
+    .theme-toggle:hover {
+      transform: scale(1.1);
+    }
+
+    /* 暗黑模式适配 */
+    .dark-theme #markdown-content pre {
+      background: #2d2d2d;
+    }
+    
+    .dark-theme .post-container {
+      background: #212529;
     }
   </style>
 </head>
 <body>
-  <a href="index.html" class="back-link">← 返回文章列表</a>
+  <!-- 滚动进度条 -->
+  <div class="scroll-progress" id="scrollProgress"></div>
+  
+  <!-- 粒子背景 -->
+  <canvas class="particles" id="particles"></canvas>
   
   <div class="post-container">
-    <h1 class="post-title" id="postTitle"></h1>
+    <h1 id="postTitle"></h1>
     <div class="post-date" id="postDate"></div>
-    <div class="post-content" id="postContent"></div>
+    <div id="markdown-content"></div>
+    <a href="/blogs" class="back-link">← 返回文章列表</a>
   </div>
-
+  
+  <!-- 主题切换按钮 -->
+  <button class="theme-toggle" id="themeToggle">🌓</button>
+  
   <script>
-    // 从 URL 中获取文章文件名（例如从 ?post=2025-08-10-暑假week3 中提取）
-    const urlParams = new URLSearchParams(window.location.search);
-    const postName = urlParams.get('post'); // 获取文章标识（如 2025-08-10-暑假week3）
+    // 从URL获取文章名称
+    const params = new URLSearchParams(window.location.search);
+    const postName = params.get('post');
     
-    // 如果获取到文章标识，则加载并渲染 Markdown
-    if (postName) {
-      // 1. 动态加载对应的 .md 文件（路径需与你的实际文件存放位置一致）
-      fetch(`posts/${postName}.md`) // 假设 .md 文件存放在 posts 文件夹下
-        .then(response => {
-          if (!response.ok) throw new Error('文章不存在');
-          return response.text(); // 获取 Markdown 文本内容
-        })
-        .then(markdownContent => {
-          // 2. 用 marked.js 将 Markdown 转换为 HTML
-          const htmlContent = marked.parse(markdownContent);
+    // 加载并解析Markdown文件
+    fetch(`/posts/${postName}.md`)
+      .then(response => {
+        if (!response.ok) throw new Error('文章不存在');
+        return response.text();
+      })
+      .then(markdown => {
+        // 提取Markdown头部信息（title和date）
+        const frontmatterRegex = /---\s*([\s\S]*?)\s*---/;
+        const match = markdown.match(frontmatterRegex);
+        let content = markdown;
+        
+        if (match && match[1]) {
+          // 解析标题和日期
+          const frontmatter = match[1];
+          const titleMatch = frontmatter.match(/title:\s*"(.*?)"/);
+          const dateMatch = frontmatter.match(/date:\s*(.*?)\s/);
           
-          // 3. 将 HTML 插入到页面中
-          document.getElementById('postContent').innerHTML = htmlContent;
+          if (titleMatch) document.getElementById('postTitle').textContent = titleMatch[1];
+          if (dateMatch) document.getElementById('postDate').textContent = dateMatch[1];
           
-          // 4. 可以额外设置标题和日期（也可以从 Markdown 文件的开头提取，如 Front Matter）
-          document.getElementById('postTitle').textContent = postName.replace(/-/g, ' '); // 简单处理标题
-          document.getElementById('postDate').textContent = new Date().toLocaleDateString(); // 示例日期
-        })
-        .catch(error => {
-          document.getElementById('postContent').innerHTML = `<p>错误：${error.message}</p>`;
+          // 移除头部信息，只保留正文
+          content = markdown.replace(frontmatterRegex, '').trim();
+        }
+        
+        // 将Markdown转换为HTML并显示
+        document.getElementById('markdown-content').innerHTML = marked.parse(content);
+        
+        // 代码高亮
+        document.querySelectorAll('pre code').forEach(block => {
+          hljs.highlightElement(block);
         });
-    } else {
-      document.getElementById('postContent').innerHTML = '<p>未找到文章，请返回列表页选择文章。</p>';
+      })
+      .catch(error => {
+        document.getElementById('markdown-content').innerHTML = `<p>错误：${error.message}</p>`;
+      });
+
+    // 滚动进度条
+    window.addEventListener('scroll', function() {
+      const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrollProgress = (scrollTop / scrollHeight) * 100;
+      document.getElementById('scrollProgress').style.width = scrollProgress + '%';
+    });
+    
+    // 粒子背景（复用列表页逻辑）
+    const canvas = document.getElementById('particles');
+    const ctx = canvas.getContext('2d');
+    
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    const particles = [];
+    const particleCount = window.innerWidth < 600 ? 30 : 50;
+    
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 3 + 1;
+        this.speedX = Math.random() * 1 - 0.5;
+        this.speedY = Math.random() * 1 - 0.5;
+        this.color = `rgba(67, 97, 238, ${Math.random() * 0.5 + 0.1})`;
+      }
+      
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        
+        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+      }
+      
+      draw() {
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
     }
+    
+    function initParticles() {
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+      }
+    }
+    
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+        particles[i].draw();
+      }
+      
+      connectParticles();
+      requestAnimationFrame(animateParticles);
+    }
+    
+    function connectParticles() {
+      for (let a = 0; a < particles.length; a++) {
+        for (let b = a; b < particles.length; b++) {
+          const dx = particles[a].x - particles[b].x;
+          const dy = particles[a].y - particles[b].y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          
+          if (distance < 100) {
+            ctx.strokeStyle = `rgba(67, 97, 238, ${1 - distance / 100})`;
+            ctx.lineWidth = 0.5;
+            ctx.beginPath();
+            ctx.moveTo(particles[a].x, particles[a].y);
+            ctx.lineTo(particles[b].x, particles[b].y);
+            ctx.stroke();
+          }
+        }
+      }
+    }
+    
+    initParticles();
+    animateParticles();
+    
+    // 窗口大小调整时重设画布
+    window.addEventListener('resize', function() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+    
+    // 主题切换功能（复用列表页逻辑）
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('click', function() {
+      document.body.classList.toggle('dark-theme');
+      
+      if (document.body.classList.contains('dark-theme')) {
+        document.documentElement.style.setProperty('--primary-color', '#4cc9f0');
+        document.documentElement.style.setProperty('--secondary-color', '#4895ef');
+        document.documentElement.style.setProperty('--text-color', '#f8f9fa');
+        document.documentElement.style.setProperty('--light-color', '#212529');
+        document.body.style.backgroundColor = '#121212';
+      } else {
+        document.documentElement.style.setProperty('--primary-color', '#4361ee');
+        document.documentElement.style.setProperty('--secondary-color', '#3f37c9');
+        document.documentElement.style.setProperty('--text-color', '#2b2d42');
+        document.documentElement.style.setProperty('--light-color', '#f8f9fa');
+        document.body.style.backgroundColor = '#f5f7ff';
+      }
+    });
   </script>
 </body>
 </html>
