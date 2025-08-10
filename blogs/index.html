@@ -1,7 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>我的博客 - 特效版</title>
+
+  <!-- 修复路径问题：使用相对路径 -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
     
@@ -57,7 +63,7 @@
     
     .post:nth-child(2) { animation-delay: 0.2s; }
     .post:nth-child(3) { animation-delay: 0.4s; }
-    .post:nth-child(4) { animation-delay: 0.6s; } /* 新增文章的动画延迟 */
+    .post:nth-child(4) { animation-delay: 0.6s; }
     
     @keyframes fadeIn {
       to {
@@ -187,12 +193,13 @@
   <div class="post">
     <div class="post-details">
       <div class="post-date">2025-08-10</div>
-      <a href="posts/2025-08-10-暑假week3.html" class="post-title">暑假第三周学习记录</a>
+      <a href="./posts/2025-08-10-暑假week3.html" class="post-title">暑假第三周学习记录</a>
       <p>记录暑假第三周的学习内容和心得体会...</p>
     </div>
   </div>
 
-  <a href="/" class="back-link">← 返回首页</a>
+  <!-- 返回链接：如果部署在 /blogs/ 下，返回上一级 -->
+  <a href="../" class="back-link">← 返回首页</a>
   
   <!-- 主题切换按钮 -->
   <button class="theme-toggle" id="themeToggle">🌓</button>
@@ -210,8 +217,11 @@
     const canvas = document.getElementById('particles');
     const ctx = canvas.getContext('2d');
     
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
     
     const particles = [];
     const particleCount = window.innerWidth < 600 ? 30 : 50;
@@ -237,7 +247,7 @@
       draw() {
         ctx.fillStyle = this.color;
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.arc(this.x, thisy, this.size, 0, Math.PI * 2);
         ctx.fill();
       }
     }
@@ -282,10 +292,12 @@
     initParticles();
     animateParticles();
     
-    // 窗口大小调整时重设画布
+    // 窗口大小调整
     window.addEventListener('resize', function() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      resizeCanvas();
+      // 重新初始化粒子位置
+      particles.length = 0;
+      initParticles();
     });
     
     // 主题切换功能
