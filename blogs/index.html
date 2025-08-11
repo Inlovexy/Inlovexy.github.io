@@ -5,10 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>我的算法博客</title>
 
-  <!-- 字体：保持原有 -->
+  <!-- 字体、脚本等保持不变 -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
-
-  <!-- MathJax, marked, highlight.js 保持不变 -->
   <script>
     window.MathJax = {
       tex: {
@@ -54,9 +52,48 @@
       color: var(--text);
       line-height: 1.8;
       position: relative;
+      overflow: hidden; /* 防止泡泡溢出影响布局 */
     }
 
-    /* 在标题下方添加一条极细的装饰线，模仿学术感 */
+    /* --- 泡泡动画样式 --- */
+    .bubble {
+      position: fixed;
+      bottom: -100px;
+      width: 20px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0.6;
+    }
+
+    .bubble::after {
+      content: '';
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      width: 6px;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 50%;
+    }
+
+    @keyframes rise {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+      }
+      50% {
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(-100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* --- 标题样式 --- */
     h1 {
       font-weight: 600;
       color: var(--primary);
@@ -74,10 +111,9 @@
       width: 60px;
       height: 2px;
       background: var(--primary);
-      /* 非常细的线条，增加设计感但不突兀 */
     }
 
-    /* 文章卡片：增加呼吸感 */
+    /* --- 文章卡片样式 --- */
     .post {
       background: var(--card);
       padding: 32px;
@@ -87,10 +123,8 @@
       margin-bottom: 36px;
       transition: var(--transition);
       position: relative;
-      /* 为装饰点预留空间 */
     }
 
-    /* 在卡片左上角添加一个极小的装饰点 */
     .post::before {
       content: '';
       position: absolute;
@@ -114,7 +148,7 @@
       font-weight: 400;
       margin-bottom: 12px;
       position: relative;
-      left: 12px; /* 让日期稍微避开装饰点 */
+      left: 12px;
     }
 
     .post-title {
@@ -124,7 +158,7 @@
       text-decoration: none;
       transition: var(--transition);
       position: relative;
-      left: 12px; /* 让标题稍微避开装饰点 */
+      left: 12px;
     }
 
     .post-title:hover {
@@ -138,10 +172,10 @@
       margin-top: 12px;
       line-height: 1.6;
       position: relative;
-      left: 12px; /* 让摘要稍微避开装饰点 */
+      left: 12px;
     }
 
-    /* 阅读器：保持简洁 */
+    /* --- 其他元素样式 --- */
     #reader {
       display: none;
       position: fixed;
@@ -176,13 +210,13 @@
       transform: scale(1.05);
     }
 
-    /* 其他样式：保持不变 */
+    /* 保持原有样式不变 */
     .MathJax { margin: 0.6em 0 !important; }
     pre { background: #f8f9ff; padding: 16px; border-radius: 8px; border: 1px solid #e0e0e0; overflow-x: auto; margin: 1.2em 0; }
     code { background: #f0f0f0; padding: 2px 6px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.95em; }
     hr { display: none; }
 
-    /* 暗色模式：完全保留你的原设计 */
+    /* 暗色模式 */
     body.dark {
       --bg: #121212;
       --text: #e0e0e0;
@@ -197,7 +231,7 @@
     body.dark code { background: #3a3a3a; color: #e0e0e0; }
     body.dark #reader { background: #1a1a1a; color: #f0f0f0; }
 
-    /* 按钮：微调位置 */
+    /* 按钮和返回链接 */
     .theme-toggle {
       position: fixed;
       bottom: 24px;
@@ -215,11 +249,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      z-index: 10;
     }
-    .theme-toggle:hover {
-      transform: scale(1.1);
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-    }
+    .theme-toggle:hover { transform: scale(1.1); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3); }
 
     .back-link {
       display: inline-block;
@@ -231,12 +263,9 @@
       border-radius: 50px;
       transition: var(--transition);
     }
-    .back-link:hover {
-      background: #3a56d4;
-      transform: scale(1.05);
-    }
+    .back-link:hover { background: #3a56d4; transform: scale(1.05); }
 
-    /* 响应式：微调 */
+    /* 响应式 */
     @media (max-width: 768px) {
       body { padding: 50px 16px 30px; }
       .post { padding: 28px; margin-bottom: 32px; }
@@ -246,6 +275,11 @@
   </style>
 </head>
 <body>
+
+  <!-- 左侧泡泡容器 -->
+  <div id="bubbles-left"></div>
+  <!-- 右侧泡泡容器 -->
+  <div id="bubbles-right"></div>
 
   <h1>我的算法博客</h1>
 
@@ -268,6 +302,7 @@
     <div id="post-content"></div>
   </div>
 
+  <!-- 核心脚本 -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       if (typeof marked !== 'undefined') {
@@ -278,8 +313,61 @@
           smartypants: true
         });
       }
+
+      // --- 泡泡生成逻辑 ---
+      const leftContainer = document.getElementById('bubbles-left');
+      const rightContainer = document.getElementById('bubbles-right');
+      const maxBubbles = 8; // 每侧最多泡泡数
+
+      function createBubble(container, side) {
+        const bubble = document.createElement('div');
+        bubble.classList.add('bubble');
+
+        // 随机大小 (10px - 30px)
+        const size = Math.random() * 20 + 10;
+        bubble.style.width = `${size}px`;
+        bubble.style.height = `${size}px`;
+
+        // 随机位置 (左侧 5%-20%，右侧 80%-95%)
+        const sidePos = side === 'left' 
+          ? (Math.random() * 15 + 5) 
+          : (Math.random() * 15 + 80);
+        bubble.style.left = `${sidePos}%`;
+
+        // 随机动画时长 (15s - 25s)
+        const duration = Math.random() * 10 + 15;
+        bubble.style.animation = `rise ${duration}s infinite ease-in-out`;
+
+        // 随机延迟
+        bubble.style.animationDelay = `${Math.random() * 5}s`;
+
+        container.appendChild(bubble);
+
+        // 动画结束后移除并重新创建
+        setTimeout(() => {
+          if (container.contains(bubble)) {
+            container.removeChild(bubble);
+            createBubble(container, side);
+          }
+        }, duration * 1000);
+      }
+
+      // 初始化泡泡
+      function initBubbles() {
+        for (let i = 0; i < maxBubbles; i++) {
+          if (i % 2 === 0) {
+            createBubble(leftContainer, 'left');
+          } else {
+            createBubble(rightContainer, 'right');
+          }
+        }
+      }
+
+      // 启动
+      initBubbles();
     });
 
+    // 原有博客功能脚本...
     function loadPost(url) {
       const reader = document.getElementById('reader');
       const contentEl = document.getElementById('post-content');
