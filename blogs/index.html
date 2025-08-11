@@ -18,25 +18,26 @@
   <style>
     :root {
       --primary: #4361ee;
+      --primary-light: #4cc9f0;
       --text: #2b2d42;
       --bg: #fdfefe;
       --card: #ffffff;
-      --shadow: 0 8px 25px rgba(0, 0, 0, 0.09);
-      --radius: 16px;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      --radius: 18px;
       --border: #e0e0e0;
       --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-      --toc-bg: rgba(255, 255, 255, 0.94);
-      --toc-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+      --toc-bg: rgba(255, 255, 255, 0.96);
+      --toc-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
     }
 
     body {
       font-family: 'Inter', 'Noto Serif SC', sans-serif;
-      max-width: 840px;
+      max-width: 860px;
       margin: 0 auto;
-      padding: 70px 20px 50px;
+      padding: 80px 20px 60px;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.85;
+      line-height: 1.9;
       position: relative;
       overflow-x: hidden;
       scroll-behavior: smooth;
@@ -45,29 +46,29 @@
     /* ============= 顶部 Logo ============= */
     .logo {
       position: fixed;
-      top: 24px;
-      left: 24px;
+      top: 26px;
+      left: 26px;
       font-family: 'Playfair Display', serif;
-      font-size: 2.6em;
+      font-size: 2.8em;
       font-weight: 900;
       color: #ff69b4;
       text-decoration: none;
       z-index: 100;
-      letter-spacing: -1.5px;
-      text-shadow: 0 2px 6px rgba(0,0,0,0.2), 0 0 20px rgba(255, 105, 180, 0.4);
-      transform: rotate(-6deg);
+      letter-spacing: -2px;
+      text-shadow: 0 3px 8px rgba(0,0,0,0.2), 0 0 25px rgba(255, 105, 180, 0.5);
+      transform: rotate(-7deg);
       transition: var(--transition);
-    }
-
-    @keyframes logoPulse {
-      0%, 100% { text-shadow: 0 2px 6px rgba(0,0,0,0.2), 0 0 20px rgba(255, 105, 180, 0.4); }
-      50% { text-shadow: 0 2px 8px rgba(0,0,0,0.3), 0 0 30px rgba(255, 105, 180, 0.6); }
     }
 
     .logo:hover {
       color: #ff1493;
-      transform: rotate(-6deg) scale(1.15);
-      text-shadow: 0 0 30px rgba(255, 105, 180, 0.7);
+      transform: rotate(-7deg) scale(1.18);
+      text-shadow: 0 0 35px rgba(255, 105, 180, 0.8);
+    }
+
+    @keyframes logoPulse {
+      0%, 100% { text-shadow: 0 3px 8px rgba(0,0,0,0.2), 0 0 25px rgba(255, 105, 180, 0.5); }
+      50% { text-shadow: 0 3px 10px rgba(0,0,0,0.3), 0 0 35px rgba(255, 105, 180, 0.7); }
     }
 
     body:not(.dark) .logo {
@@ -79,23 +80,24 @@
       position: fixed;
       top: 0;
       left: 0;
-      height: 3px;
-      background: linear-gradient(to right, #4361ee, #4cc9f0);
+      height: 4px;
+      background: linear-gradient(90deg, #4361ee, #4cc9f0, #ff69b4);
       width: 0%;
       z-index: 1000;
       transition: width 0.1s ease;
-      box-shadow: 0 0 8px rgba(67, 97, 238, 0.4);
+      box-shadow: 0 0 10px rgba(67, 97, 238, 0.5);
     }
 
     /* ============= 主标题 ============= */
     h1 {
       font-weight: 600;
       color: var(--primary);
-      padding-bottom: 16px;
-      margin-bottom: 36px;
-      font-size: 2em;
+      padding-bottom: 20px;
+      margin-bottom: 40px;
+      font-size: 2.2em;
       text-align: center;
       position: relative;
+      animation: fadeInUp 0.8s ease-out;
     }
 
     h1::after {
@@ -104,124 +106,135 @@
       bottom: 0;
       left: 50%;
       transform: translateX(-50%);
-      width: 80px;
-      height: 3px;
+      width: 100px;
+      height: 4px;
       background: linear-gradient(to right, transparent, var(--primary), transparent);
       border-radius: 2px;
+      box-shadow: 0 2px 8px rgba(67, 97, 238, 0.3);
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     /* ============= 搜索框 ============= */
     #search-box {
-      margin: 20px auto 30px;
-      padding: 12px 20px;
+      margin: 24px auto 36px;
+      padding: 14px 24px;
       width: 100%;
-      max-width: 500px;
+      max-width: 540px;
       border: 2px solid #e0e0e0;
-      border-radius: 50px;
-      font-size: 1em;
+      border-radius: 60px;
+      font-size: 1.1em;
       outline: none;
-      transition: 0.3s;
       background: white;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+      transition: 0.3s;
     }
 
     #search-box:focus, #search-box:valid {
       border-color: var(--primary);
-      box-shadow: 0 6px 16px rgba(67, 97, 238, 0.15);
+      box-shadow: 0 8px 24px rgba(67, 97, 238, 0.2);
+      transform: translateY(-2px);
     }
 
     /* ============= 文章卡片 ============= */
     .post {
       background: var(--card);
-      padding: 36px;
+      padding: 40px;
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       border: 1px solid var(--border);
-      margin-bottom: 40px;
+      margin-bottom: 50px;
       transition: var(--transition);
       position: relative;
+      backdrop-filter: blur(6px);
     }
 
     .post::before {
       content: '';
       position: absolute;
-      top: 36px;
-      left: 36px;
-      width: 8px;
-      height: 8px;
+      top: 40px;
+      left: 40px;
+      width: 10px;
+      height: 10px;
       background: var(--primary);
       border-radius: 50%;
       opacity: 0.4;
     }
 
     .post:hover {
-      transform: translateY(-6px) scale(1.01);
-      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.14);
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
     }
 
     .post-date {
       color: #777;
-      font-size: 0.92em;
+      font-size: 0.95em;
       font-weight: 400;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
       position: relative;
-      left: 14px;
+      left: 16px;
     }
 
     .post-title {
-      font-size: 1.5em;
+      font-size: 1.6em;
       font-weight: 600;
       color: var(--primary);
       text-decoration: none;
       transition: var(--transition);
       position: relative;
-      left: 14px;
+      left: 16px;
       display: inline-block;
     }
 
     .post-title:hover {
       color: #3a56d4;
       text-decoration: underline;
+      transform: scale(1.04);
     }
 
     .post-excerpt {
       color: #555;
-      font-size: 1em;
-      margin-top: 14px;
+      font-size: 1.05em;
+      margin-top: 16px;
       line-height: 1.7;
       position: relative;
-      left: 14px;
+      left: 16px;
     }
 
     /* ============= 悬浮 TOC（右侧） ============= */
     #toc-container {
       position: fixed;
-      top: 120px;
+      top: 130px;
       right: 40px;
-      width: 220px;
-      max-height: 60vh;
+      width: 240px;
+      max-height: 65vh;
       overflow-y: auto;
       background: var(--toc-bg);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px;
+      border-radius: 14px;
+      padding: 20px;
       box-shadow: var(--toc-shadow);
-      font-size: 0.95em;
+      font-size: 0.98em;
       z-index: 90;
-      opacity: 0.95;
-      backdrop-filter: blur(6px);
+      opacity: 0.98;
+      backdrop-filter: blur(8px);
       scrollbar-width: thin;
+      transition: transform 0.3s ease;
     }
 
     #toc-container h3 {
-      margin: 0 0 12px;
+      margin: 0 0 16px;
       color: var(--primary);
-      font-size: 1em;
+      font-size: 1.1em;
+      font-weight: 600;
     }
 
     #toc-container ul {
       list-style: none;
-      padding-left: 10px;
+      padding-left: 12px;
       margin: 0;
     }
 
@@ -229,29 +242,74 @@
       display: block;
       color: #555;
       text-decoration: none;
-      padding: 4px 6px;
-      border-radius: 4px;
-      transition: 0.2s;
+      padding: 6px 8px;
+      border-radius: 6px;
+      transition: 0.3s;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
     #toc-container a:hover {
-      background: rgba(67, 97, 238, 0.1);
+      background: rgba(67, 97, 238, 0.12);
       color: var(--primary);
+      transform: translateX(4px);
     }
 
     #toc-container a.active {
-      background: rgba(67, 97, 238, 0.15);
+      background: rgba(67, 97, 238, 0.2);
       color: var(--primary);
       font-weight: 600;
+      box-shadow: 0 2px 6px rgba(67, 97, 238, 0.1);
     }
 
     @media (max-width: 768px) {
       #toc-container {
         display: none;
       }
+    }
+
+    /* ============= 樱花花瓣（日间） ============= */
+    .petal {
+      position: fixed;
+      top: -20px;
+      width: 14px;
+      height: 14px;
+      background: #ffb6c1;
+      border-radius: 50% 50% 50% 0;
+      transform: rotate(45deg);
+      opacity: 0.7;
+      pointer-events: none;
+      z-index: -3;
+      filter: blur(0.5px);
+    }
+
+    @keyframes fall-petal {
+      0% { transform: rotate(45deg) translateY(0) translateX(0); opacity: 0; }
+      20% { opacity: 0.8; }
+      100% { 
+        transform: rotate(65deg) translateY(100vh) translateX(var(--drift, 40px)); 
+        opacity: 0; 
+      }
+    }
+
+    /* ============= 泡泡（夜间） ============= */
+    .bubble {
+      position: fixed;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9), rgba(200, 200, 255, 0.5));
+      opacity: 0;
+      pointer-events: none;
+      z-index: -3;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+    }
+
+    @keyframes rise-bubble {
+      0% { transform: translateY(100vh); opacity: 0; }
+      30% { opacity: 0.7; }
+      100% { transform: translateY(-15vh); opacity: 0.3; }
     }
 
     /* ============= 阅读器 ============= */
@@ -264,257 +322,135 @@
       height: 100%;
       background: white;
       overflow-y: auto;
-      padding: 80px 20px 50px;
+      padding: 90px 20px 60px;
       box-sizing: border-box;
       z-index: 1000;
     }
 
     #post-content {
-      max-width: 820px;
+      max-width: 860px;
       margin: 0 auto;
     }
 
     #reader button {
-      padding: 14px 30px;
+      padding: 16px 34px;
       background: var(--primary);
       color: white;
       border: none;
       border-radius: 60px;
       cursor: pointer;
       font-family: inherit;
-      font-size: 1.1em;
-      margin-bottom: 40px;
+      font-size: 1.2em;
+      margin-bottom: 50px;
       transition: var(--transition);
-      box-shadow: 0 6px 18px rgba(67, 97, 238, 0.3);
+      box-shadow: 0 8px 24px rgba(67, 97, 238, 0.4);
     }
 
     #reader button:hover {
       background: #3a56d4;
-      transform: scale(1.08);
+      transform: scale(1.1);
+      box-shadow: 0 10px 30px rgba(67, 97, 238, 0.5);
     }
 
     pre {
       position: relative;
       background: #f8f9ff;
-      padding: 18px;
-      border-radius: 10px;
+      padding: 20px;
+      border-radius: 12px;
       border: 1px solid #e0e0e0;
       overflow-x: auto;
-      margin: 1.4em 0;
+      margin: 1.6em 0;
+      transition: 0.3s;
+    }
+
+    pre:hover {
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
     }
 
     .copy-btn {
       position: absolute;
-      top: 10px;
-      right: 10px;
+      top: 12px;
+      right: 12px;
       background: #6c757d;
       color: white;
       border: none;
       padding: 6px 10px;
-      font-size: 0.8em;
+      font-size: 0.85em;
       border-radius: 6px;
       cursor: pointer;
-      opacity: 0.7;
+      opacity: 0.8;
+      transition: 0.3s;
     }
 
     .copy-btn:hover {
+      background: #5a6268;
       opacity: 1;
     }
 
-    /* ============= 樱花树（白天） ============= */
-    .sakura-tree {
-      position: fixed;
-      bottom: 0;
-      width: 200px;
-      height: 300px;
-      pointer-events: none;
-      z-index: -1;
-      opacity: 0.9;
-      transform-origin: bottom center;
-    }
-
-    .sakura-left {
-      left: -5%;
-      transform: rotate(-5deg) scaleY(0);
-      animation: grow-left 2s ease-out forwards, sway-left 6s ease-in-out infinite alternate;
-    }
-
-    .sakura-right {
-      right: -5%;
-      transform: rotate(5deg) scaleY(0);
-      animation: grow-right 2s ease-out forwards, sway-right 6s ease-in-out infinite alternate;
-    }
-
-    @keyframes grow-left {
-      to { transform: rotate(-5deg) scaleY(1); }
-    }
-    @keyframes grow-right {
-      to { transform: rotate(5deg) scaleY(1); }
-    }
-
-    @keyframes sway-left {
-      0% { transform: rotate(-7deg) scaleY(1); }
-      100% { transform: rotate(-3deg) scaleY(1); }
-    }
-    @keyframes sway-right {
-      0% { transform: rotate(7deg) scaleY(1); }
-      100% { transform: rotate(3deg) scaleY(1); }
-    }
-
-    .tree-trunk {
+    .lang-tag {
       position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 24px;
-      height: 140px;
-      background: #8B4513;
-      border-radius: 12px;
-      box-shadow: inset 0 0 10px #5e2c0d;
+      top: 12px;
+      left: 12px;
+      background: var(--primary);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.8em;
+      font-weight: bold;
     }
 
-    .tree-crown {
-      position: absolute;
-      bottom: 120px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 180px;
-      height: 180px;
-      background: radial-gradient(circle at 30% 30%, #ff99cc, #ff69b4);
-      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-      box-shadow: 
-        0 0 30px rgba(255, 105, 180, 0.5),
-        inset 0 0 30px rgba(255, 105, 180, 0.3);
-      filter: blur(1px);
-    }
-
-    .petal {
-      position: fixed;
-      width: 12px;
-      height: 12px;
-      background: #ffb6c1;
-      border-radius: 50% 50% 50% 0;
-      transform: rotate(45deg);
-      opacity: 0.7;
-      pointer-events: none;
-      z-index: -2;
-    }
-
-    @keyframes fall {
-      0% { transform: rotate(45deg) translateY(-20px) translateX(0); opacity: 0; }
-      20% { opacity: 0.8; }
-      100% { 
-        transform: rotate(45deg) translateY(100vh) translateX(var(--drift, 30px)); 
-        opacity: 0; 
-      }
-    }
-
-    /* ============= 泡泡与游鱼（黑夜） ============= */
-    .bubble {
-      position: fixed;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8), rgba(200, 200, 255, 0.4));
-      opacity: 0;
-      pointer-events: none;
-      z-index: -2;
-      box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
-    }
-
-    @keyframes rise {
-      0% { transform: translateY(100vh); opacity: 0; }
-      30% { opacity: 0.6; }
-      100% { transform: translateY(-10vh); opacity: 0.2; }
-    }
-
-    .fish {
-      position: fixed;
-      width: 36px;
-      height: 16px;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 50% 10% / 60% 40%;
-      transform: scaleY(1.3);
-      opacity: 0.8;
-      pointer-events: none;
-      z-index: -2;
-    }
-
-    .fish::before {
-      content: '';
-      position: absolute;
-      width: 10px;
-      height: 16px;
-      bottom: 1px;
-      right: -7px;
-      background: rgba(255, 255, 255, 0.4);
-      clip-path: polygon(0 0, 100% 50%, 0 100%);
-      transform-origin: left center;
-      animation: wiggle 1.5s ease-in-out infinite alternate;
-    }
-
-    @keyframes wiggle {
-      0% { transform: rotate(15deg); }
-      100% { transform: rotate(-15deg); }
-    }
-
-    @keyframes swim-up {
-      0% { transform: translateY(100vh) scaleY(1.3); }
-      100% { transform: translateY(-20vh) scaleY(1.3); }
+    code {
+      background: #f0f0f0;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.95em;
     }
 
     /* ============= 按钮 ============= */
     .nav-button {
       position: fixed;
-      bottom: 30px;
-      padding: 12px 24px;
-      border-radius: 50px;
+      bottom: 32px;
+      padding: 14px 28px;
+      border-radius: 55px;
       font-family: 'Inter', sans-serif;
       font-weight: 500;
-      font-size: 1em;
+      font-size: 1.05em;
       text-decoration: none;
       z-index: 100;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-      transition: all 0.3s ease;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
     .nav-home {
-      left: 30px;
+      left: 32px;
       background: white;
       color: var(--primary);
       border: 2px solid var(--primary);
     }
 
     .nav-home:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(67, 97, 238, 0.25);
+      transform: translateY(-4px) scale(1.06);
+      box-shadow: 0 10px 28px rgba(67, 97, 238, 0.3);
     }
 
     .theme-toggle {
-      right: 30px;
+      right: 32px;
       background: var(--primary);
       color: white;
       border: none;
-      padding: 12px 24px;
+      padding: 14px 28px;
       cursor: pointer;
     }
 
     .theme-toggle:hover {
-      transform: translateY(-3px) scale(1.05);
-      box-shadow: 0 8px 20px rgba(67, 97, 238, 0.3);
+      transform: translateY(-4px) scale(1.08);
+      box-shadow: 0 10px 28px rgba(67, 97, 238, 0.4);
     }
 
-    /* 黑暗模式下隐藏樱花 */
-    body.dark .sakura-tree,
-    body.dark .petal {
-      display: none;
-    }
-
-    /* 白天隐藏泡泡和鱼 */
-    body:not(.dark) .bubble,
-    body:not(.dark) .fish {
-      display: none;
-    }
+    /* 隐藏不适用的元素 */
+    body.dark .petal { display: none; }
+    body:not(.dark) .bubble { display: none; }
 
     /* ============= 暗色模式 ============= */
     body.dark {
@@ -523,21 +459,43 @@
       --card: #1a1a2e;
       --border: #333;
       --primary: #6ea8fe;
-      --toc-bg: rgba(26, 26, 46, 0.95);
+      --toc-bg: rgba(26, 26, 46, 0.98);
     }
 
     body.dark {
       background: var(--bg);
+      color: #f0f0ff;
+    }
+
+    body.dark .post {
+      background: var(--card);
+      border: 1px solid #333;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    body.dark pre {
+      background: #1e1e30;
+      border-color: #444;
+    }
+
+    body.dark code {
+      background: #2d2d40;
+      color: #d0d0ff;
+    }
+
+    body.dark #reader {
+      background: #121220;
+      color: #f0f0ff;
     }
 
     /* ============= 响应式 ============= */
     @media (max-width: 768px) {
-      .sakura-tree { width: 120px; height: 180px; }
-      .sakura-left, .sakura-right { bottom: -20px; }
-      .nav-button { padding: 10px 20px; font-size: 0.95em; bottom: 20px; }
-      #reading-progress { display: none; }
-      .logo { font-size: 2.2em; top: 18px; left: 18px; }
-      body { padding: 60px 16px 40px; }
+      .logo { font-size: 2.3em; top: 20px; left: 20px; }
+      body { padding: 70px 16px 50px; }
+      .post { padding: 36px; margin-bottom: 40px; }
+      #toc-container { right: 16px; width: 200px; }
+      .nav-button { padding: 12px 24px; font-size: 0.95em; bottom: 20px; }
+      #reading-progress { height: 3px; }
     }
   </style>
 </head>
@@ -577,20 +535,9 @@
     <ul id="toc-list"></ul>
   </div>
 
-  <!-- 樱花树（白天） -->
-  <div class="sakura-tree sakura-left">
-    <div class="tree-trunk"></div>
-    <div class="tree-crown"></div>
-  </div>
-  <div class="sakura-tree sakura-right">
-    <div class="tree-trunk"></div>
-    <div class="tree-crown"></div>
-  </div>
+  <!-- 特效容器 -->
   <div id="petals"></div>
-
-  <!-- 泡泡与游鱼（黑夜） -->
   <div id="bubbles"></div>
-  <div id="fishes"></div>
 
   <!-- 导航按钮 -->
   <a href="../" class="nav-button nav-home">🏠 返回主页</a>
@@ -627,59 +574,42 @@
         document.getElementById('reading-progress').style.width = `${Math.min(progress, 100)}%`;
       });
 
-      // 花瓣飘落
+      // 樱花花瓣（日间）
       const petals = document.getElementById('petals');
       const createPetal = () => {
         if (document.body.classList.contains('dark')) return;
         const p = document.createElement('div');
         p.classList.add('petal');
         p.style.left = Math.random() * 100 + 'vw';
-        p.style.opacity = 0.4 + Math.random() * 0.5;
-        p.style.width = p.style.height = (Math.random() * 10 + 8) + 'px';
-        p.style.setProperty('--drift', (Math.random() * 40 - 20) + 'px');
-        p.style.animation = `fall ${12 + Math.random() * 8}s ease-out forwards`;
+        p.style.opacity = 0.3 + Math.random() * 0.5;
+        p.style.width = p.style.height = (Math.random() * 12 + 8) + 'px';
+        p.style.setProperty('--drift', (Math.random() * 50 - 20) + 'px');
+        p.style.animation = `fall-petal ${14 + Math.random() * 10}s ease-out forwards`;
         petals.appendChild(p);
-        setTimeout(() => petals.removeChild(p), 15000);
+        setTimeout(() => petals.removeChild(p), 18000);
       };
+      setInterval(createPetal, 250);
 
-      setInterval(createPetal, 300);
-      createPetal();
-
-      // 泡泡（黑夜）
+      // 泡泡（夜间）
       const bubbles = document.getElementById('bubbles');
       const createBubble = () => {
         if (!document.body.classList.contains('dark')) return;
         const b = document.createElement('div');
         b.classList.add('bubble');
         b.style.left = Math.random() * 100 + 'vw';
-        b.style.width = b.style.height = (Math.random() * 10 + 8) + 'px';
-        b.style.animation = `rise ${15 + Math.random() * 10}s ease-out ${Math.random() * 5}s forwards`;
+        b.style.width = b.style.height = (Math.random() * 14 + 8) + 'px';
+        const duration = 15 + Math.random() * 15;
+        b.style.animation = `rise-bubble ${duration}s ease-out ${Math.random() * 5}s forwards`;
         bubbles.appendChild(b);
-        setTimeout(() => bubbles.removeChild(b), 25000);
+        setTimeout(() => bubbles.removeChild(b), duration * 1000 + 5000);
       };
-
-      // 小鱼（黑夜）
-      const fishes = document.getElementById('fishes');
-      const createFish = () => {
-        if (!document.body.classList.contains('dark')) return;
-        const f = document.createElement('div');
-        f.classList.add('fish');
-        f.style.left = Math.random() * 100 + 'vw';
-        f.style.animation = `swim-up ${20 + Math.random() * 10}s linear ${Math.random() * 5}s forwards`;
-        fishes.appendChild(f);
-        setTimeout(() => fishes.removeChild(f), 25000);
-      };
-
-      setInterval(createBubble, 800);
-      setInterval(createFish, 1500);
 
       // 主题模式
       if (localStorage.getItem('theme') === 'dark') {
         document.body.classList.add('dark');
         document.getElementById('themeToggle').textContent = '☀️ 昼';
-        // 启动黑夜特效
-        setInterval(createBubble, 800);
-        setInterval(createFish, 1500);
+        // 启动泡泡
+        setInterval(createBubble, 700);
       }
     });
 
@@ -688,7 +618,7 @@
       const reader = document.getElementById('reader');
       const contentEl = document.getElementById('post-content');
       reader.style.display = 'block';
-      contentEl.innerHTML = '<p style="color:#666; text-align:center">✨ 加载中……</p>';
+      contentEl.innerHTML = '<p style="color:#666; text-align:center; font-size:1.1em">🌸 加载中……</p>';
 
       fetch(url)
         .then(res => res.text())
@@ -699,22 +629,36 @@
           // 生成悬浮 TOC
           generateTOC(contentEl);
 
-          // 代码块复制按钮
+          // 代码块处理
           contentEl.querySelectorAll('pre code').forEach(block => {
+            const lang = block.className.replace('language-', '') || 'text';
+            const displayName = {
+              'cpp': 'C++', 'python': '🐍 Python', 'java': '☕ Java', 'text': '代码'
+            }[lang] || lang.toUpperCase();
+
+            // 语言标签
+            const langTag = document.createElement('div');
+            langTag.textContent = displayName;
+            langTag.className = 'lang-tag';
+            block.parentNode.style.position = 'relative';
+            block.parentNode.insertBefore(langTag, block);
+
+            // 复制按钮
             const btn = document.createElement('button');
-            btn.classList.add('copy-btn');
-            btn.textContent = '复制';
+            btn.className = 'copy-btn';
+            btn.textContent = '📄';
             btn.onclick = () => {
               navigator.clipboard.writeText(block.textContent).then(() => {
-                btn.textContent = '已复制！';
-                setTimeout(() => btn.textContent = '复制', 2000);
+                btn.textContent = '✅';
+                setTimeout(() => btn.textContent = '📄', 2000);
               });
             };
             block.parentNode.appendChild(btn);
+
+            hljs.highlightElement(block);
           });
 
-          // 语法高亮 + 公式渲染
-          contentEl.querySelectorAll('pre code').forEach(el => hljs.highlightElement(el));
+          // 公式渲染
           if (window.MathJax) MathJax.typeset([contentEl]);
         })
         .catch(err => {
@@ -736,7 +680,7 @@
         const a = document.createElement('a');
         a.href = `#${id}`;
         a.textContent = h.textContent;
-        a.style.paddingLeft = `${(parseInt(h.tagName[1]) - 1) * 16}px`;
+        a.style.paddingLeft = `${(parseInt(h.tagName[1]) - 1) * 18}px`;
         a.onclick = (e) => {
           e.preventDefault();
           document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
@@ -771,35 +715,46 @@
       document.getElementById('themeToggle').textContent = isDark ? '☀️ 昼' : '🌙 夜';
       localStorage.setItem('theme', isDark ? 'dark' : 'light');
 
-      // 重置特效
-      document.getElementById('bubbles').innerHTML = '';
-      document.getElementById('fishes').innerHTML = '';
       if (isDark) {
-        // 启动黑夜特效
+        // 启动泡泡
         const bubbles = document.getElementById('bubbles');
-        const fishes = document.getElementById('fishes');
         setInterval(() => {
           if (document.body.classList.contains('dark')) {
             const b = document.createElement('div');
             b.classList.add('bubble');
             b.style.left = Math.random() * 100 + 'vw';
-            b.style.width = b.style.height = (Math.random() * 10 + 8) + 'px';
-            b.style.animation = `rise ${15 + Math.random() * 10}s ease-out ${Math.random() * 5}s forwards`;
+            b.style.width = b.style.height = (Math.random() * 14 + 8) + 'px';
+            const duration = 15 + Math.random() * 15;
+            b.style.animation = `rise-bubble ${duration}s ease-out ${Math.random() * 5}s forwards`;
             bubbles.appendChild(b);
-            setTimeout(() => bubbles.removeChild(b), 25000);
+            setTimeout(() => bubbles.removeChild(b), duration * 1000 + 5000);
           }
-        }, 800);
+        }, 700);
+      }
+    });
 
-        setInterval(() => {
-          if (document.body.classList.contains('dark')) {
-            const f = document.createElement('div');
-            f.classList.add('fish');
-            f.style.left = Math.random() * 100 + 'vw';
-            f.style.animation = `swim-up ${20 + Math.random() * 10}s linear ${Math.random() * 5}s forwards`;
-            fishes.appendChild(f);
-            setTimeout(() => fishes.removeChild(f), 25000);
-          }
-        }, 1500);
+    // ============= 点击爆炸粒子 =============
+    document.addEventListener('click', (e) => {
+      const colors = ['#ff69b4', '#4361ee', '#4cc9f0', '#ff99cc'];
+      for (let i = 0; i < 8; i++) {
+        const p = document.createElement('div');
+        p.style.position = 'absolute';
+        p.style.width = p.style.height = '6px';
+        p.style.background = colors[i % 4];
+        p.style.borderRadius = '50%';
+        p.style.left = e.clientX + 'px';
+        p.style.top = e.clientY + 'px';
+        p.style.transform = `translate(-50%, -50%) translate(${(Math.random() - 0.5) * 40}px, ${(Math.random() - 0.5) * 40}px)`;
+        p.style.opacity = 0.8;
+        p.style.pointerEvents = 'none';
+        p.style.transition = 'all 0.6s ease-out';
+        p.style.transform += ' scale(0)';
+        document.body.appendChild(p);
+        setTimeout(() => {
+          p.style.opacity = 0;
+          p.style.transform = p.style.transform.replace('scale(0)', 'scale(1.5)');
+        }, 10);
+        setTimeout(() => p.remove(), 600);
       }
     });
   </script>
