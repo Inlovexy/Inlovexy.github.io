@@ -56,14 +56,14 @@
       overflow: hidden;
     }
 
-    /* --- Inlovexy Logo (超浮夸字体) --- */
+    /* --- Inlovexy Logo (超浮夸字体 + 呼吸光效) --- */
     .logo {
       position: fixed;
       top: 20px;
       left: 20px;
       font-family: 'Playfair Display', serif;
-      font-size: 2.4em; /* 更大 */
-      font-weight: 900; /* 最粗 */
+      font-size: 2.4em;
+      font-weight: 900;
       color: #ff69b4;
       text-decoration: none;
       z-index: 100;
@@ -71,7 +71,12 @@
       text-shadow: 
         0 2px 4px rgba(0,0,0,0.2),
         0 0 20px rgba(255, 105, 180, 0.3);
-      transform: rotate(-5deg); /* 轻微倾斜，增加艺术感 */
+      transform: rotate(-5deg);
+    }
+
+    @keyframes logoGlow {
+      0%, 100% { text-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 0 20px rgba(255, 105, 180, 0.3); }
+      50% { text-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 0 30px rgba(255, 105, 180, 0.5); }
     }
 
     .logo:hover {
@@ -81,7 +86,53 @@
       transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    /* --- 泡泡动画 (粉红色) --- */
+    body:not(.dark) .logo {
+      animation: logoGlow 4s ease-in-out infinite;
+    }
+
+    /* --- 背景涟漪 (极淡) --- */
+    .bg-ripple {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 105, 180, 0.1);
+      opacity: 0.3;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: -2;
+    }
+
+    @keyframes ripple {
+      0% { transform: translate(-50%, -50%) scale(0); opacity: 0.3; }
+      100% { transform: translate(-50%, -50%) scale(3); opacity: 0; }
+    }
+
+    body:not(.dark) .bg-ripple {
+      animation: ripple 15s ease-out infinite;
+    }
+
+    /* --- 光斑浮动 --- */
+    .light-spot {
+      position: fixed;
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle, rgba(255, 105, 180, 0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: -2;
+      opacity: 0.4;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+      100% { transform: translateY(0) rotate(360deg); }
+    }
+
+    /* --- 泡泡动画 (渐变) --- */
     .bubble {
       position: fixed;
       bottom: -100px;
@@ -90,42 +141,40 @@
       border-radius: 50%;
       pointer-events: none;
       z-index: -1;
-      opacity: 0.6;
+      opacity: 0.7;
+      background: linear-gradient(135deg, rgba(255, 105, 180, 0.3), rgba(147, 112, 219, 0.2));
     }
 
-    body:not(.dark) .bubble {
-      background: rgba(255, 105, 180, 0.2);
-    }
-
-    body:not(.dark) .bubble::after {
+    .bubble::after {
       content: '';
       position: absolute;
       top: 4px;
       left: 4px;
       width: 6px;
       height: 6px;
-      background: rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.6);
       border-radius: 50%;
-    }
-
-    body.dark .bubble {
-      background: rgba(255, 255, 255, 0.15);
-    }
-
-    body.dark .bubble::after {
-      content: '';
-      position: absolute;
-      top: 4px;
-      left: 4px;
-      width: 6px;
-      height: 6px;
-      background: rgba(255, 255, 255, 0.3);
     }
 
     @keyframes rise {
       0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-      50% { opacity: 0.8; }
+      30% { opacity: 0.7; }
       100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* --- 水波纹效果 --- */
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      opacity: 0;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    @keyframes ripple-effect {
+      0% { width: 0; height: 0; opacity: 0.5; }
+      100% { width: 60px; height: 60px; opacity: 0; }
     }
 
     /* --- 小鱼动画 --- */
@@ -138,14 +187,14 @@
       background: rgba(255, 255, 255, 0.15);
       border-radius: 50% 10% / 60% 40%;
       transform: scaleY(1.2);
-      opacity: 0.7;
+      opacity: 0.8;
     }
 
     .fish::before,
     .fish::after {
       content: '';
       position: absolute;
-      background: rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.4);
     }
 
     .fish::before {
@@ -155,6 +204,13 @@
       bottom: 1px;
       right: -8px;
       clip-path: polygon(0 0, 100% 50%, 0 100%);
+      transform-origin: left center;
+      animation: wiggle 1.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes wiggle {
+      0% { transform: rotate(10deg); }
+      100% { transform: rotate(-10deg); }
     }
 
     .fish::after {
@@ -364,6 +420,12 @@
   <!-- Inlovexy Logo -->
   <a href="/" class="logo">Inlovexy</a>
 
+  <!-- 背景涟漪 -->
+  <div class="bg-ripple"></div>
+
+  <!-- 光斑 -->
+  <div id="light-spots"></div>
+
   <!-- 泡泡容器 -->
   <div id="bubbles-left"></div>
   <div id="bubbles-right"></div>
@@ -405,10 +467,23 @@
         });
       }
 
+      // --- 光斑生成 ---
+      const lightSpotContainer = document.getElementById('light-spots');
+      for (let i = 0; i < 5; i++) {
+        const spot = document.createElement('div');
+        spot.classList.add('light-spot');
+        spot.style.left = `${Math.random() * 100}%`;
+        spot.style.top = `${Math.random() * 100}%`;
+        spot.style.opacity = 0.2 + Math.random() * 0.3;
+        spot.style.animation = `float ${10 + Math.random() * 10}s ease-in-out infinite`;
+        spot.style.animationDelay = `${Math.random() * 5}s`;
+        lightSpotContainer.appendChild(spot);
+      }
+
       // --- 泡泡生成逻辑 ---
       const leftBubbleContainer = document.getElementById('bubbles-left');
       const rightBubbleContainer = document.getElementById('bubbles-right');
-      const maxBubbles = 8;
+      const maxBubbles = 10;
 
       function createBubble(container, side) {
         const bubble = document.createElement('div');
@@ -421,10 +496,22 @@
         const duration = Math.random() * 10 + 15;
         bubble.style.animation = `rise ${duration}s infinite ease-in-out`;
         bubble.style.animationDelay = `${Math.random() * 5}s`;
+
+        // 添加水波纹
+        const ripple = document.createElement('div');
+        ripple.classList.add('ripple');
+        ripple.style.left = `calc(${sidePos}% - 30px)`;
+        ripple.style.top = 'auto';
+        ripple.style.bottom = '0';
+        ripple.style.animation = 'ripple-effect 2s ease-out forwards';
+        container.appendChild(ripple);
+
         container.appendChild(bubble);
+
         setTimeout(() => {
           if (container.contains(bubble)) {
             container.removeChild(bubble);
+            if (container.contains(ripple)) container.removeChild(ripple);
             createBubble(container, side);
           }
         }, duration * 1000);
@@ -437,22 +524,27 @@
       function createFish(container, direction) {
         const fish = document.createElement('div');
         fish.classList.add('fish');
-
-        // 随机高度 (20% - 80%)
         const topPos = Math.random() * 60 + 20;
         fish.style.top = `${topPos}%`;
-
-        // 随机速度 (20s - 40s)
         const duration = Math.random() * 20 + 20;
         fish.style.animation = direction === 'left' ? `swim-left ${duration}s linear infinite` : `swim-right ${duration}s linear infinite`;
         fish.style.animationDelay = `${Math.random() * 10}s`;
 
+        // 添加水波纹
+        const ripple = document.createElement('div');
+        ripple.classList.add('ripple');
+        ripple.style.left = '50%';
+        ripple.style.top = `${topPos}%`;
+        ripple.style.transform = 'translate(-50%, -50%)';
+        ripple.style.animation = 'ripple-effect 3s ease-out forwards';
+        document.body.appendChild(ripple);
+
         container.appendChild(fish);
 
-        // 动画结束后移除并重新创建
         setTimeout(() => {
           if (container.contains(fish)) {
             container.removeChild(fish);
+            if (document.body.contains(ripple)) document.body.removeChild(ripple);
             createFish(container, direction);
           }
         }, duration * 1000);
@@ -467,8 +559,8 @@
         }
         // 小鱼
         for (let i = 0; i < 2; i++) {
-          createFish(fishLeftContainer, 'left');   // 从右向左游
-          createFish(fishRightContainer, 'right'); // 从左向右游
+          createFish(fishLeftContainer, 'left');
+          createFish(fishRightContainer, 'right');
         }
       }
 
@@ -480,7 +572,7 @@
       }
     });
 
-    // 原有功能
+    // 原有功能...
     function loadPost(url) {
       const reader = document.getElementById('reader');
       const contentEl = document.getElementById('post-content');
