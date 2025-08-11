@@ -5,11 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>My Blogs</title>
 
-  <!-- 手写字体：夸张花体 -->
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Dancing+Script:wght@700&family=Inter:wght@300;400;600&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
+  <!-- 手写字体：仅用于 "My blogs" -->
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;600&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
   <!-- 数学公式 & Markdown & 高亮 -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)'], ['$','$']],
+        displayMath: [['\\[', '\\]'], ['$$','$$']],
+        processEscapes: true,
+        processEnvironments: true,
+        packages: ['base', 'ams']
+      },
+      chtml: {
+        scale: 1.05,
+        matchFontHeight: false,
+        displayAlign: 'center'
+      },
+      startup: {
+        ready: function () {
+          MathJax.startup.defaultReady();
+        }
+      }
+    };
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
@@ -75,30 +96,19 @@
       animation: logoPulse 5s ease-in-out infinite;
     }
 
-    /* ============= 主标题：My blogs（手写体） ============= */
+    /* ============= 主标题：My blogs（仅此处用手写体） ============= */
     h1 {
-      font-family: 'Great Vibes', cursive;
-      font-weight: 400;
-      font-size: 2.8em;
-      color: var(--primary);
       text-align: center;
       margin-bottom: 40px;
-      position: relative;
-      animation: fadeInUp 0.8s ease-out;
+      font-weight: normal;
+    }
+
+    h1 .script-title {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.8em;
+      color: var(--primary);
       letter-spacing: -1px;
       text-shadow: 0 2px 6px rgba(67, 97, 238, 0.2);
-    }
-
-    h1 span {
-      font-family: 'Dancing Script', cursive;
-      font-weight: 700;
-      font-size: 1.4em;
-      color: #ff69b4;
-    }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
     }
 
     /* ============= 阅读进度条 ============= */
@@ -178,7 +188,7 @@
       font-size: 1.6em;
       font-weight: 600;
       color: var(--primary);
-      text-decoration: none;
+      text-decoration: none; /* 去除下划线 */
       transition: var(--transition);
       position: relative;
       left: 16px;
@@ -187,7 +197,6 @@
 
     .post-title:hover {
       color: #3a56d4;
-      text-decoration: underline;
       transform: scale(1.04);
     }
 
@@ -236,7 +245,7 @@
     #toc-container a {
       display: block;
       color: #555;
-      text-decoration: none;
+      text-decoration: none; /* 去除所有目录链接下划线 */
       padding: 6px 8px;
       border-radius: 6px;
       transition: 0.3s;
@@ -382,6 +391,7 @@
       box-shadow: 0 10px 30px rgba(67, 97, 238, 0.5);
     }
 
+    /* ============= 代码块 ============= */
     pre {
       position: relative;
       background: #f8f9ff;
@@ -391,6 +401,13 @@
       overflow-x: auto;
       margin: 1.6em 0;
       transition: 0.3s;
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+      font-family: 'Courier New', monospace;
+      font-size: 0.95em;
     }
 
     .copy-btn {
@@ -430,6 +447,17 @@
       border-radius: 4px;
       font-family: 'Courier New', monospace;
       font-size: 0.95em;
+    }
+
+    /* ============= 链接去下划线 ============= */
+    a {
+      text-decoration: none !important; /* 全局去除下划线 */
+      color: inherit;
+      cursor: pointer;
+    }
+
+    a:hover {
+      color: var(--primary);
     }
 
     /* ============= 按钮 ============= */
@@ -532,8 +560,8 @@
   <!-- Logo（不变） -->
   <a href="/" class="logo">Inlovexy</a>
 
-  <!-- 主标题（手写体） -->
-  <h1><span>My blogs</span></h1>
+  <!-- 主标题（仅 "My blogs" 用手写体） -->
+  <h1><span class="script-title">My blogs</span></h1>
 
   <!-- 搜索框 -->
   <input type="text" id="search-box" placeholder="搜索文章标题..." />
@@ -700,8 +728,11 @@
             hljs.highlightElement(block);
           });
 
-          // 数学公式
-          if (window.MathJax) MathJax.typeset([contentEl]);
+          // 数学公式渲染（排除代码块）
+          if (window.MathJax) {
+            MathJax.typesetClear();
+            MathJax.typeset([contentEl]);
+          }
         })
         .catch(err => {
           contentEl.innerHTML = `<p style="color:red; text-align:center">❌ 加载失败：${err.message}</p>`;
@@ -802,6 +833,5 @@
       }
     });
   </script>
-
 </body>
 </html>
