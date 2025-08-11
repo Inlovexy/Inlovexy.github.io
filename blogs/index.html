@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>我的算法博客</title>
 
-  <!-- 字体：添加用于Logo的装饰性字体 -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Noto+Serif+SC:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <!-- 字体：使用更浮夸的艺术字体 -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=Inter:wght@300;400;600&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
 
   <!-- MathJax, marked, highlight.js 保持不变 -->
   <script>
@@ -34,7 +34,6 @@
 
   <style>
     :root {
-      /* --- 保留你的原色 --- */
       --primary: #4361ee;
       --text: #2b2d42;
       --bg: #fdfefe;
@@ -57,28 +56,32 @@
       overflow: hidden;
     }
 
-    /* --- Inlovexy Logo --- */
+    /* --- Inlovexy Logo (超浮夸字体) --- */
     .logo {
       position: fixed;
       top: 20px;
       left: 20px;
       font-family: 'Playfair Display', serif;
-      font-size: 1.8em;
-      font-weight: 700;
-      color: #ff69b4; /* 粉红色 */
+      font-size: 2.4em; /* 更大 */
+      font-weight: 900; /* 最粗 */
+      color: #ff69b4;
       text-decoration: none;
       z-index: 100;
-      letter-spacing: -1px;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      letter-spacing: -2px;
+      text-shadow: 
+        0 2px 4px rgba(0,0,0,0.2),
+        0 0 20px rgba(255, 105, 180, 0.3);
+      transform: rotate(-5deg); /* 轻微倾斜，增加艺术感 */
     }
 
     .logo:hover {
       color: #ff1493;
-      transform: scale(1.05);
-      transition: color 0.3s, transform 0.3s;
+      transform: rotate(-5deg) scale(1.1);
+      text-shadow: 0 0 30px rgba(255, 105, 180, 0.5);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    /* --- 泡泡动画 --- */
+    /* --- 泡泡动画 (粉红色) --- */
     .bubble {
       position: fixed;
       bottom: -100px;
@@ -90,9 +93,8 @@
       opacity: 0.6;
     }
 
-    /* 白天模式下的泡泡是粉红色 */
     body:not(.dark) .bubble {
-      background: rgba(255, 105, 180, 0.2); /* HotPink 透明 */
+      background: rgba(255, 105, 180, 0.2);
     }
 
     body:not(.dark) .bubble::after {
@@ -106,7 +108,6 @@
       border-radius: 50%;
     }
 
-    /* 暗色模式下，泡泡恢复为半透明白色 */
     body.dark .bubble {
       background: rgba(255, 255, 255, 0.15);
     }
@@ -119,21 +120,60 @@
       width: 6px;
       height: 6px;
       background: rgba(255, 255, 255, 0.3);
-      border-radius: 50%;
     }
 
     @keyframes rise {
-      0% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 0;
-      }
-      50% {
-        opacity: 0.8;
-      }
-      100% {
-        transform: translateY(-100vh) rotate(360deg);
-        opacity: 0;
-      }
+      0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+      50% { opacity: 0.8; }
+      100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* --- 小鱼动画 --- */
+    .fish {
+      position: fixed;
+      z-index: -1;
+      pointer-events: none;
+      width: 40px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 50% 10% / 60% 40%;
+      transform: scaleY(1.2);
+      opacity: 0.7;
+    }
+
+    .fish::before,
+    .fish::after {
+      content: '';
+      position: absolute;
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .fish::before {
+      /* 鱼尾 */
+      width: 12px;
+      height: 18px;
+      bottom: 1px;
+      right: -8px;
+      clip-path: polygon(0 0, 100% 50%, 0 100%);
+    }
+
+    .fish::after {
+      /* 鱼眼 */
+      width: 5px;
+      height: 5px;
+      top: 6px;
+      left: 8px;
+      border-radius: 50%;
+    }
+
+    @keyframes swim-left {
+      0% { transform: translateX(100vw) scaleX(1); }
+      100% { transform: translateX(-100px) scaleX(1); }
+    }
+
+    @keyframes swim-right {
+      0% { transform: translateX(-100px) scaleX(-1); }
+      100% { transform: translateX(100vw) scaleX(-1); }
     }
 
     /* --- 标题样式 --- */
@@ -311,7 +351,7 @@
 
     /* 响应式 */
     @media (max-width: 768px) {
-      .logo { top: 16px; left: 16px; font-size: 1.6em; }
+      .logo { top: 16px; left: 16px; font-size: 2em; transform: rotate(-3deg); }
       body { padding: 50px 16px 30px; }
       .post { padding: 28px; margin-bottom: 32px; }
       .back-link { margin: 36px 0 16px; }
@@ -327,6 +367,10 @@
   <!-- 泡泡容器 -->
   <div id="bubbles-left"></div>
   <div id="bubbles-right"></div>
+
+  <!-- 小鱼容器 -->
+  <div id="fish-left"></div>
+  <div id="fish-right"></div>
 
   <h1>我的算法博客</h1>
 
@@ -362,29 +406,22 @@
       }
 
       // --- 泡泡生成逻辑 ---
-      const leftContainer = document.getElementById('bubbles-left');
-      const rightContainer = document.getElementById('bubbles-right');
+      const leftBubbleContainer = document.getElementById('bubbles-left');
+      const rightBubbleContainer = document.getElementById('bubbles-right');
       const maxBubbles = 8;
 
       function createBubble(container, side) {
         const bubble = document.createElement('div');
         bubble.classList.add('bubble');
-
         const size = Math.random() * 20 + 10;
         bubble.style.width = `${size}px`;
         bubble.style.height = `${size}px`;
-
-        const sidePos = side === 'left' 
-          ? (Math.random() * 15 + 5) 
-          : (Math.random() * 15 + 80);
+        const sidePos = side === 'left' ? (Math.random() * 15 + 5) : (Math.random() * 15 + 80);
         bubble.style.left = `${sidePos}%`;
-
         const duration = Math.random() * 10 + 15;
         bubble.style.animation = `rise ${duration}s infinite ease-in-out`;
         bubble.style.animationDelay = `${Math.random() * 5}s`;
-
         container.appendChild(bubble);
-
         setTimeout(() => {
           if (container.contains(bubble)) {
             container.removeChild(bubble);
@@ -393,17 +430,49 @@
         }, duration * 1000);
       }
 
-      function initBubbles() {
-        for (let i = 0; i < maxBubbles; i++) {
-          if (i % 2 === 0) {
-            createBubble(leftContainer, 'left');
-          } else {
-            createBubble(rightContainer, 'right');
+      // --- 小鱼生成逻辑 ---
+      const fishLeftContainer = document.getElementById('fish-left');
+      const fishRightContainer = document.getElementById('fish-right');
+
+      function createFish(container, direction) {
+        const fish = document.createElement('div');
+        fish.classList.add('fish');
+
+        // 随机高度 (20% - 80%)
+        const topPos = Math.random() * 60 + 20;
+        fish.style.top = `${topPos}%`;
+
+        // 随机速度 (20s - 40s)
+        const duration = Math.random() * 20 + 20;
+        fish.style.animation = direction === 'left' ? `swim-left ${duration}s linear infinite` : `swim-right ${duration}s linear infinite`;
+        fish.style.animationDelay = `${Math.random() * 10}s`;
+
+        container.appendChild(fish);
+
+        // 动画结束后移除并重新创建
+        setTimeout(() => {
+          if (container.contains(fish)) {
+            container.removeChild(fish);
+            createFish(container, direction);
           }
+        }, duration * 1000);
+      }
+
+      // 启动所有动画
+      function initAnimations() {
+        // 泡泡
+        for (let i = 0; i < maxBubbles / 2; i++) {
+          createBubble(leftBubbleContainer, 'left');
+          createBubble(rightBubbleContainer, 'right');
+        }
+        // 小鱼
+        for (let i = 0; i < 2; i++) {
+          createFish(fishLeftContainer, 'left');   // 从右向左游
+          createFish(fishRightContainer, 'right'); // 从左向右游
         }
       }
 
-      initBubbles();
+      initAnimations();
 
       // 恢复主题
       if (localStorage.getItem('theme') === 'dark') {
