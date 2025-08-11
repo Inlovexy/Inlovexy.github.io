@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>我的算法博客</title>
 
-  <!-- 艺术字体 -->
+  <!-- 字体 -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=Inter:wght@300;400;600&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
@@ -18,7 +18,6 @@
   <style>
     :root {
       --primary: #4361ee;
-      --primary-glow: #4cc9f0;
       --text: #2b2d42;
       --bg: #fdfefe;
       --card: #ffffff;
@@ -26,13 +25,13 @@
       --radius: 16px;
       --border: #e0e0e0;
       --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-      --toc-bg: rgba(255, 255, 255, 0.92);
+      --toc-bg: rgba(255, 255, 255, 0.94);
       --toc-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
     }
 
     body {
       font-family: 'Inter', 'Noto Serif SC', sans-serif;
-      max-width: 820px;
+      max-width: 840px;
       margin: 0 auto;
       padding: 70px 20px 50px;
       background: var(--bg);
@@ -55,9 +54,7 @@
       text-decoration: none;
       z-index: 100;
       letter-spacing: -1.5px;
-      text-shadow: 
-        0 2px 6px rgba(0,0,0,0.2),
-        0 0 20px rgba(255, 105, 180, 0.4);
+      text-shadow: 0 2px 6px rgba(0,0,0,0.2), 0 0 20px rgba(255, 105, 180, 0.4);
       transform: rotate(-6deg);
       transition: var(--transition);
     }
@@ -77,148 +74,38 @@
       animation: logoPulse 5s ease-in-out infinite;
     }
 
-    /* ============= 背景特效 ============= */
-    .bg-ripple {
+    /* ============= 视差星空背景 ============= */
+    .parallax-bg {
       position: fixed;
-      top: 50%;
-      left: 50%;
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
-      border: 1px solid rgba(255, 105, 180, 0.15);
-      opacity: 0.3;
-      transform: translate(-50%, -50%);
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       pointer-events: none;
-      z-index: -3;
+      z-index: -5;
+      overflow: hidden;
     }
-
-    @keyframes ripple {
-      0% { transform: translate(-50%, -50%) scale(0); opacity: 0.3; }
-      100% { transform: translate(-50%, -50%) scale(4); opacity: 0; }
-    }
-
-    body:not(.dark) .bg-ripple {
-      animation: ripple 18s ease-out infinite;
-    }
-
-    /* ============= 光斑漂浮 ============= */
-    .light-spot {
-      position: fixed;
-      width: 120px;
-      height: 120px;
-      background: radial-gradient(circle, rgba(255, 105, 180, 0.12) 0%, transparent 70%);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: -2;
-      opacity: 0.5;
-    }
-
-    @keyframes float {
-      0% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-30px) rotate(180deg); }
-      100% { transform: translateY(0) rotate(360deg); }
-    }
-
-    /* ============= 泡泡上升 ============= */
-    .bubble {
-      position: fixed;
-      bottom: -50px;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: -1;
-      opacity: 0.7;
-      background: linear-gradient(135deg, rgba(255, 105, 180, 0.35), rgba(147, 112, 219, 0.25));
-    }
-
-    .bubble::after {
-      content: '';
+    .star {
       position: absolute;
-      top: 4px;
-      left: 4px;
-      width: 5px;
-      height: 5px;
-      background: rgba(255, 255, 255, 0.7);
-      border-radius: 50%;
-    }
-
-    @keyframes rise {
-      0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-      30% { opacity: 0.7; }
-      100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
-    }
-
-    /* ============= 小鱼游动 ============= */
-    .fish {
-      position: fixed;
-      z-index: -1;
-      pointer-events: none;
-      width: 44px;
-      height: 22px;
-      background: rgba(255, 255, 255, 0.18);
-      border-radius: 50% 10% / 60% 40%;
-      transform: scaleY(1.2);
-      opacity: 0.85;
-    }
-
-    .fish::before, .fish::after {
-      content: '';
-      position: absolute;
-      background: rgba(255, 255, 255, 0.45);
-    }
-
-    .fish::before {
-      width: 14px;
-      height: 20px;
-      bottom: 1px;
-      right: -9px;
-      clip-path: polygon(0 0, 100% 50%, 0 100%);
-      transform-origin: left center;
-      animation: wiggle 1.8s ease-in-out infinite alternate;
-    }
-
-    @keyframes wiggle {
-      0% { transform: rotate(12deg); }
-      100% { transform: rotate(-12deg); }
-    }
-
-    .fish::after {
-      width: 6px;
-      height: 6px;
-      top: 6px;
-      left: 9px;
-      border-radius: 50%;
       background: #fff;
-    }
-
-    @keyframes swim-left {
-      0% { transform: translateX(100vw) scaleX(1); }
-      100% { transform: translateX(-120px) scaleX(1); }
-    }
-
-    @keyframes swim-right {
-      0% { transform: translateX(-120px) scaleX(-1); }
-      100% { transform: translateX(100vw) scaleX(-1); }
-    }
-
-    /* ============= 粒子光点 ============= */
-    .spark {
-      position: fixed;
-      width: 4px;
-      height: 4px;
-      background: #ff69b4;
       border-radius: 50%;
-      pointer-events: none;
-      z-index: -2;
       opacity: 0.6;
-      box-shadow: 0 0 8px rgba(255, 105, 180, 0.6);
+      animation: twinkle 3s infinite alternate;
+    }
+    @keyframes twinkle {
+      0% { opacity: 0.3; }
+      100% { opacity: 0.9; }
     }
 
-    @keyframes floatSpark {
-      0% { transform: translateY(0) opacity: 0; }
-      50% { opacity: 0.7; }
-      100% { transform: translateY(-80px) opacity: 0; }
+    /* ============= 阅读进度条 ============= */
+    #reading-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(to right, #4361ee, #4cc9f0);
+      width: 0%;
+      z-index: 1000;
+      transition: width 0.1s ease;
+      box-shadow: 0 0 8px rgba(67, 97, 238, 0.4);
     }
 
     /* ============= 主标题 ============= */
@@ -230,7 +117,6 @@
       font-size: 2em;
       text-align: center;
       position: relative;
-      animation: fadeInUp 0.8s ease-out;
     }
 
     h1::after {
@@ -245,9 +131,24 @@
       border-radius: 2px;
     }
 
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    /* ============= 搜索框 ============= */
+    #search-box {
+      margin: 20px auto 30px;
+      padding: 12px 20px;
+      width: 100%;
+      max-width: 500px;
+      border: 2px solid #e0e0e0;
+      border-radius: 50px;
+      font-size: 1em;
+      outline: none;
+      transition: 0.3s;
+      background: white;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    #search-box:focus, #search-box:valid {
+      border-color: var(--primary);
+      box-shadow: 0 6px 16px rgba(67, 97, 238, 0.15);
     }
 
     /* ============= 文章卡片 ============= */
@@ -260,7 +161,6 @@
       margin-bottom: 40px;
       transition: var(--transition);
       position: relative;
-      backdrop-filter: blur(4px);
     }
 
     .post::before {
@@ -303,7 +203,6 @@
     .post-title:hover {
       color: #3a56d4;
       text-decoration: underline;
-      transform: scale(1.03);
     }
 
     .post-excerpt {
@@ -315,119 +214,65 @@
       left: 14px;
     }
 
-    /* ============= 目录 TOC ============= */
-    #toc {
+    /* ============= 悬浮 TOC（右侧） ============= */
+    #toc-container {
+      position: fixed;
+      top: 120px;
+      right: 40px;
+      width: 220px;
+      max-height: 60vh;
+      overflow-y: auto;
       background: var(--toc-bg);
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 16px;
-      margin: 20px 0 30px;
       box-shadow: var(--toc-shadow);
-      backdrop-filter: blur(8px);
-      overflow: hidden;
+      font-size: 0.95em;
+      z-index: 90;
+      opacity: 0.95;
+      backdrop-filter: blur(6px);
+      scrollbar-width: thin;
     }
 
-    .toc-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
+    #toc-container h3 {
+      margin: 0 0 12px;
       color: var(--primary);
-      font-weight: 600;
-      font-size: 1.1em;
+      font-size: 1em;
     }
 
-    #toc-toggle {
-      background: #f0f0f0;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 0.9em;
-      transition: 0.3s;
-    }
-
-    #toc-toggle:hover {
-      background: #e0e0e0;
-    }
-
-    .toc-list {
+    #toc-container ul {
       list-style: none;
       padding-left: 10px;
       margin: 0;
     }
 
-    .toc-list li {
-      margin: 6px 0;
-    }
-
-    .toc-list a {
+    #toc-container a {
+      display: block;
       color: #555;
       text-decoration: none;
-      font-size: 0.95em;
-      transition: 0.3s;
-      display: block;
-      padding: 4px 8px;
-      border-radius: 6px;
+      padding: 4px 6px;
+      border-radius: 4px;
+      transition: 0.2s;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    .toc-list a:hover {
+    #toc-container a:hover {
+      background: rgba(67, 97, 238, 0.1);
       color: var(--primary);
-      background: rgba(67, 97, 238, 0.08);
     }
 
-    .toc-list a.active {
+    #toc-container a.active {
+      background: rgba(67, 97, 238, 0.15);
       color: var(--primary);
       font-weight: 600;
-      background: rgba(67, 97, 238, 0.12);
     }
 
-    /* ============= 代码块复制按钮 ============= */
-    pre {
-      position: relative;
-      background: #f8f9ff;
-      padding: 18px;
-      border-radius: 10px;
-      border: 1px solid #e0e0e0;
-      overflow-x: auto;
-      margin: 1.4em 0;
-      transition: var(--transition);
-    }
-
-    pre:hover {
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    }
-
-    .copy-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: #6c757d;
-      color: white;
-      border: none;
-      padding: 6px 10px;
-      font-size: 0.8em;
-      border-radius: 6px;
-      cursor: pointer;
-      opacity: 0.7;
-      transition: 0.3s;
-    }
-
-    .copy-btn:hover {
-      background: #5a6268;
-      opacity: 1;
-    }
-
-    .copy-btn.copied {
-      background: #28a745;
-    }
-
-    code {
-      background: #f0f0f0;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-family: 'Courier New', monospace;
-      font-size: 0.95em;
+    @media (max-width: 768px) {
+      #toc-container {
+        display: none;
+      }
     }
 
     /* ============= 阅读器 ============= */
@@ -467,68 +312,34 @@
     #reader button:hover {
       background: #3a56d4;
       transform: scale(1.08);
-      box-shadow: 0 8px 24px rgba(67, 97, 238, 0.4);
     }
 
-    .MathJax {
-      margin: 1em 0 !important;
+    pre {
+      position: relative;
+      background: #f8f9ff;
+      padding: 18px;
+      border-radius: 10px;
+      border: 1px solid #e0e0e0;
+      overflow-x: auto;
+      margin: 1.4em 0;
     }
 
-    hr {
-      display: none;
-    }
-
-    /* ============= 返回按钮 ============= */
-    .back-link {
-      display: inline-block;
-      margin: 48px 0 24px;
-      padding: 12px 24px;
-      background: var(--primary);
-      color: white;
-      text-decoration: none;
-      border-radius: 50px;
-      transition: var(--transition);
-      font-size: 1em;
-      box-shadow: 0 4px 12px rgba(67, 97, 238, 0.2);
-    }
-
-    .back-link:hover {
-      background: #3a56d4;
-      transform: scale(1.06);
-      box-shadow: 0 6px 16px rgba(67, 97, 238, 0.3);
-    }
-
-    /* ============= 主题切换按钮 ============= */
-    .theme-toggle {
-      position: fixed;
-      bottom: 28px;
-      right: 28px;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background: var(--primary);
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #6c757d;
       color: white;
       border: none;
+      padding: 6px 10px;
+      font-size: 0.8em;
+      border-radius: 6px;
       cursor: pointer;
-      font-size: 1.4em;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
-      transition: var(--transition);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 100;
-      animation: pulse 2s infinite;
+      opacity: 0.7;
     }
 
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(67, 97, 238, 0.4); }
-      70% { box-shadow: 0 0 0 10px rgba(67, 97, 238, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(67, 97, 238, 0); }
-    }
-
-    .theme-toggle:hover {
-      transform: scale(1.15);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+    .copy-btn:hover {
+      opacity: 1;
     }
 
     /* ============= 暗色模式 ============= */
@@ -539,21 +350,11 @@
       --border: #333;
       --primary: #6ea8fe;
       --toc-bg: rgba(26, 26, 46, 0.95);
-      --toc-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     }
 
     body.dark .post {
       background: var(--card);
       border: 1px solid #333;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
-    }
-
-    body.dark .post-title {
-      color: var(--primary);
-    }
-
-    body.dark .post-title:hover {
-      color: #9ec0fe;
     }
 
     body.dark pre {
@@ -561,63 +362,37 @@
       border-color: #444;
     }
 
-    body.dark code {
-      background: #2d2d40;
-      color: #d0d0ff;
-    }
-
     body.dark #reader {
       background: #121220;
       color: #f0f0ff;
     }
 
-    body.dark .back-link {
-      background: #6ea8fe;
-    }
-
-    body.dark .back-link:hover {
-      background: #7fb8ff;
-    }
-
-    body.dark .copy-btn {
-      background: #888;
-    }
-
-    body.dark .copy-btn.copied {
-      background: #28a745;
-    }
-
     /* ============= 响应式 ============= */
     @media (max-width: 768px) {
-      .logo { top: 18px; left: 18px; font-size: 2.2em; transform: rotate(-4deg); }
+      #reading-progress { display: none; }
+      .logo { font-size: 2.2em; top: 18px; left: 18px; }
       body { padding: 60px 16px 40px; }
-      .post { padding: 30px; margin-bottom: 36px; }
-      .back-link { margin: 40px 0 20px; font-size: 0.95em; }
-      #reader { padding: 70px 16px 40px; }
-      #toc { padding: 14px; }
-      .toc-header { font-size: 1em; }
-      .theme-toggle { width: 54px; height: 54px; font-size: 1.2em; bottom: 20px; right: 20px; }
     }
   </style>
 </head>
 <body>
 
+  <!-- 顶部进度条 -->
+  <div id="reading-progress"></div>
+
+  <!-- 视差星空 -->
+  <div class="parallax-bg" id="stars"></div>
+
   <!-- Logo -->
   <a href="/" class="logo">Inlovexy</a>
 
-  <!-- 背景特效 -->
-  <div class="bg-ripple"></div>
-  <div id="light-spots"></div>
-  <div id="bubbles-left"></div>
-  <div id="bubbles-right"></div>
-  <div id="fish-left"></div>
-  <div id="fish-right"></div>
-  <div id="sparks"></div>
-
   <h1>✨ 我的算法博客</h1>
 
+  <!-- 搜索框 -->
+  <input type="text" id="search-box" placeholder="🔍 搜索文章标题..." />
+
   <!-- 博客文章列表 -->
-  <div class="post">
+  <div class="post" data-title="[暑假 Week3] 三维DP与颜色球移动问题">
     <div class="post-date">📅 2025-08-10</div>
     <a href="javascript:loadPost('https://raw.githubusercontent.com/Inlovexy/Inlovexy.github.io/main/blogs/posts/2025-08-10-%E6%9A%91%E5%81%87week3.md')" class="post-title">
       🌈 [暑假 Week3] 三维DP与颜色球移动问题
@@ -630,6 +405,12 @@
   <a href="../" class="back-link">← 返回首页</a>
   <button class="theme-toggle" id="themeToggle">🌙</button>
 
+  <!-- 悬浮目录 -->
+  <div id="toc-container" style="display: none;">
+    <h3>📚 目录</h3>
+    <ul id="toc-list"></ul>
+  </div>
+
   <!-- 阅读器 -->
   <div id="reader">
     <button onclick="closeReader()">← 返回列表</button>
@@ -637,94 +418,68 @@
   </div>
 
   <script>
-    // 初始化
+    // ============= 初始化 =============
     document.addEventListener('DOMContentLoaded', () => {
       marked.setOptions({
         gfm: true,
         breaks: true,
         smartLists: true,
-        smartypants: true,
-        highlight: function(code, lang) {
-          const language = hljs.getLanguage(lang) ? lang : 'plaintext';
-          return hljs.highlight(code, { language }).value;
+        highlight: (code, lang) => {
+          const hl = hljs.getLanguage(lang) ? lang : 'plaintext';
+          return hljs.highlight(code, { language: hl }).value;
         }
       });
 
-      // 光斑
-      const ls = document.getElementById('light-spots');
-      for (let i = 0; i < 4; i++) {
+      // 星空
+      const stars = document.getElementById('stars');
+      for (let i = 0; i < 150; i++) {
         const s = document.createElement('div');
-        s.classList.add('light-spot');
+        s.classList.add('star');
         s.style.left = Math.random() * 100 + '%';
         s.style.top = Math.random() * 100 + '%';
-        s.style.opacity = 0.2 + Math.random() * 0.3;
-        s.style.animation = `float ${12 + Math.random() * 10}s ease-in-out infinite`;
-        s.style.animationDelay = Math.random() * 5 + 's';
-        ls.appendChild(s);
+        s.style.width = s.style.height = (Math.random() * 3 + 1) + 'px';
+        s.style.opacity = 0.2 + Math.random() * 0.6;
+        s.style.animationDelay = Math.random() * 3 + 's';
+        s.dataset.depth = (Math.random() * 2 + 1).toFixed(1);
+        stars.appendChild(s);
       }
 
-      // 泡泡
-      const bl = document.getElementById('bubbles-left');
-      const br = document.getElementById('bubbles-right');
-      const createBubble = (container, side) => {
-        const b = document.createElement('div');
-        b.classList.add('bubble');
-        const size = 10 + Math.random() * 15;
-        b.style.width = b.style.height = `${size}px`;
-        b.style.left = side === 'left'
-          ? (Math.random() * 15 + 5) + '%'
-          : (Math.random() * 15 + 80) + '%';
-        const duration = 15 + Math.random() * 15;
-        b.style.animation = `rise ${duration}s infinite ease-in-out`;
-        b.style.animationDelay = Math.random() * 5 + 's';
-        container.appendChild(b);
-        setTimeout(() => { if (container.contains(b)) container.removeChild(b); }, duration * 1000);
-        setTimeout(() => createBubble(container, side), (duration - 5) * 1000);
-      };
-      for (let i = 0; i < 3; i++) {
-        createBubble(bl, 'left');
-        createBubble(br, 'right');
-      }
+      // 视差效果
+      document.addEventListener('mousemove', (e) => {
+        const x = (e.clientX - window.innerWidth / 2) / 20;
+        const y = (e.clientY - window.innerHeight / 2) / 20;
+        document.querySelectorAll('.star').forEach(s => {
+          const d = s.dataset.depth;
+          s.style.transform = `translate(${x * d}px, ${y * d}px)`;
+        });
+      });
 
-      // 小鱼
-      const fl = document.getElementById('fish-left');
-      const fr = document.getElementById('fish-right');
-      const createFish = (container, dir) => {
-        const f = document.createElement('div');
-        f.classList.add('fish');
-        f.style.top = (Math.random() * 60 + 20) + '%';
-        const duration = 20 + Math.random() * 20;
-        f.style.animation = dir === 'left' ? `swim-left ${duration}s linear infinite` : `swim-right ${duration}s linear infinite`;
-        f.style.animationDelay = Math.random() * 10 + 's';
-        container.appendChild(f);
-        setTimeout(() => { if (container.contains(f)) container.removeChild(f); }, duration * 1000);
-        setTimeout(() => createFish(container, dir), (duration - 8) * 1000);
-      };
-      createFish(fl, 'left');
-      createFish(fr, 'right');
+      // 搜索功能
+      const search = document.getElementById('search-box');
+      const posts = document.querySelectorAll('.post');
+      search.addEventListener('input', () => {
+        const q = search.value.toLowerCase();
+        posts.forEach(p => {
+          const title = p.dataset.title.toLowerCase();
+          p.style.display = title.includes(q) ? 'block' : 'none';
+        });
+      });
 
-      // 粒子光点
-      const sparks = document.getElementById('sparks');
-      const createSpark = () => {
-        const s = document.createElement('div');
-        s.classList.add('spark');
-        s.style.left = (Math.random() * 100) + '%';
-        s.style.bottom = '20px';
-        s.style.animation = `floatSpark ${2 + Math.random() * 2}s ease-out forwards`;
-        sparks.appendChild(s);
-        setTimeout(() => { if (sparks.contains(s)) sparks.removeChild(s); }, 3000);
-      };
-      setInterval(createSpark, 800);
-      createSpark();
+      // 阅读进度条
+      window.addEventListener('scroll', () => {
+        const total = document.body.scrollHeight - window.innerHeight;
+        const progress = total > 0 ? (window.scrollY / total) * 100 : 0;
+        document.getElementById('reading-progress').style.width = `${Math.min(progress, 100)}%`;
+      });
 
-      // 主题
+      // 主题模式
       if (localStorage.getItem('theme') === 'dark') {
         document.body.classList.add('dark');
         document.getElementById('themeToggle').textContent = '☀️';
       }
     });
 
-    // 加载文章
+    // ============= 加载文章 =============
     function loadPost(url) {
       const reader = document.getElementById('reader');
       const contentEl = document.getElementById('post-content');
@@ -737,29 +492,24 @@
           contentEl.innerHTML = marked.parse(md);
           contentEl.querySelectorAll('hr').forEach(hr => hr.remove());
 
-          // 添加目录
+          // 生成悬浮 TOC
           generateTOC(contentEl);
 
-          // 添加代码复制
-          contentEl.querySelectorAll('pre').forEach(block => {
+          // 代码块复制按钮
+          contentEl.querySelectorAll('pre code').forEach(block => {
             const btn = document.createElement('button');
             btn.classList.add('copy-btn');
             btn.textContent = '复制';
             btn.onclick = () => {
-              const code = block.querySelector('code');
-              navigator.clipboard.writeText(code.textContent).then(() => {
+              navigator.clipboard.writeText(block.textContent).then(() => {
                 btn.textContent = '已复制！';
-                btn.classList.add('copied');
-                setTimeout(() => {
-                  btn.textContent = '复制';
-                  btn.classList.remove('copied');
-                }, 2000);
+                setTimeout(() => btn.textContent = '复制', 2000);
               });
             };
-            block.appendChild(btn);
+            block.parentNode.appendChild(btn);
           });
 
-          // 高亮 + 公式
+          // 语法高亮 + 公式渲染
           contentEl.querySelectorAll('pre code').forEach(el => hljs.highlightElement(el));
           if (window.MathJax) MathJax.typeset([contentEl]);
         })
@@ -768,69 +518,51 @@
         });
     }
 
-    // 生成目录
+    // ============= 生成 TOC =============
     function generateTOC(contentEl) {
+      const tocList = document.getElementById('toc-list');
+      tocList.innerHTML = '';
       const headers = contentEl.querySelectorAll('h1, h2, h3');
-      if (headers.length < 2) return;
-
-      const toc = document.createElement('div');
-      toc.id = 'toc';
-      toc.innerHTML = `
-        <div class="toc-header">
-          <span>📚 文章目录</span>
-          <button id="toc-toggle">折叠</button>
-        </div>
-        <ul class="toc-list"></ul>
-      `;
-      contentEl.insertBefore(toc, contentEl.firstChild);
-
-      const list = toc.querySelector('.toc-list');
-      const toggle = toc.querySelector('#toc-toggle');
-      let items = [];
+      const items = [];
 
       headers.forEach((h, idx) => {
         if (h.tagName === 'H1' && idx === 0) return; // 跳过主标题
-        const level = parseInt(h.tagName[1]);
         const id = `toc-${idx}`;
         h.id = id;
         const a = document.createElement('a');
         a.href = `#${id}`;
         a.textContent = h.textContent;
-        a.style.paddingLeft = `${(level - 1) * 16}px`;
+        a.style.paddingLeft = `${(parseInt(h.tagName[1]) - 1) * 16}px`;
         a.onclick = (e) => {
           e.preventDefault();
           document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
         };
         const li = document.createElement('li');
         li.appendChild(a);
-        list.appendChild(li);
+        tocList.appendChild(li);
         items.push({ el: h, link: a });
       });
 
-      // 折叠功能
-      toggle.addEventListener('click', () => {
-        const ul = list;
-        ul.style.display = ul.style.display === 'none' ? 'block' : 'none';
-        toggle.textContent = ul.style.display === 'none' ? '展开' : '折叠';
-      });
+      document.getElementById('toc-container').style.display = items.length ? 'block' : 'none';
 
       // 滚动高亮
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           const item = items.find(i => i.el === entry.target);
-          if (item) {
-            item.link.classList.toggle('active', entry.isIntersecting);
-          }
+          if (item) item.link.classList.toggle('active', entry.isIntersecting);
         });
-      }, { threshold: 0.2 });
+      }, { threshold: 0.3 });
 
       items.forEach(item => observer.observe(item.el));
     }
 
+    // ============= 关闭阅读器 =============
     function closeReader() {
       document.getElementById('reader').style.display = 'none';
+      document.getElementById('toc-container').style.display = 'none';
     }
 
+    // ============= 主题切换 =============
     document.getElementById('themeToggle').addEventListener('click', () => {
       const isDark = document.body.classList.toggle('dark');
       document.getElementById('themeToggle').textContent = isDark ? '☀️' : '🌙';
