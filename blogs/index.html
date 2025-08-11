@@ -5,10 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>我的算法博客</title>
 
-  <!-- 字体：优雅的中英混合 -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
+  <!-- 字体：完全模仿 acoipp 的优雅中英混合 -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 
-  <!-- 🔴 MathJax 配置（必须在加载前定义） -->
+  <!-- 🔴 MathJax 配置 -->
   <script>
     window.MathJax = {
       tex: {
@@ -19,11 +20,6 @@
       chtml: {
         scale: 1.05,
         matchFontHeight: false
-      },
-      startup: {
-        ready: function () {
-          MathJax.startup.defaultReady();
-        }
       }
     };
   </script>
@@ -33,28 +29,29 @@
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
   <!-- 代码高亮 -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 
   <style>
     :root {
-      /* --- 严格保留你的原色 --- */
+      /* --- 保留你的主色，但代码块使用深色 --- */
       --primary: #4361ee;
-      --text: #2b2d42;
+      --text: #2c3e50;
       --bg: #fdfefe;
       --card: #ffffff;
       --shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
       --radius: 12px;
       --border: #e0e0e0;
       --transition: all 0.3s ease;
+      --font-serif: 'Noto Serif SC', 'Songti SC', serif;
+      --font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
     }
 
     body {
-      font-family: 'Inter', 'Noto Serif SC', sans-serif;
+      font-family: var(--font-serif);
       max-width: 800px;
       margin: 0 auto;
-      /* 增加上边距，让页面更有呼吸感 */
-      padding: 40px 20px 20px;
+      padding: 50px 20px 30px;
       background: var(--bg);
       color: var(--text);
       line-height: 1.9;
@@ -62,65 +59,59 @@
     }
 
     h1 {
+      font-size: 2em;
       font-weight: 600;
-      color: var(--primary);
-      /* 将粗边框改为更精致的细线+padding组合 */
+      color: var(--text);
       border-bottom: 1px solid var(--border);
-      padding-bottom: 8px;
+      padding-bottom: 10px;
       margin-bottom: 30px;
-      font-size: 1.8em;
-      /* 去掉突兀的下划线，用 padding 和 border 模拟 */
+      font-family: var(--font-serif);
     }
 
-    /* 文章卡片：微调间距和圆角 */
+    /* 文章卡片：更像一篇论文的“入口” */
     .post {
       background: var(--card);
-      /* 增加一点内边距，内容更舒适 */
       padding: 28px;
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       border: 1px solid var(--border);
-      /* 增加一点外边距，卡片之间不拥挤 */
       margin-bottom: 32px;
       transition: var(--transition);
     }
 
     .post:hover {
-      /* 悬停效果更克制，只轻微上浮 */
       transform: translateY(-2px);
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
     }
 
     .post-date {
       color: #666;
-      font-size: 0.9em;
+      font-size: 0.95em;
       font-weight: 400;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     .post-title {
-      font-size: 1.4em;
+      font-size: 1.5em;
       font-weight: 600;
-      color: var(--primary);
+      color: var(--text);
       text-decoration: none;
       transition: var(--transition);
-      /* 去掉下划线，用颜色变化体现可点击 */
+      font-family: var(--font-serif);
     }
 
     .post-title:hover {
-      color: #3a56d4;
-      /* 去掉下划线，保持简洁 */
+      color: var(--primary);
     }
 
     .post-excerpt {
       color: #555;
-      font-size: 0.95em;
-      /* 增加一点上边距，与标题分离更清晰 */
+      font-size: 1.02em;
       margin-top: 12px;
-      line-height: 1.6;
+      line-height: 1.7;
     }
 
-    /* 阅读器：优化按钮位置和间距 */
+    /* 阅读器：进入文章后，风格完全模仿 acoipp */
     #reader {
       display: none;
       position: fixed;
@@ -128,7 +119,6 @@
       width: 100%; height: 100%;
       background: white;
       overflow-y: auto;
-      /* 增加上下内边距，阅读更舒适 */
       padding: 60px 20px;
       box-sizing: border-box;
     }
@@ -136,6 +126,43 @@
     #post-content {
       max-width: 800px;
       margin: 0 auto;
+      font-family: var(--font-serif);
+      color: var(--text);
+      line-height: 1.9;
+    }
+
+    #reader h1, #reader h2, #reader h3 {
+      margin-top: 1.5em;
+      margin-bottom: 0.8em;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    #reader h1 {
+      font-size: 1.8em;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.3em;
+    }
+
+    #reader h2 {
+      font-size: 1.5em;
+    }
+
+    #reader h3 {
+      font-size: 1.3em;
+    }
+
+    #reader p {
+      margin-bottom: 1.5em;
+    }
+
+    #reader a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    #reader a:hover {
+      text-decoration: underline;
     }
 
     #reader button {
@@ -145,9 +172,8 @@
       border: none;
       border-radius: 50px;
       cursor: pointer;
-      font-family: inherit;
+      font-family: var(--font-serif);
       font-size: 1em;
-      /* 增加一点下边距 */
       margin-bottom: 40px;
       transition: var(--transition);
     }
@@ -157,29 +183,31 @@
       transform: scale(1.05);
     }
 
-    /* 数学公式样式增强 */
-    .MathJax {
-      margin: 0.6em 0 !important;
-      font-feature-settings: "kern";
-    }
-
-    /* 代码块：保持原样，只微调间距 */
+    /* 代码块：使用深色主题，模仿 acoipp 的极客感 */
     pre {
-      background: #f8f9ff;
+      background: #282c34;
       padding: 16px;
       border-radius: 8px;
       border: 1px solid #e0e0e0;
       overflow-x: auto;
-      /* 保持原间距 */
-      margin: 1.2em 0;
+      margin: 1.5em 0;
+      font-size: 0.95em;
+      font-family: var(--font-mono);
+      line-height: 1.5;
     }
 
     code {
+      font-family: var(--font-mono);
+      font-size: 0.95em;
       background: #f0f0f0;
       padding: 2px 6px;
       border-radius: 4px;
-      font-family: 'Courier New', monospace;
-      font-size: 0.95em;
+    }
+
+    /* 行内代码也使用等宽字体 */
+    #post-content code {
+      background: #f0f0f0;
+      color: #e06c75;
     }
 
     /* 去掉所有 hr 横线 */
@@ -187,9 +215,9 @@
       display: none;
     }
 
-    /* 暗色模式：完全保留你的原设计 */
+    /* 暗色模式：只改变背景和文字色，代码块保持深色 */
     body.dark {
-      --bg: #121212;
+      --bg: #1a1a1a;
       --text: #e0e0e0;
       --card: #1e1e1e;
       --border: #333;
@@ -203,29 +231,25 @@
     }
 
     body.dark .post-title {
-      color: var(--primary);
+      color: var(--text);
     }
 
     body.dark .post-title:hover {
-      color: #9ec0fe;
-    }
-
-    body.dark pre {
-      background: #2a2a2a;
-      border-color: #444;
-    }
-
-    body.dark code {
-      background: #3a3a3a;
-      color: #e0e0e0;
+      color: var(--primary);
     }
 
     body.dark #reader {
-      background: #1a1a1a;
+      background: #121212;
       color: #f0f0f0;
     }
 
-    /* 主题切换按钮：位置微调，增加一点呼吸感 */
+    body.dark #reader h1, 
+    body.dark #reader h2, 
+    body.dark #reader h3 {
+      color: #f0f0f0;
+    }
+
+    /* 主题切换按钮 */
     .theme-toggle {
       position: fixed;
       bottom: 24px;
@@ -250,10 +274,9 @@
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
     }
 
-    /* 返回首页链接：优化位置和间距 */
+    /* 返回首页链接 */
     .back-link {
       display: inline-block;
-      /* 增加上边距，与文章列表分离 */
       margin: 40px 0 20px;
       padding: 10px 20px;
       background: var(--primary);
@@ -268,17 +291,17 @@
       transform: scale(1.05);
     }
 
-    /* 响应式优化：微调移动端间距 */
+    /* 响应式 */
     @media (max-width: 768px) {
       body {
-        padding: 30px 16px 16px;
+        padding: 40px 16px 20px;
+      }
+      h1 {
+        font-size: 1.8em;
       }
       .post {
         padding: 24px;
         margin-bottom: 28px;
-      }
-      .back-link {
-        margin: 32px 0 16px;
       }
       #reader {
         padding: 50px 16px;
@@ -313,7 +336,6 @@
 
   <!-- 核心脚本 -->
   <script>
-    // 初始化 marked
     document.addEventListener('DOMContentLoaded', () => {
       if (typeof marked !== 'undefined') {
         marked.setOptions({
@@ -325,7 +347,6 @@
       }
     });
 
-    // 加载文章
     function loadPost(url) {
       const reader = document.getElementById('reader');
       const contentEl = document.getElementById('post-content');
@@ -343,10 +364,9 @@
             throw new Error('marked 未加载');
           }
 
-          // 渲染 Markdown
           contentEl.innerHTML = marked.parse(md);
 
-          // 🔥 删除所有横线
+          // 删除所有横线
           contentEl.querySelectorAll('hr').forEach(hr => hr.remove());
 
           // 代码高亮
@@ -364,12 +384,10 @@
         });
     }
 
-    // 关闭阅读器
     function closeReader() {
       document.getElementById('reader').style.display = 'none';
     }
 
-    // 主题切换
     document.getElementById('themeToggle').addEventListener('click', () => {
       document.body.classList.toggle('dark');
     });
