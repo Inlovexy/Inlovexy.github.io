@@ -6,20 +6,24 @@
   <title>我的算法博客</title>
 
   <!-- 字体 -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Noto+Serif+SC&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
 
-  <!-- MathJax 数学公式 -->
+  <!-- MathJax v3: 数学公式引擎 -->
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <script>
     window.MathJax = {
       tex: {
         inlineMath: [['$', '$']],
-        displayMath: [['$$', '$$']]
+        displayMath: [['$$', '$$']],
+        processEscapes: true
+      },
+      startup: {
+        pageReady: () => MathJax.startup.defaultPageReady()
       }
     };
   </script>
 
-  <!-- ✅ 关键：使用能暴露全局变量的 marked 版本 -->
+  <!-- ✅ marked v4: Markdown 解析器（UMD 全局版本） -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
   <!-- 代码高亮 -->
@@ -27,58 +31,192 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 
   <style>
+    :root {
+      --primary: #4361ee;
+      --text: #2b2d42;
+      --bg: #f8f9ff;
+      --card: #ffffff;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --radius: 8px;
+    }
+
     body {
       font-family: 'Poppins', 'Noto Serif SC', sans-serif;
       max-width: 800px;
       margin: 0 auto;
       padding: 20px;
+      background: var(--bg);
+      color: var(--text);
       line-height: 1.8;
+      transition: background-color 0.3s, color 0.3s;
     }
+
+    h1 {
+      color: var(--text);
+      border-bottom: 3px solid var(--primary);
+      padding-bottom: 8px;
+      margin-bottom: 30px;
+      font-weight: 600;
+    }
+
+    .post {
+      background: var(--card);
+      padding: 20px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+      transition: transform 0.2s;
+    }
+
+    .post:hover {
+      transform: translateY(-2px);
+    }
+
+    .post-date {
+      color: #555;
+      font-size: 0.9em;
+      margin-bottom: 6px;
+    }
+
     .post-title {
       font-size: 1.4em;
-      color: #4361ee;
+      font-weight: 600;
+      color: var(--primary);
       text-decoration: none;
     }
+
     .post-title:hover {
       text-decoration: underline;
+      color: #3a56d4;
     }
+
+    .post-excerpt {
+      color: #666;
+      font-size: 0.95em;
+      margin-top: 8px;
+    }
+
+    /* 阅读器 */
     #reader {
       display: none;
-      padding: 20px;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: white;
       overflow-y: auto;
-      height: 100vh;
+      padding: 40px 20px;
+      box-sizing: border-box;
     }
+
     #post-content {
       max-width: 800px;
       margin: 0 auto;
     }
-    .back-button {
+
+    #reader button {
+      margin-bottom: 20px;
       padding: 10px 20px;
-      background: #4361ee;
+      background: var(--primary);
       color: white;
       border: none;
       border-radius: 50px;
       cursor: pointer;
+      font-family: inherit;
+      font-size: 1em;
+    }
+
+    /* 公式与代码 */
+    .MathJax {
+      margin: 0.8em 0 !important;
+      font-size: 1.1em;
+    }
+
+    code {
+      background: #f0f0f0;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+
+    pre {
+      background: #f5f5f5;
+      padding: 12px;
+      border-radius: 6px;
+      overflow-x: auto;
+    }
+
+    /* 暗色模式 */
+    body.dark {
+      --bg: #121212;
+      --text: #f8f9fa;
+      --card: #1f1f1f;
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    body.dark .post {
+      background: var(--card);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    body.dark .post-title,
+    body.dark .post-excerpt,
+    body.dark .post-date {
+      color: #a8d0ff;
+    }
+
+    body.dark #reader {
+      background: #1a1a1a;
+      color: #f0f0f0;
+    }
+
+    body.dark code,
+    body.dark pre {
+      background: #2a2a2a;
+      color: #e0e0e0;
+    }
+
+    /* 主题切换按钮 */
+    .theme-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 1.2em;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      transition: transform 0.2s;
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.1);
     }
   </style>
 </head>
 <body>
 
-  <h1>文章列表</h1>
+  <h1>我的算法博客</h1>
 
-  <div>
-    <div>
-      <div>2025-08-10</div>
-      <!-- ✅ 正确的 URL 编码 -->
-      <a href="javascript:loadPost('https://raw.githubusercontent.com/Inlovexy/Inlovexy.github.io/main/blogs/posts/2025-08-10-%E6%9A%91%E5%81%87week3.md')" 
-         class="post-title">
-        [暑假 Week3] 算法训练总结
-      </a>
-      <p>动态规划、图论、数学推导</p>
-    </div>
+  <!-- 文章列表 -->
+  <div class="post">
+    <div class="post-date">2025-08-10</div>
+    <a href="javascript:loadPost('https://raw.githubusercontent.com/Inlovexy/Inlovexy.github.io/main/blogs/posts/2025-08-10-%E6%9A%91%E5%81%87week3.md')"
+       class="post-title">
+      [暑假 Week3] 算法训练总结
+    </a>
+    <p class="post-excerpt">动态规划、图论、数学推导与复杂度分析</p>
   </div>
 
-  <a href="../" class="back-button">← 返回首页</a>
+  <!-- 返回首页 -->
+  <a href="../" class="back-link">← 返回首页</a>
+
+  <!-- 主题切换 -->
+  <button class="theme-toggle" id="themeToggle">🌓</button>
 
   <!-- 阅读器 -->
   <div id="reader">
@@ -86,44 +224,75 @@
     <div id="post-content"></div>
   </div>
 
+  <!-- 核心脚本 -->
   <script>
-    // ✅ 确保 marked 已加载
-    console.log('marked:', typeof marked); // 调试用
+    // 确保 marked 已加载
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof marked === 'undefined') {
+        console.error('❌ marked 未加载，请检查网络或 CDN');
+      } else {
+        marked.setOptions({ gfm: true, breaks: true, smartLists: true });
+      }
+    });
 
+    // 加载文章
     function loadPost(url) {
-      document.getElementById('reader').style.display = 'block';
+      const reader = document.getElementById('reader');
       const contentEl = document.getElementById('post-content');
-      contentEl.innerHTML = '加载中...';
+
+      reader.style.display = 'block';
+      contentEl.innerHTML = '<p>加载中...</p>';
 
       fetch(url)
         .then(res => {
-          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
           return res.text();
         })
         .then(md => {
-          // ✅ 使用 marked 解析（确保 window.marked 存在）
-          if (typeof marked === 'undefined') {
-            throw new Error('marked 未加载，请检查网络或 CDN');
+          // ✅ 使用 marked.parse(md)
+          if (typeof marked === 'undefined' || typeof marked.parse !== 'function') {
+            throw new Error('marked 库未正确加载');
           }
-          contentEl.innerHTML = marked(md);  // 也可以用 marked.parse(md)
 
-          // 高亮代码
-          document.querySelectorAll('pre code').forEach(hljs.highlightElement);
+          const html = marked.parse(md);
+          contentEl.innerHTML = html;
 
-          // 渲染公式
+          // 代码高亮
+          document.querySelectorAll('pre code').forEach(block => {
+            hljs.highlightElement(block);
+          });
+
+          // 渲染数学公式
           if (window.MathJax) {
+            MathJax.typesetClear();
             MathJax.typeset([contentEl]);
           }
         })
         .catch(err => {
-          contentEl.innerHTML = `<p style="color:red">❌ ${err.message}</p>`;
-          console.error(err);
+          contentEl.innerHTML = `
+            <h3 style="color:red">❌ 加载失败</h3>
+            <p><strong>${err.message}</strong></p>
+            <details style="margin:10px 0; padding:10px; background:#f0f0f0;">
+              <summary>查看调试信息</summary>
+              <p>URL: ${url}</p>
+              <p>marked loaded: ${typeof marked !== 'undefined'}</p>
+              <p>marked.parse: ${typeof marked?.parse === 'function' ? '✅' : '❌'}</p>
+            </details>
+          `;
+          console.error('加载文章失败:', err);
         });
     }
 
+    // 关闭阅读器
     function closeReader() {
       document.getElementById('reader').style.display = 'none';
     }
+
+    // 主题切换
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+    });
   </script>
+
 </body>
 </html>
