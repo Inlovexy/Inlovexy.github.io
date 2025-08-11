@@ -8,22 +8,14 @@
   <!-- 字体 -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
 
-  <!-- MathJax v3: 数学公式引擎 -->
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-  <script>
-    window.MathJax = {
-      tex: {
-        inlineMath: [['$', '$']],
-        displayMath: [['$$', '$$']],
-        processEscapes: true
-      },
-      startup: {
-        pageReady: () => MathJax.startup.defaultPageReady()
-      }
-    };
-  </script>
+  <!-- ✅ MathJax v3: 数学公式渲染（CDN 稳定链接） -->
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
 
-  <!-- ✅ marked v4: Markdown 解析器（UMD 全局版本） -->
+  <!-- ✅ marked: Markdown 解析器（确保全局可用） -->
+  <script>
+    // 防止未加载时调用，先定义占位
+    window.marked = undefined;
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
   <!-- 代码高亮 -->
@@ -114,7 +106,6 @@
     }
 
     #reader button {
-      margin-bottom: 20px;
       padding: 10px 20px;
       background: var(--primary);
       color: white;
@@ -125,10 +116,12 @@
       font-size: 1em;
     }
 
-    /* 公式与代码 */
-    .MathJax {
-      margin: 0.8em 0 !important;
-      font-size: 1.1em;
+    /* 代码块 */
+    pre {
+      background: #f5f5f5;
+      padding: 12px;
+      border-radius: 6px;
+      overflow-x: auto;
     }
 
     code {
@@ -136,13 +129,6 @@
       padding: 2px 6px;
       border-radius: 4px;
       font-family: monospace;
-    }
-
-    pre {
-      background: #f5f5f5;
-      padding: 12px;
-      border-radius: 6px;
-      overflow-x: auto;
     }
 
     /* 暗色模式 */
@@ -226,34 +212,60 @@
 
   <!-- 核心脚本 -->
   <script>
-    // 确保 marked 已加载
+    // 等待 DOM 加载完成
     document.addEventListener('DOMContentLoaded', () => {
-      if (typeof marked === 'undefined') {
-        console.error('❌ marked 未加载，请检查网络或 CDN');
+      // 配置 marked
+      if (typeof marked !== 'undefined') {
+        marked.setOptions({
+          gfm: true,
+          breaks: true,
+          smartLists: true,
+          smartypants: true
+        });
       } else {
-        marked.setOptions({ gfm: true, breaks: true, smartLists: true });
+        console.error('❌ marked 未加载，请检查网络或 CDN');
+      }
+
+      // 配置 MathJax（可选：添加加载完成提示）
+      if (window.MathJax) {
+        MathJax.startup.promise.then(() => {
+          console.log('✅ MathJax 初始化完成');
+        }).catch(err => {
+          console.error('❌ MathJax 初始化失败', err);
+        });
       }
     });
 
-    // 加载文章
+    /**
+     * 加载远程 Markdown 文件
+     * @param {string} url - Markdown 文件的 raw.githubusercontent 链接
+     */
     function loadPost(url) {
       const reader = document.getElementById('reader');
       const contentEl = document.getElementById('post-content');
 
+      // 显示阅读器
       reader.style.display = 'block';
       contentEl.innerHTML = '<p>加载中...</p>';
 
+      // 获取 Markdown 内容
       fetch(url)
-        .then(res => {
-          if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-          return res.text();
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`加载失败：${response.status} ${response.statusText}`);
+          }
+          return response.text();
         })
         .then(md => {
-          // ✅ 使用 marked.parse(md)
-          if (typeof marked === 'undefined' || typeof marked.parse !== 'function') {
-            throw new Error('marked 库未正确加载');
+          // 检查 marked 是否可用
+          if (typeof marked === 'undefined') {
+            throw new Error('marked 未加载。请检查网络或刷新页面。');
+          }
+          if (typeof marked.parse !== 'function') {
+            throw new Error('marked.parse 不是函数。请检查版本。');
           }
 
+          // 解析 Markdown
           const html = marked.parse(md);
           contentEl.innerHTML = html;
 
@@ -262,33 +274,42 @@
             hljs.highlightElement(block);
           });
 
-          // 渲染数学公式
-          if (window.MathJax) {
-            MathJax.typesetClear();
+          // ✅ MathJax v3 正确渲染公式（无需 typesetClear）
+          if (window.MathJax && typeof MathJax.typeset === 'function') {
             MathJax.typeset([contentEl]);
+          } else {
+            console.warn('MathJax 未准备好或 typeset 不可用');
           }
         })
         .catch(err => {
           contentEl.innerHTML = `
             <h3 style="color:red">❌ 加载失败</h3>
             <p><strong>${err.message}</strong></p>
-            <details style="margin:10px 0; padding:10px; background:#f0f0f0;">
-              <summary>查看调试信息</summary>
-              <p>URL: ${url}</p>
-              <p>marked loaded: ${typeof marked !== 'undefined'}</p>
-              <p>marked.parse: ${typeof marked?.parse === 'function' ? '✅' : '❌'}</p>
+            <details style="margin:10px 0; padding:10px; background:#f0f0f0; border-radius:6px;">
+              <summary>调试信息</summary>
+              <ul>
+                <li><strong>URL:</strong> ${url}</li>
+                <li><strong>marked loaded:</strong> ${typeof marked !== 'undefined' ? '✅' : '❌'}</li>
+                <li><strong>marked.parse:</strong> ${typeof marked?.parse === 'function' ? '✅' : '❌'}</li>
+                <li><strong>MathJax loaded:</strong> ${typeof MathJax !== 'undefined' ? '✅' : '❌'}</li>
+                <li><strong>MathJax.typeset:</strong> ${typeof MathJax?.typeset === 'function' ? '✅' : '❌'}</li>
+              </ul>
             </details>
           `;
           console.error('加载文章失败:', err);
         });
     }
 
-    // 关闭阅读器
+    /**
+     * 关闭阅读器
+     */
     function closeReader() {
       document.getElementById('reader').style.display = 'none';
     }
 
-    // 主题切换
+    /**
+     * 切换暗色模式
+     */
     document.getElementById('themeToggle').addEventListener('click', () => {
       document.body.classList.toggle('dark');
     });
