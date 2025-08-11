@@ -49,36 +49,60 @@
       font-family: 'Inter', 'Noto Serif SC', sans-serif;
       max-width: 800px;
       margin: 0 auto;
-      /* 增加上边距，让页面呼吸 */
-      padding: 50px 20px 30px;
+      padding: 60px 20px 40px;
       background: var(--bg);
       color: var(--text);
       line-height: 1.8;
-      /* 去除默认边距 */
+      position: relative;
     }
 
+    /* 在标题下方添加一条极细的装饰线，模仿学术感 */
     h1 {
       font-weight: 600;
       color: var(--primary);
-      border-bottom: 3px solid var(--primary);
-      padding-bottom: 8px;
-      margin-bottom: 40px;
+      padding-bottom: 12px;
+      margin-bottom: 30px;
       font-size: 1.8em;
-      /* 增加下边距，与列表分离 */
+      position: relative;
     }
 
-    /* 文章卡片：增加内边距，圆角更柔和 */
+    h1::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 2px;
+      background: var(--primary);
+      /* 非常细的线条，增加设计感但不突兀 */
+    }
+
+    /* 文章卡片：增加呼吸感 */
     .post {
       background: var(--card);
-      padding: 30px;
+      padding: 32px;
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       border: 1px solid var(--border);
-      margin-bottom: 30px;
-      /* 保持原有过渡 */
+      margin-bottom: 36px;
+      transition: var(--transition);
+      position: relative;
+      /* 为装饰点预留空间 */
     }
 
-    /* 悬停效果：保持原样 */
+    /* 在卡片左上角添加一个极小的装饰点 */
+    .post::before {
+      content: '';
+      position: absolute;
+      top: 32px;
+      left: 32px;
+      width: 6px;
+      height: 6px;
+      background: var(--primary);
+      border-radius: 50%;
+      opacity: 0.3;
+    }
+
     .post:hover {
       transform: translateY(-3px);
       box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
@@ -88,7 +112,9 @@
       color: #666;
       font-size: 0.9em;
       font-weight: 400;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
+      position: relative;
+      left: 12px; /* 让日期稍微避开装饰点 */
     }
 
     .post-title {
@@ -97,6 +123,8 @@
       color: var(--primary);
       text-decoration: none;
       transition: var(--transition);
+      position: relative;
+      left: 12px; /* 让标题稍微避开装饰点 */
     }
 
     .post-title:hover {
@@ -107,11 +135,13 @@
     .post-excerpt {
       color: #555;
       font-size: 0.95em;
-      margin-top: 10px;
+      margin-top: 12px;
       line-height: 1.6;
+      position: relative;
+      left: 12px; /* 让摘要稍微避开装饰点 */
     }
 
-    /* 阅读器：增加顶部内边距，让按钮更易点击 */
+    /* 阅读器：保持简洁 */
     #reader {
       display: none;
       position: fixed;
@@ -208,8 +238,8 @@
 
     /* 响应式：微调 */
     @media (max-width: 768px) {
-      body { padding: 40px 16px 20px; }
-      .post { padding: 26px; margin-bottom: 26px; }
+      body { padding: 50px 16px 30px; }
+      .post { padding: 28px; margin-bottom: 32px; }
       .back-link { margin: 36px 0 16px; }
       #reader { padding: 60px 16px 20px; }
     }
