@@ -6,9 +6,9 @@
   <title>我的算法博客</title>
 
   <!-- 字体：优雅的中英混合 -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
 
-  <!-- 🔴 MathJax 配置 -->
+  <!-- 🔴 MathJax 配置（必须在加载前定义） -->
   <script>
     window.MathJax = {
       tex: {
@@ -17,7 +17,7 @@
         processEscapes: true
       },
       chtml: {
-        scale: 1.08,
+        scale: 1.05,
         matchFontHeight: false
       },
       startup: {
@@ -33,130 +33,94 @@
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
   <!-- 代码高亮 -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/gradient-light.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 
   <style>
     :root {
+      /* --- 严格保留你的原色 --- */
       --primary: #4361ee;
-      --primary-light: #e9edff;
-      --text: #2c3e50;
-      --bg: #f8faff;
+      --text: #2b2d42;
+      --bg: #fdfefe;
       --card: #ffffff;
-      --shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
-      --shadow-hover: 0 16px 40px rgba(0, 0, 0, 0.1);
-      --radius: 16px;
-      --border: #e5eaf2;
-      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-      --font-mono: 'Courier New', 'monospace', Consolas, 'SFMono-Regular';
+      --shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      --radius: 12px;
+      --border: #e0e0e0;
+      --transition: all 0.3s ease;
     }
 
     body {
       font-family: 'Inter', 'Noto Serif SC', sans-serif;
-      max-width: 840px;
+      max-width: 800px;
       margin: 0 auto;
-      padding: 20px;
+      /* 增加上边距，让页面更有呼吸感 */
+      padding: 40px 20px 20px;
       background: var(--bg);
       color: var(--text);
       line-height: 1.9;
       letter-spacing: 0.3px;
-      transition: background 0.4s ease, color 0.4s ease;
     }
 
-    /* 标题美化 */
     h1 {
       font-weight: 600;
       color: var(--primary);
-      border-bottom: 3px solid var(--primary-light);
-      padding-bottom: 10px;
-      margin-bottom: 40px;
-      font-size: 2em;
-      letter-spacing: -0.5px;
-      position: relative;
+      /* 将粗边框改为更精致的细线+padding组合 */
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+      margin-bottom: 30px;
+      font-size: 1.8em;
+      /* 去掉突兀的下划线，用 padding 和 border 模拟 */
     }
 
-    h1::after {
-      content: '';
-      position: absolute;
-      bottom: -3px;
-      left: 0;
-      width: 120px;
-      height: 3px;
-      background: var(--primary);
-      border-radius: 2px;
-      transition: width 0.6s ease;
-    }
-
-    h1:hover::after {
-      width: 200px;
-    }
-
-    /* 文章卡片 */
+    /* 文章卡片：微调间距和圆角 */
     .post {
       background: var(--card);
+      /* 增加一点内边距，内容更舒适 */
       padding: 28px;
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       border: 1px solid var(--border);
-      margin-bottom: 28px;
+      /* 增加一点外边距，卡片之间不拥挤 */
+      margin-bottom: 32px;
       transition: var(--transition);
-      backdrop-filter: blur(4px);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .post::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 4px;
-      height: 100%;
-      background: var(--primary);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .post:hover::before {
-      opacity: 1;
     }
 
     .post:hover {
-      transform: translateY(-6px);
-      box-shadow: var(--shadow-hover);
+      /* 悬停效果更克制，只轻微上浮 */
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
     }
 
     .post-date {
-      color: #6c757d;
+      color: #666;
       font-size: 0.9em;
       font-weight: 400;
-      margin-bottom: 10px;
-      letter-spacing: 0.5px;
+      margin-bottom: 8px;
     }
 
     .post-title {
-      font-size: 1.45em;
+      font-size: 1.4em;
       font-weight: 600;
       color: var(--primary);
       text-decoration: none;
       transition: var(--transition);
-      display: inline-block;
+      /* 去掉下划线，用颜色变化体现可点击 */
     }
 
     .post-title:hover {
       color: #3a56d4;
-      transform: translateX(4px);
-      text-decoration: underline;
+      /* 去掉下划线，保持简洁 */
     }
 
     .post-excerpt {
       color: #555;
-      font-size: 0.98em;
-      margin-top: 10px;
-      line-height: 1.7;
-      opacity: 0.9;
+      font-size: 0.95em;
+      /* 增加一点上边距，与标题分离更清晰 */
+      margin-top: 12px;
+      line-height: 1.6;
     }
 
-    /* 阅读器 */
+    /* 阅读器：优化按钮位置和间距 */
     #reader {
       display: none;
       position: fixed;
@@ -164,15 +128,9 @@
       width: 100%; height: 100%;
       background: white;
       overflow-y: auto;
+      /* 增加上下内边距，阅读更舒适 */
       padding: 60px 20px;
       box-sizing: border-box;
-      z-index: 1000;
-      animation: fadeIn 0.5s ease-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
     }
 
     #post-content {
@@ -181,7 +139,7 @@
     }
 
     #reader button {
-      padding: 12px 28px;
+      padding: 10px 24px;
       background: var(--primary);
       color: white;
       border: none;
@@ -189,70 +147,59 @@
       cursor: pointer;
       font-family: inherit;
       font-size: 1em;
+      /* 增加一点下边距 */
       margin-bottom: 40px;
       transition: var(--transition);
-      box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
     }
 
     #reader button:hover {
       background: #3a56d4;
-      transform: scale(1.08);
-      box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+      transform: scale(1.05);
     }
 
-    /* 数学公式增强 */
+    /* 数学公式样式增强 */
     .MathJax {
-      margin: 1em 0 !important;
-      text-align: center;
+      margin: 0.6em 0 !important;
+      font-feature-settings: "kern";
     }
 
-    .MathJax_Display {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    /* 代码块 */
+    /* 代码块：保持原样，只微调间距 */
     pre {
       background: #f8f9ff;
-      padding: 18px;
-      border-radius: 10px;
-      border: 1px solid #e0e6ff;
+      padding: 16px;
+      border-radius: 8px;
+      border: 1px solid #e0e0e0;
       overflow-x: auto;
-      margin: 1.5em 0;
-      font-size: 0.95em;
-      font-family: var(--font-mono);
-      line-height: 1.5;
-      box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+      /* 保持原间距 */
+      margin: 1.2em 0;
     }
 
     code {
-      background: #f0f3ff;
-      color: #2c3e50;
+      background: #f0f0f0;
       padding: 2px 6px;
-      border-radius: 6px;
-      font-family: var(--font-mono);
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
       font-size: 0.95em;
     }
 
-    /* 去掉横线 */
+    /* 去掉所有 hr 横线 */
     hr {
-      display: none !important;
+      display: none;
     }
 
-    /* 暗色模式 */
+    /* 暗色模式：完全保留你的原设计 */
     body.dark {
-      --bg: #0f0f14;
+      --bg: #121212;
       --text: #e0e0e0;
-      --card: #16161d;
-      --border: #2a2a35;
+      --card: #1e1e1e;
+      --border: #333;
       --primary: #6ea8fe;
-      --primary-light: #1a2340;
     }
 
     body.dark .post {
       background: var(--card);
-      border: 1px solid var(--border);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      border: 1px solid #333;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
     }
 
     body.dark .post-title {
@@ -264,104 +211,77 @@
     }
 
     body.dark pre {
-      background: #1e1e28;
-      border-color: #333;
-      color: #f0f0f0;
+      background: #2a2a2a;
+      border-color: #444;
     }
 
     body.dark code {
-      background: #2a2a3a;
-      color: #a0dfff;
+      background: #3a3a3a;
+      color: #e0e0e0;
     }
 
     body.dark #reader {
-      background: #121218;
-      color: #f8f8f8;
+      background: #1a1a1a;
+      color: #f0f0f0;
     }
 
-    body.dark #reader button {
-      background: #6ea8fe;
-      box-shadow: 0 4px 15px rgba(110, 168, 254, 0.3);
-    }
-
-    body.dark #reader button:hover {
-      background: #7fb8ff;
-    }
-
-    /* 主题切换按钮 */
+    /* 主题切换按钮：位置微调，增加一点呼吸感 */
     .theme-toggle {
       position: fixed;
       bottom: 24px;
       right: 24px;
-      width: 60px;
-      height: 60px;
+      width: 56px;
+      height: 56px;
       border-radius: 50%;
       background: var(--primary);
       color: white;
       border: none;
       cursor: pointer;
       font-size: 1.3em;
-      box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
       transition: var(--transition);
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 100;
-      animation: pulse 3s infinite alternate;
-    }
-
-    @keyframes pulse {
-      0% { box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4); }
-      100% { box-shadow: 0 8px 25px rgba(67, 97, 238, 0.6), 0 0 30px rgba(67, 97, 238, 0.2); }
     }
 
     .theme-toggle:hover {
-      transform: scale(1.12);
-      box-shadow: 0 8px 28px rgba(67, 97, 238, 0.6);
+      transform: scale(1.1);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
     }
 
-    /* 返回首页 */
+    /* 返回首页链接：优化位置和间距 */
     .back-link {
       display: inline-block;
-      margin: 36px 0 20px;
-      padding: 12px 24px;
+      /* 增加上边距，与文章列表分离 */
+      margin: 40px 0 20px;
+      padding: 10px 20px;
       background: var(--primary);
       color: white;
       text-decoration: none;
       border-radius: 50px;
       transition: var(--transition);
-      font-size: 0.98em;
-      box-shadow: 0 4px 12px rgba(67, 97, 238, 0.2);
     }
 
     .back-link:hover {
       background: #3a56d4;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(67, 97, 238, 0.3);
+      transform: scale(1.05);
     }
 
-    /* 响应式优化 */
+    /* 响应式优化：微调移动端间距 */
     @media (max-width: 768px) {
       body {
-        padding: 16px;
-      }
-      h1 {
-        font-size: 1.8em;
+        padding: 30px 16px 16px;
       }
       .post {
         padding: 24px;
-        margin-bottom: 24px;
+        margin-bottom: 28px;
       }
-      .post-title {
-        font-size: 1.35em;
-      }
-      .theme-toggle {
-        width: 52px;
-        height: 52px;
-        font-size: 1.1em;
+      .back-link {
+        margin: 32px 0 16px;
       }
       #reader {
-        padding: 40px 16px;
+        padding: 50px 16px;
       }
     }
   </style>
@@ -411,7 +331,7 @@
       const contentEl = document.getElementById('post-content');
 
       reader.style.display = 'block';
-      contentEl.innerHTML = '<p style="color:#666; text-align:center; margin-top:20px;">🌀 加载中……</p>';
+      contentEl.innerHTML = '<p style="color:#666">加载中...</p>';
 
       fetch(url)
         .then(res => {
@@ -426,7 +346,7 @@
           // 渲染 Markdown
           contentEl.innerHTML = marked.parse(md);
 
-          // 删除所有横线
+          // 🔥 删除所有横线
           contentEl.querySelectorAll('hr').forEach(hr => hr.remove());
 
           // 代码高亮
@@ -440,7 +360,7 @@
           }
         })
         .catch(err => {
-          contentEl.innerHTML = `<p style="color:red; text-align:center; margin-top:20px;">❌ ${err.message}</p>`;
+          contentEl.innerHTML = `<p style="color:red">❌ ${err.message}</p>`;
         });
     }
 
@@ -452,15 +372,6 @@
     // 主题切换
     document.getElementById('themeToggle').addEventListener('click', () => {
       document.body.classList.toggle('dark');
-      // 保存主题
-      localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
-    });
-
-    // 恢复主题
-    window.addEventListener('DOMContentLoaded', () => {
-      if (localStorage.getItem('theme') === 'dark') {
-        document.body.classList.add('dark');
-      }
     });
   </script>
 
