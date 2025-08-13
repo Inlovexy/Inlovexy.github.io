@@ -222,105 +222,125 @@
       box-sizing: border-box;
     }
 
-    .reader-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 40px;
+    /* ============= 从第二个HTML文件复制的阅读器样式 ============= */
+    #reading-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #4361ee, #4cc9f0, #ff69b4);
+      width: 0%;
+      z-index: 1000;
+      transition: width 0.1s ease;
+      box-shadow: 0 0 10px rgba(67, 97, 238, 0.5);
     }
 
-    .close-btn {
-      background: none;
+    #reader {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      overflow-y: auto;
+      padding: 90px 20px 60px;
+      box-sizing: border-box;
+      z-index: 1000;
+    }
+
+    #post-content {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    #reader button {
+      padding: 16px 34px;
+      background: var(--primary);
+      color: white;
       border: none;
-      color: var(--text-light);
-      font-size: 1.5em;
+      border-radius: 60px;
       cursor: pointer;
-      padding: 10px;
+      font-family: inherit;
+      font-size: 1.2em;
+      margin-bottom: 50px;
       transition: var(--transition);
+      box-shadow: 0 8px 24px rgba(67, 97, 238, 0.4);
     }
 
-    .close-btn:hover {
-      color: var(--primary);
-      transform: rotate(90deg);
-    }
-
-    .article-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.8em;
-      font-weight: 700;
-      color: var(--text);
-      line-height: 1.3;
-      margin-bottom: 20px;
-    }
-
-    .article-meta {
-      color: var(--text-light);
-      font-size: 0.9em;
-      margin-bottom: 40px;
-    }
-
-    .article-content {
-      line-height: 1.8;
-      color: var(--text);
-    }
-
-    .article-content h1, .article-content h2, .article-content h3 {
-      font-family: 'Playfair Display', serif;
-      color: var(--text);
-      margin: 40px 0 20px;
-    }
-
-    .article-content h1 { font-size: 2.2em; }
-    .article-content h2 { font-size: 1.8em; }
-    .article-content h3 { font-size: 1.5em; }
-
-    .article-content p {
-      margin-bottom: 20px;
-    }
-
-    .article-content img {
-      max-width: 100%;
-      border-radius: 8px;
-      margin: 20px 0;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    #reader button:hover {
+      background: #3a56d4;
+      transform: scale(1.1);
+      box-shadow: 0 10px 30px rgba(67, 97, 238, 0.5);
     }
 
     /* ============= 代码块 ============= */
     pre {
-      background: #f8f9fa;
-      border: 1px solid #ecf0f1;
-      border-radius: 8px;
+      position: relative;
+      background: #f8f9ff;
       padding: 20px;
-      margin: 20px 0;
+      border-radius: 12px;
+      border: 1px solid #e0e0e0;
       overflow-x: auto;
-      font-size: 0.95em;
+      margin: 1.6em 0;
+      transition: 0.3s;
     }
 
-    code {
+    pre code {
+      background: none;
+      padding: 0;
       font-family: 'Consolas', 'Courier New', monospace;
-      background: #f8f9fa;
-      padding: 2px 6px;
-      border-radius: 4px;
       font-size: 0.95em;
     }
 
     .copy-btn {
       position: absolute;
-      top: 10px;
-      right: 10px;
-      background: var(--text-light);
+      top: 12px;
+      right: 12px;
+      background: #6c757d;
       color: white;
       border: none;
       padding: 6px 10px;
-      border-radius: 4px;
+      font-size: 0.85em;
+      border-radius: 6px;
       cursor: pointer;
-      font-size: 0.8em;
       opacity: 0.8;
     }
 
     .copy-btn:hover {
+      background: #5a6268;
       opacity: 1;
+    }
+
+    .lang-tag {
+      position: absolute;
+      top: 12px;
+      left: 12px;
       background: var(--primary);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.8em;
+      font-weight: bold;
+    }
+
+    code {
+      background: #f0f0f0;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 0.95em;
+    }
+
+    /* ============= 链接去下划线 ============= */
+    a {
+      text-decoration: none !important;
+      color: inherit;
+      cursor: pointer;
+    }
+
+    a:hover {
+      color: var(--primary);
     }
 
     /* ============= 响应式 ============= */
@@ -357,14 +377,13 @@
       .reader {
         padding: 100px 20px 40px;
       }
-
-      .article-title {
-        font-size: 2.2em;
-      }
     }
   </style>
 </head>
 <body>
+  <!-- 顶部进度条 -->
+  <div id="reading-progress"></div>
+
   <!-- 顶部导航 -->
   <header class="header">
     <a href="/" class="logo">Inlovexy</a>
@@ -423,18 +442,16 @@
   </div>
 
   <!-- 阅读器 -->
-  <div class="reader" id="reader">
-    <div class="reader-header">
-      <button class="close-btn" onclick="closeReader()">&times;</button>
-    </div>
-    <div id="article-content"></div>
+  <div id="reader">
+    <button onclick="closeReader()">← 返回列表</button>
+    <div id="post-content"></div>
   </div>
 
   <script>
     // 加载文章
     function loadPost(url) {
       const reader = document.getElementById('reader');
-      const contentEl = document.getElementById('article-content');
+      const contentEl = document.getElementById('post-content');
       reader.style.display = 'block';
       window.scrollTo(0, 0);
 
@@ -443,44 +460,38 @@
       fetch(url)
         .then(res => res.text())
         .then(md => {
-          // 转换 Markdown
-          let html = marked.parse(md);
-          
-          // 添加文章标题
-          const titleMatch = html.match(/<h1>(.*?)<\/h1>/);
-          let title = 'Untitled';
-          if (titleMatch) {
-            title = titleMatch[1];
-            html = html.replace(/<h1>.*?<\/h1>/, '');
-          }
-          
-          contentEl.innerHTML = `
-            <h1 class="article-title">${title}</h1>
-            <div class="article-meta">
-              <span class="post-meta-item"><i class="far fa-calendar"></i> ${getCurrentDate()}</span>
-              <span class="post-meta-item"><i class="far fa-clock"></i> ${estimateReadingTime(md)} min read</span>
-            </div>
-            <div class="article-content">${html}</div>
-          `;
-          
+          contentEl.innerHTML = marked.parse(md);
+          contentEl.querySelectorAll('hr').forEach(hr => hr.remove());
+
+          // 生成目录
+          generateTOC(contentEl);
+
           // 代码块处理
           contentEl.querySelectorAll('pre code').forEach(block => {
+            const lang = block.className.replace('language-', '') || 'text';
+            const displayName = { 'cpp': 'C++', 'python': 'Python', 'java': 'Java' }[lang] || lang.toUpperCase();
+            const langTag = document.createElement('div');
+            langTag.textContent = displayName;
+            langTag.className = 'lang-tag';
+            block.parentNode.style.position = 'relative';
+            block.parentNode.insertBefore(langTag, block);
+
             const btn = document.createElement('button');
             btn.className = 'copy-btn';
-            btn.textContent = 'Copy';
+            btn.textContent = '📄';
             btn.onclick = () => {
               navigator.clipboard.writeText(block.textContent).then(() => {
-                btn.textContent = 'Copied!';
-                setTimeout(() => btn.textContent = 'Copy', 2000);
+                btn.textContent = '✅';
+                setTimeout(() => btn.textContent = '📄', 2000);
               });
             };
-            block.parentNode.style.position = 'relative';
             block.parentNode.appendChild(btn);
             hljs.highlightElement(block);
           });
 
           // 数学公式渲染
           if (window.MathJax) {
+            MathJax.typesetClear();
             MathJax.typeset([contentEl]);
           }
         })
@@ -493,18 +504,37 @@
       document.getElementById('reader').style.display = 'none';
     }
 
-    function getCurrentDate() {
-      const now = new Date();
-      return now.getFullYear() + '-' + 
-             String(now.getMonth() + 1).padStart(2, '0') + '-' + 
-             String(now.getDate()).padStart(2, '0');
-    }
+    function generateTOC(contentEl) {
+      const tocList = document.getElementById('toc-list');
+      tocList.innerHTML = '';
+      const headers = contentEl.querySelectorAll('h1, h2, h3');
+      const items = [];
 
-    function estimateReadingTime(text) {
-      const wordsPerMinute = 200;
-      const words = text.trim().split(/\s+/).length;
-      const minutes = Math.ceil(words / wordsPerMinute);
-      return minutes;
+      headers.forEach((h, idx) => {
+        if (h.tagName === 'H1' && idx === 0) return;
+        const id = `toc-${idx}`;
+        h.id = id;
+        const a = document.createElement('a');
+        a.href = `#${id}`;
+        a.textContent = h.textContent;
+        a.style.paddingLeft = `${(parseInt(h.tagName[1]) - 1) * 18}px`;
+        a.onclick = (e) => { e.preventDefault(); document.getElementById(id).scrollIntoView({ behavior: 'smooth' }); };
+        const li = document.createElement('li');
+        li.appendChild(a);
+        tocList.appendChild(li);
+        items.push({ el: h, link: a });
+      });
+
+      document.getElementById('toc-container').style.display = items.length ? 'block' : 'none';
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          const item = items.find(i => i.el === entry.target);
+          if (item) item.link.classList.toggle('active', entry.isIntersecting);
+        });
+      }, { threshold: 0.3 });
+
+      items.forEach(item => observer.observe(item.el));
     }
 
     // 页面加载完成
@@ -517,6 +547,13 @@
           const hl = hljs.getLanguage(lang) ? lang : 'plaintext';
           return hljs.highlight(code, { language: hl }).value;
         }
+      });
+
+      // 进度条
+      window.addEventListener('scroll', () => {
+        const total = document.body.scrollHeight - window.innerHeight;
+        const progress = total > 0 ? (window.scrollY / total) * 100 : 0;
+        document.getElementById('reading-progress').style.width = `${Math.min(progress, 100)}%`;
       });
     });
   </script>
