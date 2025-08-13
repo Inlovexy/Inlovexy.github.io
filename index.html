@@ -12,7 +12,7 @@
     }
 
     body {
-      background: #000;
+      background: url('https://cdn.luogu.com.cn/upload/image_hosting/30jra2vy.png') center/cover fixed;
       margin: 0;
       font-family: 'Arial', 'Microsoft YaHei', sans-serif;
       min-height: 100vh;
@@ -22,45 +22,59 @@
       position: relative;
     }
 
-    /* 动态流动渐变背景 */
+    /* 动态融合渐变层（与原图融合） */
     body::before {
       content: '';
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: linear-gradient(-45deg, #0b1a30, #1a0b30, #300b2a, #2a300b);
-      background-size: 400% 400%;
-      animation: gradientFlow 15s ease infinite;
-      z-index: -3;
+      background: linear-gradient(45deg, 
+        rgba(180, 255, 255, 0.1), 
+        rgba(255, 180, 220, 0.05), 
+        rgba(150, 150, 255, 0.1), 
+        rgba(255, 220, 180, 0.05));
+      background-size: 300% 300%;
+      animation: gradientBlend 20s ease infinite;
+      z-index: -2;
+      opacity: 0.4;
+      mix-blend-mode: overlay; /* 让颜色与背景图融合，不覆盖 */
     }
 
-    @keyframes gradientFlow {
-      0%, 100% { background-position: 0% 50%; }
+    @keyframes gradientBlend {
+      0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
-    /* 微光脉动层 */
+    /* 背景图浮动视差（随鼠标） */
     body::after {
       content: '';
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: radial-gradient(circle at center, transparent, #000033 70%);
-      opacity: 0.8;
-      animation: pulseGlow 8s ease-in-out infinite alternate;
-      z-index: -2;
+      background: inherit;
+      background-size: cover;
+      background-position: center;
+      z-index: -1;
+      transform: translate(0, 0);
+      transition: transform 0.6s ease-out;
+      pointer-events: none;
+      opacity: 1;
+      mix-blend-mode: color-dodge; /* 提亮融合，让图更“发光” */
     }
 
-    @keyframes pulseGlow {
-      0% { opacity: 0.6; }
-      100% { opacity: 0.9; }
-    }
-
-    /* 玻璃遮罩增强 */
-    .overlay {
+    /* 呼吸光晕（整体氛围） */
+    .breathing-glow {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: radial-gradient(circle at center, transparent 20%, rgba(0,0,0,0.5) 100%);
+      background: radial-gradient(circle at center, transparent, rgba(0,0,30,0.2));
+      opacity: 0;
+      animation: breath 8s ease-in-out infinite alternate;
       pointer-events: none;
       z-index: -1;
+    }
+
+    @keyframes breath {
+      0% { opacity: 0.1; }
+      100% { opacity: 0.4; }
     }
 
     /* 鼠标光晕 */
@@ -68,8 +82,8 @@
       position: fixed;
       width: 400px;
       height: 400px;
-      background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
-      box-shadow: 0 0 30px 15px rgba(255,255,255,0.15);
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      box-shadow: 0 0 30px 15px rgba(255,255,255,0.1);
       border-radius: 50%;
       pointer-events: none;
       z-index: 1;
@@ -79,7 +93,7 @@
       mix-blend-mode: screen;
     }
 
-    /* 聚光灯扫描效果 */
+    /* 聚光灯扫描（轻量级） */
     .spotlight {
       position: fixed;
       top: -50%;
@@ -88,10 +102,10 @@
       height: 200%;
       background: conic-gradient(transparent, transparent 50%, rgba(255,255,255,0.03), transparent 51%);
       transform: rotate(0deg);
-      animation: scan 12s linear infinite;
+      animation: scan 15s linear infinite;
       pointer-events: none;
       z-index: 0;
-      opacity: 0.4;
+      opacity: 0.3;
       mix-blend-mode: overlay;
     }
 
@@ -100,23 +114,22 @@
       100% { transform: rotate(360deg); }
     }
 
-    /* 玻璃卡片增强版 */
+    /* 玻璃卡片 */
     .glass-card {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
       width: 85%;
-      max-width: 680px;
-      margin: 100px auto;
-      padding: 70px 50px;
-      border-radius: 30px;
+      max-width: 640px;
+      margin: 90px auto;
+      padding: 60px 40px;
+      border-radius: 26px;
       box-shadow: 
-        0 15px 50px rgba(0, 0, 0, 0.4),
-        0 0 40px rgba(255, 255, 255, 0.15),
-        inset 0 1px 0 rgba(255,255,255,0.1);
+        0 10px 40px rgba(0, 0, 0, 0.3),
+        0 0 30px rgba(255, 255, 255, 0.1);
       border: 1px solid rgba(255, 255, 255, 0.2);
-      animation: floatUp 1.4s ease-out forwards;
-      transform: translateY(40px);
+      animation: floatUp 1.2s ease-out forwards;
+      transform: translateY(30px);
       opacity: 0;
       position: relative;
       z-index: 2;
@@ -124,36 +137,30 @@
     }
 
     @keyframes floatUp {
-      0% { opacity: 0; transform: translateY(40px); }
+      0% { opacity: 0; transform: translateY(30px); }
       100% { opacity: 1; transform: translateY(0); }
     }
 
-    /* 3D 倾斜跟随鼠标 */
-    .glass-card:hover {
-      transform: translateY(0) scale(1.02);
-    }
-
-    /* 主标题：Inlovexy —— 霓虹闪耀 */
+    /* 标题 */
     h1 {
-      margin: 0 0 25px 0;
-      font-size: 3.8em;
-      font-weight: 800;
-      letter-spacing: 6px;
+      margin: 0 0 20px 0;
+      font-size: 3.4em;
+      font-weight: 700;
+      letter-spacing: 4px;
       text-shadow: 
-        0 0 15px rgba(255,255,255,0.8),
-        0 0 35px rgba(255,110,220,0.6),
-        0 0 60px rgba(255,110,220,0.4);
+        0 0 10px rgba(255,255,255,0.8),
+        0 0 30px rgba(255,255,255,0.6),
+        0 0 50px rgba(180, 255, 255, 0.5),
+        0 0 70px rgba(100, 200, 255, 0.4);
       animation: 
         pulse 3s ease-in-out infinite alternate,
-        colorShift 6s linear infinite,
-        flicker 2s ease-in-out infinite alternate;
-      background: linear-gradient(90deg, #ff6edc, #b387ff, #6ecfff, #ffdd99, #ff6edc);
+        colorShift 8s linear infinite;
+      background: linear-gradient(90deg, #ff6edc, #b387ff, #6ecfff, #ffdd99);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
       position: relative;
       display: inline-block;
-      white-space: nowrap;
     }
 
     @keyframes pulse {
@@ -163,23 +170,16 @@
 
     @keyframes colorShift {
       0% { background-position: 0% 50%; }
-      100% { background-position: 300% 50%; }
+      100% { background-position: 200% 50%; }
     }
 
-    @keyframes flicker {
-      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
-      20%, 22%, 24%, 55% { opacity: 0.8; }
-    }
-
-    /* 引用文字：温柔浮现 + 交错动画 */
+    /* 引用文字 */
     .quote {
-      font-size: 1.3em;
-      line-height: 2;
+      font-size: 1.25em;
+      line-height: 1.9;
       opacity: 0;
       transform: translateY(20px);
-      transition: all 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      margin-bottom: 12px;
-      letter-spacing: 0.5px;
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
     .quote.show {
@@ -187,55 +187,38 @@
       transform: translateY(0);
     }
 
-    /* 按钮增强 */
+    /* 按钮 */
     a {
       display: inline-block;
-      margin-top: 50px;
-      padding: 16px 36px;
-      background: rgba(255,255,255,0.2);
+      margin-top: 40px;
+      padding: 14px 32px;
+      background: rgba(255,255,255,0.25);
       color: white;
       text-decoration: none;
-      border-radius: 60px;
-      font-size: 1.2em;
+      border-radius: 50px;
+      font-size: 1.15em;
       font-weight: 500;
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.35);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.3);
       box-shadow: 
-        0 8px 25px rgba(0,0,0,0.25),
-        0 0 20px rgba(255,255,255,0.12),
-        inset 0 1px 0 rgba(255,255,255,0.2);
-      transition: all 0.4s ease;
-      letter-spacing: 1.5px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    a::before {
-      content: '';
-      position: absolute;
-      top: 0; left: -100%;
-      width: 100%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-      transition: none;
-    }
-
-    a:hover::before {
-      left: 100%;
-      transition: left 0.8s ease;
+        0 6px 20px rgba(0,0,0,0.2),
+        0 0 15px rgba(255,255,255,0.1);
+      transition: all 0.3s ease;
+      letter-spacing: 1px;
     }
 
     a:hover {
-      background: rgba(255,255,255,0.4);
-      transform: translateY(-6px) scale(1.08);
+      background: rgba(255,255,255,0.45);
+      transform: translateY(-5px) scale(1.05);
       box-shadow: 
-        0 15px 40px rgba(0,0,0,0.35),
-        0 0 40px rgba(255,255,255,0.25);
+        0 12px 30px rgba(0,0,0,0.3),
+        0 0 30px rgba(255,255,255,0.2);
     }
 
-    /* 响应式优化 */
+    /* 响应式 */
     @media (max-width: 768px) {
       h1 {
-        font-size: 2.8em;
+        font-size: 2.6em;
         letter-spacing: 2px;
       }
       .glass-card {
@@ -244,24 +227,23 @@
         margin: 80px auto;
       }
       .quote {
-        font-size: 1.15em;
-        line-height: 1.8;
-      }
-      a {
         font-size: 1.1em;
-        padding: 14px 30px;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- 动态背景层 -->
-  <div class="overlay"></div>
-  <div class="cursor-glow" id="cursorGlow"></div>
-  <div class="spotlight" id="spotlight"></div>
+  <!-- 呼吸光晕 -->
+  <div class="breathing-glow"></div>
 
-  <!-- 光斑点击特效容器 -->
+  <!-- 聚光灯 -->
+  <div class="spotlight"></div>
+
+  <!-- 鼠标光晕 -->
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <!-- 点击特效 -->
   <div id="clickEffect" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3;"></div>
 
   <div class="glass-card" id="card">
@@ -274,26 +256,26 @@
     <a href="/blogs">Inlovexy's blogs</a>
   </div>
 
-  <!-- 粒子背景 -->
+  <!-- 粒子 -->
   <canvas id="particles" style="position:fixed;top:0;left:0;z-index:-1;width:100%;height:100%"></canvas>
 
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
   <script>
-    // 粒子系统配置：梦幻星光 + 星轨 + 呼吸
+    // 粒子系统：与背景协调（淡紫、粉、蓝）
     particlesJS('particles', {
       "particles": {
-        "number": { "value": 120, "density": { "enable": true, "value_area": 1000 } },
-        "color": { "value": ["#ffffff", "#ff99cc", "#99ccff", "#ccff99", "#ffff99"] },
-        "shape": { "type": ["circle", "star"], "options": { "star": { "sides": 5 } } },
+        "number": { "value": 60 },
+        "color": { "value": ["#ffffff", "#d0a0ff", "#ff90c0", "#a0d0ff"] },
+        "shape": { "type": "circle" },
         "opacity": {
-          "value": 0.7,
+          "value": 0.6,
           "random": true,
-          "anim": { "enable": true, "speed": 2, "opacity_min": 0.1 }
+          "anim": { "enable": true, "speed": 1, "opacity_min": 0.1 }
         },
         "size": {
-          "value": 3,
+          "value": 2.5,
           "random": true,
-          "anim": { "enable": true, "speed": 4, "size_min": 0.2, "sync": false }
+          "anim": { "enable": true, "speed": 2, "size_min": 0.2 }
         },
         "line_linked": {
           "enable": true,
@@ -304,13 +286,12 @@
         },
         "move": {
           "enable": true,
-          "speed": 1.5,
-          "direction": "none",
+          "speed": 1.2,
+          "direction": "top",
           "random": true,
           "straight": false,
           "out_mode": "out",
-          "bounce": false,
-          "attract": { "enable": true, "rotateX": 600, "rotateY": 1200 }
+          "attract": { "enable": true, "rotateX": 500, "rotateY": 1000 }
         }
       },
       "interactivity": {
@@ -318,17 +299,17 @@
           "onhover": {
             "enable": true,
             "mode": "grab",
-            "parallax": { "enable": true, "force": 50, "smooth": 20 }
+            "parallax": { "enable": true, "force": 30, "smooth": 15 }
           },
           "onclick": {
             "enable": true,
             "mode": "push",
-            "particles_nb": 4
+            "particles_nb": 3
           }
         },
         "modes": {
-          "grab": { "distance": 180, "line_linked": { "opacity": 0.8 } },
-          "push": { "particles_nb": 4 }
+          "grab": { "distance": 140, "line_linked": { "opacity": 0.6 } },
+          "push": { "particles_nb": 3 }
         }
       },
       "retina_detect": true
@@ -339,107 +320,55 @@
     document.addEventListener('mousemove', (e) => {
       glow.style.left = e.clientX + 'px';
       glow.style.top = e.clientY + 'px';
-      glow.style.opacity = 0.7;
+      glow.style.opacity = 0.6;
     });
     document.addEventListener('mouseout', () => {
       glow.style.opacity = 0;
     });
 
-    // 3D 卡片跟随鼠标倾斜
-    const card = document.getElementById('card');
-    const rotate = (e) => {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      const angleX = (y - centerY) / 10;
-      const angleY = -(x - centerX) / 10;
-      card.style.transform = `rotateX(${angleX}deg) rotateY(${angleY}deg) translateY(0)`;
-    };
-
-    card.addEventListener('mousemove', rotate);
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = 'translateY(0)';
+    // 背景图视差浮动
+    const bg = document.querySelector('body::after');
+    document.addEventListener('mousemove', (e) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 10; // ±5px
+      const y = (e.clientY / window.innerHeight - 0.5) * 5;
+      document.body.style.setProperty('--bg-translate-x', `${x}px`);
+      document.body.style.setProperty('--bg-translate-y', `${y}px`);
+      document.querySelector('body::after').style.transform = `translate(${x}px, ${y}px) scale(1.02)`;
     });
 
-    // 点击光斑涟漪 + 彩虹光点爆发
+    // 点击光斑
     const effect = document.getElementById('clickEffect');
     document.addEventListener('click', (e) => {
-      // 涟漪
-      const ripple = document.createElement('div');
-      ripple.style.position = 'absolute';
-      ripple.style.width = '10px';
-      ripple.style.height = '10px';
-      ripple.style.borderRadius = '50%';
-      ripple.style.backgroundColor = 'rgba(255,255,255,0.7)';
-      ripple.style.boxShadow = '0 0 20px 10px rgba(255,255,255,0.5)';
-      ripple.style.left = (e.clientX - 5) + 'px';
-      ripple.style.top = (e.clientY - 5) + 'px';
-      ripple.style.transform = 'scale(0)';
-      ripple.style.transition = 'transform 0.8s cubic-bezier(0.2, 0.8, 0.8, 1), opacity 0.8s ease';
-      ripple.style.pointerEvents = 'none';
-      effect.appendChild(ripple);
-
-      // 彩色光点
-      for (let i = 0; i < 6; i++) {
-        const spark = document.createElement('div');
-        const angle = (Math.PI * 2 / 6) * i;
-        const dist = 50 + Math.random() * 40;
-        const x = Math.cos(angle) * dist;
-        const y = Math.sin(angle) * dist;
-        spark.style.position = 'absolute';
-        spark.style.width = '6px';
-        spark.style.height = '6px';
-        spark.style.borderRadius = '50%';
-        spark.style.backgroundColor = ['#ff6edc', '#b387ff', '#6ecfff', '#ffdd99', '#ccff99', '#ff99cc'][i];
-        spark.style.boxShadow = `0 0 15px ${['#ff6edc', '#b387ff', '#6ecfff', '#ffdd99', '#ccff99', '#ff99cc'][i]}`;
-        spark.style.left = (e.clientX - 3) + 'px';
-        spark.style.top = (e.clientY - 3) + 'px';
-        spark.style.transform = 'scale(0)';
-        spark.style.transition = 'all 0.8s ease-out';
-        spark.style.pointerEvents = 'none';
-        effect.appendChild(spark);
-
-        setTimeout(() => {
-          spark.style.transform = `translate(${x}px, ${y}px) scale(1.5)`;
-          spark.style.opacity = 0;
-        }, 10);
-      }
+      const light = document.createElement('div');
+      light.style.position = 'absolute';
+      light.style.width = '8px';
+      light.style.height = '8px';
+      light.style.borderRadius = '50%';
+      light.style.backgroundColor = 'rgba(255,255,255,0.7)';
+      light.style.boxShadow = '0 0 20px 8px rgba(255,255,255,0.4)';
+      light.style.left = (e.clientX - 4) + 'px';
+      light.style.top = (e.clientY - 4) + 'px';
+      light.style.transform = 'scale(0)';
+      light.style.transition = 'transform 0.6s ease-out, opacity 0.6s ease';
+      light.style.pointerEvents = 'none';
+      effect.appendChild(light);
 
       setTimeout(() => {
-        ripple.style.transform = 'scale(12)';
-        ripple.style.opacity = 0;
+        light.style.transform = 'scale(8)';
+        light.style.opacity = 0;
       }, 10);
 
       setTimeout(() => {
-        effect.removeChild(ripple);
-        // 清理光点
-        const sparks = effect.querySelectorAll('div');
-        sparks.forEach(spark => {
-          if (spark !== ripple) effect.removeChild(spark);
-        });
-      }, 810);
+        effect.removeChild(light);
+      }, 610);
     });
 
-    // 文字逐行浮现
+    // 文字浮现
     document.querySelectorAll('.quote').forEach((p, index) => {
       setTimeout(() => {
         p.classList.add('show');
-      }, 800 + index * 700);
+      }, 900 + index * 600);
     });
-
-    // 可选：背景音乐（点击任意位置开启）
-    let audioPlayed = false;
-    document.addEventListener('click', function enableAudio() {
-      if (audioPlayed) return;
-      const audio = new Audio('https://cdn.luogu.com.cn/upload/music/123456/123456.mp3'); // 替换为你喜欢的温柔BGM链接
-      audio.loop = true;
-      audio.volume = 0.4;
-      audio.play().catch(e => console.log("音频播放被阻止"));
-      audioPlayed = true;
-      document.removeEventListener('click', enableAudio);
-    }, { once: false });
   </script>
 
 </body>
