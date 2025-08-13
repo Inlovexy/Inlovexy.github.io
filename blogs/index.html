@@ -285,9 +285,9 @@
       background: #6c757d;
       color: white;
       border: none;
-      padding: 4px 8px; /* 减小按钮大小 */
-      font-size: 0.75em; /* 减小字体 */
-      border-radius: 4px;
+      padding: 6px 10px;
+      font-size: 0.85em;
+      border-radius: 6px;
       cursor: pointer;
       opacity: 0.8;
     }
@@ -317,42 +317,15 @@
       font-size: 0.95em;
     }
 
-    /* ============= 夸张的右上角 Logo ============= */
-    .dramatic-logo {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      font-family: 'Playfair Display', cursive;
-      font-size: 4.5em;
-      font-weight: 900;
-      color: #ff69b4;
-      z-index: 1000;
-      text-shadow: 
-        0 0 10px rgba(255, 105, 180, 0.5),
-        0 0 20px rgba(255, 105, 180, 0.3),
-        0 0 30px rgba(255, 105, 180, 0.2);
-      transform: rotate(15deg);
-      animation: pulse 3s infinite alternate;
-      pointer-events: none;
-      opacity: 0.9;
-      letter-spacing: -2px;
+    /* ============= 链接去下划线 ============= */
+    a {
+      text-decoration: none !important;
+      color: inherit;
+      cursor: pointer;
     }
 
-    @keyframes pulse {
-      0% {
-        transform: rotate(15deg) scale(1);
-        text-shadow: 
-          0 0 10px rgba(255, 105, 180, 0.5),
-          0 0 20px rgba(255, 105, 180, 0.3),
-          0 0 30px rgba(255, 105, 180, 0.2);
-      }
-      100% {
-        transform: rotate(15deg) scale(1.1);
-        text-shadow: 
-          0 0 15px rgba(255, 105, 180, 0.8),
-          0 0 25px rgba(255, 105, 180, 0.6),
-          0 0 35px rgba(255, 105, 180, 0.4);
-      }
+    a:hover {
+      color: var(--primary);
     }
 
     /* ============= 响应式 ============= */
@@ -389,12 +362,6 @@
       #reader {
         padding: 100px 20px 40px;
       }
-      
-      .dramatic-logo {
-        font-size: 3em;
-        top: 15px;
-        right: 15px;
-      }
     }
   </style>
 </head>
@@ -410,9 +377,6 @@
       <a href="#" class="active">Blog</a>
     </nav>
   </header>
-
-  <!-- 夸张的右上角 Logo -->
-  <div class="dramatic-logo">Inlovexy</div>
 
   <!-- 主内容 -->
   <div class="container">
@@ -508,11 +472,11 @@
             // 添加复制按钮
             const btn = document.createElement('button');
             btn.className = 'copy-btn';
-            btn.textContent = 'copy'; // 改为小写 copy
+            btn.textContent = '📄';
             btn.onclick = () => {
               navigator.clipboard.writeText(block.textContent).then(() => {
-                btn.textContent = '✓';
-                setTimeout(() => btn.textContent = 'copy', 2000);
+                btn.textContent = '✅';
+                setTimeout(() => btn.textContent = '📄', 2000);
               }).catch(err => {
                 console.error('复制失败:', err);
               });
