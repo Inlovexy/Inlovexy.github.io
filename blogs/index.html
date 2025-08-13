@@ -7,7 +7,7 @@
 
   <!-- 手写字体：仅用于 "My blogs" -->
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;600&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css       " rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
   <!-- 数学公式 & Markdown & 高亮 -->
   <script>
@@ -31,10 +31,10 @@
       }
     };
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js       "></script>
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js       "></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css       ">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js       "></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 
   <style>
     :root {
@@ -56,7 +56,8 @@
       max-width: 860px;
       margin: 0 auto;
       padding: 80px 20px 60px;
-      background: var(--bg);
+      background: #000 url('https://cdn.luogu.com.cn/upload/image_hosting/biw52x05.png') center/cover fixed;
+      background-blend-mode: multiply;
       color: var(--text);
       line-height: 1.9;
       position: relative;
@@ -64,7 +65,7 @@
       scroll-behavior: smooth;
     }
 
-    /* ============= 顶部 Logo（不变） ============= */
+    /* ============= 顶部 Logo（固定在左上角） ============= */
     .logo {
       position: fixed;
       top: 26px;
@@ -79,12 +80,8 @@
       text-shadow: 0 3px 8px rgba(0,0,0,0.2), 0 0 25px rgba(255, 105, 180, 0.5);
       transform: rotate(-7deg);
       transition: var(--transition);
-    }
-
-    .logo:hover {
-      color: #ff1493;
-      transform: rotate(-7deg) scale(1.18);
-      text-shadow: 0 0 35px rgba(255, 105, 180, 0.8);
+      position: relative;
+      display: inline-block;
     }
 
     @keyframes logoPulse {
@@ -92,62 +89,152 @@
       50% { text-shadow: 0 3px 10px rgba(0,0,0,0.3), 0 0 35px rgba(255, 105, 180, 0.7); }
     }
 
-    body:not(.dark) .logo {
+    .logo {
       animation: logoPulse 5s ease-in-out infinite;
     }
 
-    /* ============= 主标题：My blogs（仅此处用手写体） ============= */
+    /* ============= 主标题：My blogs（史诗级手写体升级） ============= */
     h1 {
       text-align: center;
       margin-bottom: 40px;
       font-weight: normal;
+      position: relative;
+    }
+
+    h1::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(67, 97, 238, 0.3), rgba(76, 201, 240, 0.3), rgba(255, 105, 180, 0.3), transparent);
+      z-index: -1;
+    }
+
+    h1::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(67, 97, 238, 0.1), rgba(76, 201, 240, 0.1), rgba(255, 105, 180, 0.1), transparent);
+      z-index: -1;
+      transform: translateY(-2px);
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { opacity: 0; }
+      50% { opacity: 0.6; }
+      100% { opacity: 0; }
     }
 
     h1 .script-title {
       font-family: 'Great Vibes', cursive;
-      font-size: 2.8em;
+      font-size: 3.4em;
       color: var(--primary);
       letter-spacing: -1px;
-      text-shadow: 0 2px 6px rgba(67, 97, 238, 0.2);
+      text-shadow: 
+        0 2px 6px rgba(67, 97, 238, 0.2),
+        0 0 20px rgba(76, 201, 240, 0.3);
+      position: relative;
+      display: inline-block;
+      background: linear-gradient(45deg, #4361ee, #4cc9f0, #ff69b4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: titleGlow 3s ease-in-out infinite alternate;
+      position: relative;
+      z-index: 1;
     }
 
-    /* ============= 阅读进度条 ============= */
+    @keyframes titleGlow {
+      0% { text-shadow: 0 2px 6px rgba(67, 97, 238, 0.2); }
+      100% { text-shadow: 0 2px 10px rgba(76, 201, 240, 0.5), 0 0 25px rgba(255, 105, 180, 0.4); }
+    }
+
+    /* ============= 阅读进度条（史诗级升级） ============= */
     #reading-progress {
       position: fixed;
       top: 0;
       left: 0;
-      height: 4px;
+      height: 6px;
       background: linear-gradient(90deg, #4361ee, #4cc9f0, #ff69b4);
+      background-size: 200% 100%;
       width: 0%;
       z-index: 1000;
       transition: width 0.1s ease;
-      box-shadow: 0 0 10px rgba(67, 97, 238, 0.5);
+      box-shadow: 0 0 15px rgba(67, 97, 238, 0.7);
+      animation: progressShine 2s infinite;
+      position: relative;
+      overflow: hidden;
     }
 
-    /* ============= 搜索框 ============= */
+    #reading-progress::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+      animation: shine 2s infinite;
+    }
+
+    @keyframes progressShine {
+      0% { background-position: 0% 0%; }
+      100% { background-position: 200% 0%; }
+    }
+
+    @keyframes shine {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    /* ============= 搜索框（史诗级升级） ============= */
     #search-box {
       margin: 24px auto 36px;
-      padding: 14px 24px;
+      padding: 16px 28px;
       width: 100%;
       max-width: 540px;
       border: 2px solid #e0e0e0;
       border-radius: 60px;
       font-size: 1.1em;
       outline: none;
-      background: white;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+      transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      position: relative;
+      z-index: 1;
+      backdrop-filter: blur(10px);
+    }
+
+    #search-box::before {
+      content: '🔍';
+      position: absolute;
+      left: 28px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #aaa;
+      font-size: 1.2em;
       transition: 0.3s;
+    }
+
+    #search-box:focus::before {
+      color: var(--primary);
     }
 
     #search-box:focus, #search-box:valid {
       border-color: var(--primary);
-      box-shadow: 0 8px 24px rgba(67, 97, 238, 0.2);
-      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(67, 97, 238, 0.3);
+      transform: translateY(-3px);
     }
 
-    /* ============= 文章卡片 ============= */
+    /* ============= 文章卡片（史诗级升级） ============= */
     .post {
-      background: var(--card);
+      background: rgba(255, 255, 255, 0.95);
       padding: 40px;
       border-radius: var(--radius);
       box-shadow: var(--shadow);
@@ -156,6 +243,9 @@
       transition: var(--transition);
       position: relative;
       backdrop-filter: blur(6px);
+      overflow: hidden;
+      transform: translateY(0);
+      opacity: 0;
     }
 
     .post::before {
@@ -168,11 +258,29 @@
       background: var(--primary);
       border-radius: 50%;
       opacity: 0.4;
+      box-shadow: 0 0 15px rgba(67, 97, 238, 0.6);
+    }
+
+    .post::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #4361ee, #4cc9f0, #ff69b4);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
     }
 
     .post:hover {
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+      transform: translateY(-12px) scale(1.04);
+      box-shadow: 0 24px 55px rgba(0, 0, 0, 0.25);
+    }
+
+    .post:hover::after {
+      transform: scaleX(1);
     }
 
     .post-date {
@@ -182,22 +290,46 @@
       margin-bottom: 16px;
       position: relative;
       left: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .post-date::before {
+      content: '📅';
+      color: var(--primary);
     }
 
     .post-title {
       font-size: 1.6em;
       font-weight: 600;
       color: var(--primary);
-      text-decoration: none; /* 去除下划线 */
+      text-decoration: none;
       transition: var(--transition);
       position: relative;
       left: 16px;
       display: inline-block;
+      position: relative;
+    }
+
+    .post-title::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--primary);
+      transition: width 0.3s ease;
     }
 
     .post-title:hover {
       color: #3a56d4;
-      transform: scale(1.04);
+      transform: scale(1.06);
+    }
+
+    .post-title:hover::after {
+      width: 100%;
     }
 
     .post-excerpt {
@@ -207,64 +339,111 @@
       line-height: 1.7;
       position: relative;
       left: 16px;
+      transition: 0.3s;
     }
 
-    /* ============= 悬浮 TOC（右侧） ============= */
+    .post:hover .post-excerpt {
+      color: #333;
+    }
+
+    /* ============= 悬浮 TOC（右侧，史诗级升级） ============= */
     #toc-container {
       position: fixed;
       top: 130px;
       right: 40px;
-      width: 240px;
+      width: 260px;
       max-height: 65vh;
       overflow-y: auto;
       background: var(--toc-bg);
       border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 20px;
+      border-radius: 16px;
+      padding: 24px;
       box-shadow: var(--toc-shadow);
       font-size: 0.98em;
       z-index: 90;
       opacity: 0.98;
-      backdrop-filter: blur(8px);
+      backdrop-filter: blur(10px);
       scrollbar-width: thin;
+      border: 1px solid rgba(67, 97, 238, 0.2);
+      transition: 0.3s;
+      transform: translateX(20px);
+      opacity: 0;
+    }
+
+    #toc-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #4361ee, #4cc9f0, #ff69b4);
+      border-radius: 16px 16px 0 0;
     }
 
     #toc-container h3 {
-      margin: 0 0 16px;
+      margin: 0 0 18px;
       color: var(--primary);
-      font-size: 1.1em;
+      font-size: 1.2em;
       font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #toc-container h3::before {
+      content: '📚';
     }
 
     #toc-container ul {
       list-style: none;
-      padding-left: 12px;
+      padding-left: 14px;
       margin: 0;
     }
 
     #toc-container a {
       display: block;
       color: #555;
-      text-decoration: none; /* 去除所有目录链接下划线 */
-      padding: 6px 8px;
-      border-radius: 6px;
+      text-decoration: none;
+      padding: 8px 10px;
+      border-radius: 8px;
       transition: 0.3s;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      position: relative;
+      padding-left: 30px;
+    }
+
+    #toc-container a::before {
+      content: '•';
+      position: absolute;
+      left: 12px;
+      color: var(--primary);
+      font-size: 1.2em;
+      opacity: 0;
+      transition: 0.3s;
     }
 
     #toc-container a:hover {
-      background: rgba(67, 97, 238, 0.12);
+      background: rgba(67, 97, 238, 0.15);
       color: var(--primary);
-      transform: translateX(4px);
+      transform: translateX(6px);
+    }
+
+    #toc-container a:hover::before {
+      opacity: 1;
     }
 
     #toc-container a.active {
-      background: rgba(67, 97, 238, 0.2);
+      background: rgba(67, 97, 238, 0.25);
       color: var(--primary);
       font-weight: 600;
-      box-shadow: 0 2px 6px rgba(67, 97, 238, 0.1);
+      box-shadow: 0 3px 8px rgba(67, 97, 238, 0.15);
+    }
+
+    #toc-container a.active::before {
+      opacity: 1;
     }
 
     @media (max-width: 768px) {
@@ -273,85 +452,32 @@
       }
     }
 
-    /* ============= 樱花花瓣（日间） ============= */
-    .petal {
+    /* ============= 特效粒子系统 ============= */
+    .particle {
       position: fixed;
-      top: -20px;
-      width: 14px;
-      height: 14px;
-      background: #ffb6c1;
-      border-radius: 50% 50% 50% 0;
-      transform: rotate(45deg);
-      opacity: 0.7;
       pointer-events: none;
-      z-index: -3;
-      filter: blur(0.5px);
+      z-index: -2;
     }
 
-    @keyframes fall-petal {
-      0% { transform: rotate(45deg) translateY(0) translateX(0); opacity: 0; }
-      20% { opacity: 0.8; }
-      100% { 
-        transform: rotate(65deg) translateY(100vh) translateX(var(--drift, 40px)); 
-        opacity: 0; 
-      }
-    }
-
-    /* ============= 泡泡与游鱼（夜间） ============= */
-    .bubble {
+    /* ============= 光点飘动特效 ============= */
+    .glow-dot {
       position: fixed;
-      width: 16px;
-      height: 16px;
+      width: 6px;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.6);
       border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9), rgba(200, 200, 255, 0.5));
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
       opacity: 0;
-      pointer-events: none;
-      z-index: -3;
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+      z-index: -2;
     }
 
-    @keyframes rise-bubble {
-      0% { transform: translateY(100vh); opacity: 0; }
-      30% { opacity: 0.7; }
-      100% { transform: translateY(-15vh); opacity: 0.3; }
+    @keyframes floatGlow {
+      0% { transform: translateY(0) translateX(0); opacity: 0; }
+      50% { opacity: 0.8; }
+      100% { transform: translateY(-100vh) translateX(50px); opacity: 0; }
     }
 
-    .fish {
-      position: fixed;
-      width: 36px;
-      height: 16px;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 50% 10% / 60% 40%;
-      transform: scaleY(1.3);
-      opacity: 0.8;
-      pointer-events: none;
-      z-index: -3;
-    }
-
-    .fish::before {
-      content: '';
-      position: absolute;
-      width: 10px;
-      height: 16px;
-      bottom: 1px;
-      right: -7px;
-      background: rgba(255, 255, 255, 0.4);
-      clip-path: polygon(0 0, 100% 50%, 0 100%);
-      transform-origin: left center;
-      animation: wiggle 1.5s ease-in-out infinite alternate;
-    }
-
-    @keyframes wiggle {
-      0% { transform: rotate(15deg); }
-      100% { transform: rotate(-15deg); }
-    }
-
-    @keyframes swim-up {
-      0% { transform: translateY(100vh) scaleY(1.3); }
-      100% { transform: translateY(-20vh) scaleY(1.3); }
-    }
-
-    /* ============= 阅读器 ============= */
+    /* ============= 阅读器（史诗级升级） ============= */
     #reader {
       display: none;
       position: fixed;
@@ -359,186 +485,229 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: white;
+      background: #000 url('https://cdn.luogu.com.cn/upload/image_hosting/biw52x05.png') center/cover fixed;
+      background-blend-mode: multiply;
       overflow-y: auto;
-      padding: 90px 20px 60px;
+      padding: 100px 20px 70px;
       box-sizing: border-box;
       z-index: 1000;
     }
 
+    #reader::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #4361ee, #4cc9f0, #ff69b4);
+      z-index: 1001;
+    }
+
     #post-content {
-      max-width: 860px;
+      max-width: 880px;
       margin: 0 auto;
+      position: relative;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    #post-content.loaded {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #post-content::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: -20px;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, rgba(67, 97, 238, 0.1), rgba(76, 201, 240, 0.1), rgba(255, 105, 180, 0.1), transparent);
+      z-index: -1;
     }
 
     #reader button {
-      padding: 16px 34px;
+      padding: 12px 24px;
       background: var(--primary);
       color: white;
       border: none;
-      border-radius: 60px;
+      border-radius: 50px;
       cursor: pointer;
       font-family: inherit;
-      font-size: 1.2em;
-      margin-bottom: 50px;
+      font-size: 1.1em;
+      margin-bottom: 60px;
       transition: var(--transition);
-      box-shadow: 0 8px 24px rgba(67, 97, 238, 0.4);
+      box-shadow: 0 8px 24px rgba(67, 97, 238, 0.5);
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    #reader button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      transition: none;
+    }
+
+    #reader button:hover::before {
+      left: 100%;
+      transition: left 0.8s ease;
     }
 
     #reader button:hover {
       background: #3a56d4;
-      transform: scale(1.1);
-      box-shadow: 0 10px 30px rgba(67, 97, 238, 0.5);
+      transform: scale(1.08);
+      box-shadow: 0 12px 35px rgba(67, 97, 238, 0.6);
     }
 
-    /* ============= 代码块 ============= */
+    /* ============= 代码块（史诗级升级） ============= */
     pre {
       position: relative;
       background: #f8f9ff;
-      padding: 20px;
-      border-radius: 12px;
+      padding: 24px;
+      border-radius: 14px;
       border: 1px solid #e0e0e0;
       overflow-x: auto;
-      margin: 1.6em 0;
-      transition: 0.3s;
+      margin: 1.8em 0;
+      transition: 0.4s;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      border-left: 4px solid var(--primary);
+    }
+
+    pre:hover {
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      transform: translateY(-2px);
     }
 
     pre code {
       background: none;
       padding: 0;
-      font-family: 'Consolas', 'Courier New', monospace; /* 已修改为 Consolas */
-      font-size: 0.95em;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 0.98em;
+      line-height: 1.5;
     }
 
     .copy-btn {
       position: absolute;
-      top: 12px;
-      right: 12px;
-      background: #6c757d;
+      top: 8px;
+      right: 8px;
+      background: var(--primary);
       color: white;
       border: none;
       padding: 6px 10px;
-      font-size: 0.85em;
+      font-size: 0.8em;
       border-radius: 6px;
       cursor: pointer;
-      opacity: 0.8;
+      opacity: 0.9;
+      transition: 0.3s;
+      font-weight: 500;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
     }
 
     .copy-btn:hover {
-      background: #5a6268;
+      background: #3a56d4;
       opacity: 1;
+      transform: scale(1.05);
     }
 
     .lang-tag {
       position: absolute;
-      top: 12px;
-      left: 12px;
+      top: 8px;
+      left: 8px;
       background: var(--primary);
       color: white;
       padding: 4px 8px;
       border-radius: 6px;
       font-size: 0.8em;
       font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
     code {
       background: #f0f0f0;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-family: 'Consolas', 'Courier New', monospace; /* 已修改为 Consolas */
-      font-size: 0.95em;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 0.98em;
+      border: 1px solid #e0e0e0;
     }
 
     /* ============= 链接去下划线 ============= */
     a {
-      text-decoration: none !important; /* 全局去除下划线 */
+      text-decoration: none !important;
       color: inherit;
       cursor: pointer;
+      position: relative;
     }
 
     a:hover {
       color: var(--primary);
     }
 
-    /* ============= 按钮 ============= */
+    /* ============= 按钮（史诗级升级） ============= */
     .nav-button {
       position: fixed;
-      bottom: 32px;
-      padding: 14px 28px;
-      border-radius: 55px;
+      bottom: 24px;
+      padding: 12px 24px;
+      border-radius: 50px;
       font-family: 'Inter', sans-serif;
       font-weight: 500;
-      font-size: 1.05em;
+      font-size: 1em;
       text-decoration: none;
       z-index: 100;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
       transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      border: none;
+      min-width: 120px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(20px);
     }
 
     .nav-home {
-      left: 32px;
+      left: 24px;
       background: white;
       color: var(--primary);
       border: 2px solid var(--primary);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-home::before {
+      content: '';
+      margin-right: 8px;
     }
 
     .nav-home:hover {
       transform: translateY(-4px) scale(1.06);
-      box-shadow: 0 10px 28px rgba(67, 97, 238, 0.3);
+      box-shadow: 0 10px 30px rgba(67, 97, 238, 0.35);
     }
 
-    .theme-toggle {
-      right: 32px;
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 14px 28px;
-      cursor: pointer;
+    /* 特效按钮悬停动画 */
+    .nav-button::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: none;
     }
 
-    .theme-toggle:hover {
-      transform: translateY(-4px) scale(1.08);
-      box-shadow: 0 10px 28px rgba(67, 97, 238, 0.4);
-    }
-
-    /* 隐藏不适用的元素 */
-    body.dark .petal { display: none; }
-    body:not(.dark) .bubble, body:not(.dark) .fish { display: none; }
-
-    /* ============= 暗色模式 ============= */
-    body.dark {
-      --bg: linear-gradient(135deg, #0f0f20, #1a0f30);
-      --text: #e0e0f0;
-      --card: #1a1a2e;
-      --border: #333;
-      --primary: #6ea8fe;
-      --toc-bg: rgba(26, 26, 46, 0.98);
-    }
-
-    body.dark {
-      background: var(--bg);
-      color: #f0f0ff;
-    }
-
-    body.dark .post {
-      background: var(--card);
-      border: 1px solid #333;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    }
-
-    body.dark pre {
-      background: #1e1e30;
-      border-color: #444;
-    }
-
-    body.dark code {
-      background: #2d2d40;
-      color: #d0d0ff;
-    }
-
-    body.dark #reader {
-      background: #121220;
-      color: #f0f0ff;
+    .nav-button:hover::after {
+      left: 100%;
+      transition: left 0.8s ease;
     }
 
     /* ============= 响应式 ============= */
@@ -546,9 +715,15 @@
       .logo { font-size: 2.3em; top: 20px; left: 20px; }
       body { padding: 70px 16px 50px; }
       .post { padding: 36px; margin-bottom: 40px; }
-      #toc-container { right: 16px; width: 200px; }
-      .nav-button { padding: 12px 24px; font-size: 0.95em; bottom: 20px; }
-      #reading-progress { height: 3px; }
+      #toc-container { right: 16px; width: 220px; }
+      .nav-button { 
+        padding: 10px 20px; 
+        font-size: 0.9em; 
+        bottom: 20px; 
+        min-width: 100px;
+      }
+      #reading-progress { height: 4px; }
+      h1 .script-title { font-size: 2.8em; }
     }
   </style>
 </head>
@@ -557,10 +732,10 @@
   <!-- 顶部进度条 -->
   <div id="reading-progress"></div>
 
-  <!-- Logo（不变） -->
+  <!-- Logo（固定在左上角） -->
   <a href="/" class="logo">Inlovexy</a>
 
-  <!-- 主标题（仅 "My blogs" 用手写体） -->
+  <!-- 主标题（史诗级升级） -->
   <h1><span class="script-title">My blogs</span></h1>
 
   <!-- 搜索框 -->
@@ -568,8 +743,8 @@
 
   <!-- 博客文章列表 -->
   <div class="post" data-title="Algorithm Training Summary Week3">
-    <div class="post-date">📅 2025-08-10</div>
-    <a href="javascript:loadPost('https://raw.githubusercontent.com/Inlovexy/Inlovexy.github.io/main/blogs/posts/2025-08-10-%E6%9A%91%E5%81%87week3.md       ')" class="post-title">
+    <div class="post-date">2025-08-10</div>
+    <a href="javascript:loadPost('https://raw.githubusercontent.com/Inlovexy/Inlovexy.github.io/main/blogs/posts/2025-08-10-%E6%9A%91%E5%81%87week3.md')" class="post-title">
       [暑假 Week3] 算法训练总结
     </a>
     <p class="post-excerpt">
@@ -578,35 +753,32 @@
   </div>
 
   <div class="post" data-title="构造专练">
-    <div class="post-date">📅 2025-08-11</div>
-    <a href="javascript:loadPost('https://raw.githubusercontent.com/Inlovexy/Inlovexy.github.io/main/blogs/posts/2025-08-11-%E6%9E%84%E9%80%A0%E4%B8%93%E7%BB%83.md       ')" class="post-title">
+    <div class="post-date">2025-08-11</div>
+    <a href="javascript:loadPost('https://raw.githubusercontent.com/Inlovexy/Inlovexy.github.io/main/blogs/posts/2025-08-11-%E6%9E%84%E9%80%A0%E4%B8%93%E7%BB%83.md')" class="post-title">
       构造专练
     </a>
     <p class="post-excerpt">
-      提升思维，加强构造。
+      构造太菜了，多多练习涨涨脑子。
     </p>
   </div>
 
   <!-- 阅读器 -->
   <div id="reader">
-    <button onclick="closeReader()">← 返回列表</button>
+    <button onclick="closeReader()">back</button>
     <div id="post-content"></div>
   </div>
 
   <!-- 悬浮目录 -->
   <div id="toc-container" style="display: none;">
-    <h3>📚 目录</h3>
+    <h3>目录</h3>
     <ul id="toc-list"></ul>
   </div>
 
   <!-- 特效容器 -->
-  <div id="petals"></div>
-  <div id="bubbles"></div>
-  <div id="fishes"></div>
+  <div id="glow-dots"></div>
 
   <!-- 导航按钮 -->
-  <a href="../" class="nav-button nav-home">🏠 返回首页</a>
-  <button class="nav-button theme-toggle" id="themeToggle">🌙 夜</button>
+  <a href="../" class="nav-button nav-home">back</a>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -638,55 +810,55 @@
         document.getElementById('reading-progress').style.width = `${Math.min(progress, 100)}%`;
       });
 
-      // 樱花（日间）
-      const petals = document.getElementById('petals');
-      const createPetal = () => {
-        if (document.body.classList.contains('dark')) return;
-        const p = document.createElement('div');
-        p.classList.add('petal');
-        p.style.left = Math.random() * 100 + 'vw';
-        p.style.opacity = 0.3 + Math.random() * 0.5;
-        p.style.width = p.style.height = (Math.random() * 12 + 8) + 'px';
-        p.style.setProperty('--drift', (Math.random() * 50 - 20) + 'px');
-        p.style.animation = `fall-petal ${14 + Math.random() * 10}s ease-out forwards`;
-        petals.appendChild(p);
-        setTimeout(() => petals.removeChild(p), 18000);
+      // 光点飘动特效
+      const glowDots = document.getElementById('glow-dots');
+      const createGlowDot = () => {
+        const dot = document.createElement('div');
+        dot.classList.add('glow-dot', 'particle');
+        dot.style.left = Math.random() * 100 + 'vw';
+        dot.style.opacity = 0.3 + Math.random() * 0.5;
+        dot.style.animation = `floatGlow ${8 + Math.random() * 12}s ease-out ${Math.random() * 5}s forwards`;
+        glowDots.appendChild(dot);
+        setTimeout(() => glowDots.removeChild(dot), 15000);
       };
-      setInterval(createPetal, 250);
-
-      // 泡泡（夜间）
-      const bubbles = document.getElementById('bubbles');
-      const createBubble = () => {
-        if (!document.body.classList.contains('dark')) return;
-        const b = document.createElement('div');
-        b.classList.add('bubble');
-        b.style.left = Math.random() * 100 + 'vw';
-        b.style.width = b.style.height = (Math.random() * 14 + 8) + 'px';
-        const duration = 15 + Math.random() * 15;
-        b.style.animation = `rise-bubble ${duration}s ease-out ${Math.random() * 5}s forwards`;
-        bubbles.appendChild(b);
-        setTimeout(() => bubbles.removeChild(b), duration * 1000 + 5000);
-      };
-
-      // 小鱼（夜间）
-      const fishes = document.getElementById('fishes');
-      const createFish = () => {
-        if (!document.body.classList.contains('dark')) return;
-        const f = document.createElement('div');
-        f.classList.add('fish');
-        f.style.left = Math.random() * 100 + 'vw';
-        f.style.animation = `swim-up ${20 + Math.random() * 10}s linear ${Math.random() * 5}s forwards`;
-        fishes.appendChild(f);
-        setTimeout(() => fishes.removeChild(f), 25000);
-      };
-
-      // 主题
-      if (localStorage.getItem('theme') === 'dark') {
-        document.body.classList.add('dark');
-        document.getElementById('themeToggle').textContent = '☀️ 日';
-        setInterval(createBubble, 800);
-        setInterval(createFish, 1500);
+      
+      // 初始创建一些光点
+      for (let i = 0; i < 15; i++) {
+        setTimeout(createGlowDot, i * 300);
       }
+      
+      // 定期创建新的光点
+      setInterval(createGlowDot, 1500);
+
+      // 文章卡片淡入动画
+      setTimeout(() => {
+        document.querySelectorAll('.post').forEach((post, index) => {
+          setTimeout(() => {
+            post.style.opacity = '1';
+            post.style.transform = 'translateY(0)';
+          }, index * 200);
+        });
+      }, 300);
+
+      // 导航按钮淡入
+      setTimeout(() => {
+        document.querySelector('.nav-button').style.opacity = '1';
+        document.querySelector('.nav-button').style.transform = 'translateY(0)';
+      }, 600);
+
+      // 为所有图片添加淡入动画
+      document.querySelectorAll('img').forEach(img => {
+        img.style.opacity = '0';
+        img.style.transition = 'opacity 0.5s ease';
+        const fadeIn = () => {
+          img.style.opacity = '1';
+        };
+        if (img.complete) {
+          fadeIn();
+        } else {
+          img.addEventListener('load', fadeIn);
+        }
+      });
     });
 
     // 加载文章
@@ -695,6 +867,8 @@
       const contentEl = document.getElementById('post-content');
       reader.style.display = 'block';
       contentEl.innerHTML = '<p style="color:#666; text-align:center; font-size:1.1em">加载中……</p>';
+      contentEl.style.opacity = '0';
+      contentEl.style.transform = 'translateY(20px)';
 
       fetch(url)
         .then(res => res.text())
@@ -717,22 +891,28 @@
 
             const btn = document.createElement('button');
             btn.className = 'copy-btn';
-            btn.textContent = '📄';
+            btn.textContent = 'copy';
             btn.onclick = () => {
               navigator.clipboard.writeText(block.textContent).then(() => {
-                btn.textContent = '✅';
-                setTimeout(() => btn.textContent = '📄', 2000);
+                btn.textContent = '✓';
+                setTimeout(() => btn.textContent = 'copy', 2000);
               });
             };
             block.parentNode.appendChild(btn);
             hljs.highlightElement(block);
           });
 
-          // 数学公式渲染（排除代码块）
+          // 数学公式渲染
           if (window.MathJax) {
             MathJax.typesetClear();
             MathJax.typeset([contentEl]);
           }
+          
+          // 内容加载完成动画
+          setTimeout(() => {
+            contentEl.style.opacity = '1';
+            contentEl.style.transform = 'translateY(0)';
+          }, 100);
         })
         .catch(err => {
           contentEl.innerHTML = `<p style="color:red; text-align:center">❌ 加载失败：${err.message}</p>`;
@@ -753,7 +933,7 @@
         const a = document.createElement('a');
         a.href = `#${id}`;
         a.textContent = h.textContent;
-        a.style.paddingLeft = `${(parseInt(h.tagName[1]) - 1) * 18}px`;
+        a.style.paddingLeft = `${(parseInt(h.tagName[1]) - 1) * 20}px`;
         a.onclick = (e) => { e.preventDefault(); document.getElementById(id).scrollIntoView({ behavior: 'smooth' }); };
         const li = document.createElement('li');
         li.appendChild(a);
@@ -762,6 +942,8 @@
       });
 
       document.getElementById('toc-container').style.display = items.length ? 'block' : 'none';
+      document.getElementById('toc-container').style.opacity = '1';
+      document.getElementById('toc-container').style.transform = 'translateX(0)';
 
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -776,60 +958,32 @@
     function closeReader() {
       document.getElementById('reader').style.display = 'none';
       document.getElementById('toc-container').style.display = 'none';
+      document.getElementById('toc-container').style.opacity = '0';
+      document.getElementById('toc-container').style.transform = 'translateX(20px)';
     }
-
-    document.getElementById('themeToggle').addEventListener('click', () => {
-      const isDark = document.body.classList.toggle('dark');
-      document.getElementById('themeToggle').textContent = isDark ? '☀️ 日' : '🌙 夜';
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-
-      if (isDark) {
-        setInterval(() => {
-          if (document.body.classList.contains('dark')) {
-            const b = document.createElement('div');
-            b.classList.add('bubble');
-            b.style.left = Math.random() * 100 + 'vw';
-            b.style.width = b.style.height = (Math.random() * 14 + 8) + 'px';
-            const duration = 15 + Math.random() * 15;
-            b.style.animation = `rise-bubble ${duration}s ease-out ${Math.random() * 5}s forwards`;
-            document.getElementById('bubbles').appendChild(b);
-            setTimeout(() => b.remove(), duration * 1000 + 5000);
-          }
-        }, 800);
-
-        setInterval(() => {
-          if (document.body.classList.contains('dark')) {
-            const f = document.createElement('div');
-            f.classList.add('fish');
-            f.style.left = Math.random() * 100 + 'vw';
-            f.style.animation = `swim-up ${20 + Math.random() * 10}s linear ${Math.random() * 5}s forwards`;
-            document.getElementById('fishes').appendChild(f);
-            setTimeout(() => f.remove(), 25000);
-          }
-        }, 1500);
-      }
-    });
 
     // 点击爆炸粒子
     document.addEventListener('click', (e) => {
       const colors = ['#ff69b4', '#4361ee', '#4cc9f0', '#ff99cc'];
-      for (let i = 0; i < 8; i++) {
+      for (let i = 0; i < 10; i++) {
         const p = document.createElement('div');
+        p.classList.add('particle');
         p.style.position = 'absolute';
-        p.style.width = p.style.height = '6px';
+        p.style.width = p.style.height = (Math.random() * 8 + 4) + 'px';
         p.style.background = colors[i % 4];
         p.style.borderRadius = '50%';
         p.style.left = e.clientX + 'px';
         p.style.top = e.clientY + 'px';
-        p.style.transform = `translate(-50%, -50%) translate(${(Math.random() - 0.5) * 40}px, ${(Math.random() - 0.5) * 40}px) scale(0)`;
-        p.style.opacity = 0.8;
+        p.style.transform = `translate(-50%, -50%) translate(${(Math.random() - 0.5) * 50}px, ${(Math.random() - 0.5) * 50}px) scale(0)`;
+        p.style.opacity = 0.9;
         p.style.pointerEvents = 'none';
+        p.style.boxShadow = `0 0 10px ${colors[i % 4]}`;
         document.body.appendChild(p);
         setTimeout(() => {
           p.style.opacity = 0;
-          p.style.transform = p.style.transform.replace('scale(0)', 'scale(1.5)');
+          p.style.transform = p.style.transform.replace('scale(0)', 'scale(2)');
         }, 10);
-        setTimeout(() => p.remove(), 600);
+        setTimeout(() => p.remove(), 800);
       }
     });
   </script>
