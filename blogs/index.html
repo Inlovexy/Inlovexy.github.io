@@ -1,534 +1,426 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Inlovexy's Blog</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Inlovexy's Blog</title>
 
-  <!-- 优雅的字体组合 -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+Pro:wght@300;400;600&display=swap" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css  " rel="stylesheet">
+    <!-- 字体组合（整合所需字体） -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Sans+Pro:wght@300;400;600&family=Great+Vibes&family=Inter:wght@300;400;600&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
-  <!-- 数学公式 & Markdown & 高亮 -->
-  <script>
-    window.MathJax = {
-      tex: {
-        inlineMath: [['\\(', '\\)'], ['$','$']],
-        displayMath: [['\\[', '\\]'], ['$$','$$']],
-        processEscapes: true,
-        processEnvironments: true,
-        packages: ['base', 'ams']
-      },
-      chtml: {
-        scale: 1.05,
-        matchFontHeight: false,
-        displayAlign: 'center'
-      }
-    };
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js  "></script>
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js  "></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css  ">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js  "></script>
+    <!-- 数学公式 & Markdown & 高亮 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)'], ['$','$']],
+                displayMath: [['\\[', '\\]'], ['$$','$$']],
+                processEscapes: true,
+                processEnvironments: true,
+                packages: ['base', 'ams']
+            },
+            chtml: {
+                scale: 1.05,
+                matchFontHeight: false,
+                displayAlign: 'center'
+            },
+            startup: {
+                ready: function () {
+                    MathJax.startup.defaultReady();
+                }
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 
-  <style>
-    :root {
-      --primary: #e91e63;
-      --text: #2c3e50;
-      --text-light: #7f8c8d;
-      --bg: #f8f9fa;
-      --card: #ffffff;
-      --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      --radius: 12px;
-      --border: #ecf0f1;
-      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Source Sans Pro', sans-serif;
-      color: var(--text);
-      line-height: 1.8;
-      background: #f8f9fa;
-      padding: 0;
-      margin: 0;
-      min-height: 100vh;
-    }
-
-    /* ============= 顶部导航 ============= */
-    .header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-      padding: 16px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.8em;
-      font-weight: 700;
-      color: var(--primary);
-      text-decoration: none;
-      letter-spacing: -1px;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 30px;
-    }
-
-    .nav-links a {
-      color: var(--text);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 1em;
-      position: relative;
-      padding: 4px 0;
-      transition: var(--transition);
-    }
-
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: var(--primary);
-      transition: var(--transition);
-    }
-
-    .nav-links a:hover {
-      color: var(--primary);
-    }
-
-    .nav-links a:hover::after {
-      width: 100%;
-    }
-
-    /* ============= 主内容区域 ============= */
-    .container {
-      max-width: 800px;
-      margin: 120px auto 60px;
-      padding: 0 40px;
-    }
-
-    .title {
-      text-align: center;
-      margin-bottom: 60px;
-    }
-
-    .title h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 3.5em;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 16px;
-      line-height: 1.2;
-    }
-
-    .title p {
-      color: var(--text-light);
-      font-size: 1.2em;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    /* ============= 博客文章列表 ============= */
-    .posts {
-      display: grid;
-      gap: 30px;
-    }
-
-    .post {
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      transition: var(--transition);
-      border: 1px solid var(--border);
-    }
-
-    .post:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-    }
-
-    .post-header {
-      padding: 30px 30px 20px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .post-title {
-      font-size: 1.8em;
-      font-weight: 700;
-      margin-bottom: 12px;
-      color: var(--text);
-      text-decoration: none;
-      display: inline-block;
-      transition: var(--transition);
-    }
-
-    .post-title:hover {
-      color: var(--primary);
-    }
-
-    .post-meta {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      color: var(--text-light);
-      font-size: 0.9em;
-    }
-
-    .post-meta-item {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .post-excerpt {
-      padding: 20px 30px 30px;
-      color: var(--text-light);
-      font-size: 1.1em;
-      line-height: 1.7;
-    }
-
-    /* ============= 阅读器 ============= */
-    #reading-progress {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 4px;
-      background: linear-gradient(90deg, #4361ee, #4cc9f0, #ff69b4);
-      width: 0%;
-      z-index: 1000;
-      transition: width 0.1s ease;
-      box-shadow: 0 0 10px rgba(67, 97, 238, 0.5);
-    }
-
-    #reader {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: white;
-      overflow-y: auto;
-      padding: 90px 20px 60px;
-      box-sizing: border-box;
-      z-index: 1000;
-    }
-
-    #reader-content {
-      max-width: 860px;
-      margin: 0 auto;
-    }
-
-    #reader button {
-      padding: 16px 34px;
-      background: var(--primary);
-      color: white;
-      border: none;
-      border-radius: 60px;
-      cursor: pointer;
-      font-family: inherit;
-      font-size: 1.2em;
-      margin-bottom: 50px;
-      transition: var(--transition);
-      box-shadow: 0 8px 24px rgba(67, 97, 238, 0.4);
-    }
-
-    #reader button:hover {
-      background: #3a56d4;
-      transform: scale(1.1);
-      box-shadow: 0 10px 30px rgba(67, 97, 238, 0.5);
-    }
-
-    /* ============= 代码块 ============= */
-    pre {
-      position: relative;
-      background: #f8f9ff;
-      padding: 20px;
-      border-radius: 12px;
-      border: 1px solid #e0e0e0;
-      overflow-x: auto;
-      margin: 1.6em 0;
-      transition: 0.3s;
-    }
-
-    pre code {
-      background: none;
-      padding: 0;
-      font-family: 'Consolas', 'Courier New', monospace;
-      font-size: 0.95em;
-    }
-
-    .copy-btn {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      background: #6c757d;
-      color: white;
-      border: none;
-      padding: 6px 10px;
-      font-size: 0.85em;
-      border-radius: 6px;
-      cursor: pointer;
-      opacity: 0.8;
-    }
-
-    .copy-btn:hover {
-      background: #5a6268;
-      opacity: 1;
-    }
-
-    .lang-tag {
-      position: absolute;
-      top: 12px;
-      left: 12px;
-      background: var(--primary);
-      color: white;
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-size: 0.8em;
-      font-weight: bold;
-    }
-
-    code {
-      background: #f0f0f0;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-family: 'Consolas', 'Courier New', monospace;
-      font-size: 0.95em;
-    }
-
-    /* ============= 链接去下划线 ============= */
-    a {
-      text-decoration: none !important;
-      color: inherit;
-      cursor: pointer;
-    }
-
-    a:hover {
-      color: var(--primary);
-    }
-
-    /* ============= 响应式 ============= */
-    @media (max-width: 768px) {
-      .header {
-        padding: 16px 20px;
-      }
-
-      .nav-links {
-        gap: 20px;
-      }
-
-      .container {
-        margin-top: 100px;
-        padding: 0 20px;
-      }
-
-      .title h1 {
-        font-size: 2.8em;
-      }
-
-      .title p {
-        font-size: 1.1em;
-      }
-
-      .post-header, .post-excerpt {
-        padding: 25px;
-      }
-
-      .post-title {
-        font-size: 1.6em;
-      }
-
-      #reader {
-        padding: 100px 20px 40px;
-      }
-    }
-  </style>
-</head>
-<body>
-  <!-- 顶部进度条 -->
-  <div id="reading-progress"></div>
-
-  <!-- 顶部导航 -->
-  <header class="header">
-    <a href="/" class="logo">Inlovexy</a>
-    <nav class="nav-links">
-      <a href="/">Home</a>
-      <a href="#" class="active">Blog</a>
-    </nav>
-  </header>
-
-  <!-- 主内容 -->
-  <div class="container">
-    <div class="title">
-      <h1>My Blog</h1>
-      <p>记录算法学习的点点滴滴，分享思考与感悟</p>
-    </div>
-
-    <div class="posts">
-      <article class="post">
-        <div class="post-header">
-          <h2 class="post-title" onclick="loadPost('https://raw.githubusercontent.com/Inlovexy/Inlovexy.github.io/main/blogs/posts/2025-08-11-%E6%9E%84%E9%80%A0%E4%B8%93%E7%BB%83.md  ')">构造专练</h2>
-          <div class="post-meta">
-            <div class="post-meta-item">
-              <i class="far fa-calendar"></i>
-              <span>2025-08-11</span>
-            </div>
-            <div class="post-meta-item">
-              <i class="far fa-clock"></i>
-              <span>5 min read</span>
-            </div>
-          </div>
-        </div>
-        <div class="post-excerpt">
-          构造太菜了，多多练习涨涨脑子。[[POI 2013] GRA-Tower Defense Game](https://www.luogu.com.cn/problem/P3557  ) 一道水绿，一看是还以为攻击距离为 2 是指只能打到相距为 2 的点，画了一下样例以后发现不就是在一开始的基础上多走一步吗。
-        </div>
-      </article>
-
-      <article class="post">
-        <div class="post-header">
-          <h2 class="post-title" onclick="loadPost('https://raw.githubusercontent.com/Inlovexy/Inlovexy.github.io/main/blogs/posts/2025-08-10-%E6%9A%91%E5%81%87week3.md  ')">[暑假 Week3] 算法训练总结</h2>
-          <div class="post-meta">
-            <div class="post-meta-item">
-              <i class="far fa-calendar"></i>
-              <span>2025-08-10</span>
-            </div>
-            <div class="post-meta-item">
-              <i class="far fa-clock"></i>
-              <span>8 min read</span>
-            </div>
-          </div>
-        </div>
-        <div class="post-excerpt">
-          使用三维动态规划解决颜色球移动问题，结合二分查找优化移动代价。数学推导与复杂度分析。
-        </div>
-      </article>
-    </div>
-  </div>
-
-  <!-- 阅读器 -->
-  <div id="reader">
-    <button onclick="closeReader()">← 返回列表</button>
-    <div id="reader-content"></div>
-  </div>
-
-  <script>
-    // 加载文章
-    function loadPost(url) {
-      const reader = document.getElementById('reader');
-      const contentEl = document.getElementById('reader-content');
-      
-      if (!contentEl) {
-        console.error('reader-content element not found');
-        return;
-      }
-      
-      reader.style.display = 'block';
-      window.scrollTo(0, 0);
-      contentEl.innerHTML = '<p style="color:#7f8c8d; text-align:center; font-size:1.1em">Loading...</p>';
-
-      fetch(url)
-        .then(res => {
-          if (!res.ok) {
-            throw new Error(`HTTP error! status: ${res.status}`);
-          }
-          return res.text();
-        })
-        .then(md => {
-          contentEl.innerHTML = marked.parse(md);
-          
-          // 处理代码块
-          contentEl.querySelectorAll('pre code').forEach(block => {
-            const lang = block.className.replace('language-', '') || 'text';
-            const displayName = { 'cpp': 'C++', 'python': 'Python', 'java': 'Java' }[lang] || lang.toUpperCase();
-            
-            // 添加语言标签
-            const langTag = document.createElement('div');
-            langTag.textContent = displayName;
-            langTag.className = 'lang-tag';
-            block.parentNode.style.position = 'relative';
-            block.parentNode.insertBefore(langTag, block);
-
-            // 添加复制按钮
-            const btn = document.createElement('button');
-            btn.className = 'copy-btn';
-            btn.textContent = '📄';
-            btn.onclick = () => {
-              navigator.clipboard.writeText(block.textContent).then(() => {
-                btn.textContent = '✅';
-                setTimeout(() => btn.textContent = '📄', 2000);
-              }).catch(err => {
-                console.error('复制失败:', err);
-              });
-            };
-            block.parentNode.appendChild(btn);
-            
-            // 代码高亮
-            hljs.highlightElement(block);
-          });
-
-          // 数学公式渲染
-          if (window.MathJax) {
-            MathJax.typesetClear();
-            MathJax.typeset([contentEl]);
-          }
-        })
-        .catch(err => {
-          console.error('加载失败:', err);
-          contentEl.innerHTML = `<p style="color:red; text-align:center">❌ 加载失败：${err.message}</p>`;
-        });
-    }
-
-    function closeReader() {
-      const reader = document.getElementById('reader');
-      if (reader) {
-        reader.style.display = 'none';
-      }
-    }
-
-    // 页面加载完成
-    document.addEventListener('DOMContentLoaded', () => {
-      // 初始化 marked
-      marked.setOptions({
-        gfm: true,
-        breaks: true,
-        smartLists: true,
-        highlight: (code, lang) => {
-          const hl = hljs.getLanguage(lang) ? lang : 'plaintext';
-          return hljs.highlight(code, { language: hl }).value;
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #4cc9f0;
+            --text: #2b2d42;
+            --bg: #fdfefe;
+            --card: #ffffff;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --radius: 18px;
+            --border: #e0e0e0;
+            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --toc-bg: rgba(255, 255, 255, 0.96);
+            --toc-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
         }
-      });
 
-      // 进度条
-      window.addEventListener('scroll', () => {
-        const total = document.body.scrollHeight - window.innerHeight;
-        const progress = total > 0 ? (window.scrollY / total) * 100 : 0;
-        const progressBar = document.getElementById('reading-progress');
-        if (progressBar) {
-          progressBar.style.width = `${Math.min(progress, 100)}%`;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-      });
-    });
-  </script>
-</body>
-</html>
+
+        body {
+            font-family: 'Inter', 'Noto Serif SC', sans-serif;
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 80px 20px 60px;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.9;
+            position: relative;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* ============= 顶部导航 ============= */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 16px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            letter-spacing: -1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1em;
+            position: relative;
+            padding: 4px 0;
+            transition: var(--transition);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* ============= 顶部装饰 Logo ============= */
+        .decorative-logo {
+            position: fixed;
+            top: 26px;
+            left: 26px;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8em;
+            font-weight: 900;
+            color: #ff69b4;
+            text-decoration: none;
+            z-index: 100;
+            letter-spacing: -2px;
+            text-shadow: 0 3px 8px rgba(0,0,0,0.2), 0 0 25px rgba(255, 105, 180, 0.5);
+            transform: rotate(-7deg);
+            transition: var(--transition);
+        }
+
+        .decorative-logo:hover {
+            color: #ff1493;
+            transform: rotate(-7deg) scale(1.18);
+            text-shadow: 0 0 35px rgba(255, 105, 180, 0.8);
+        }
+
+        @keyframes logoPulse {
+            0%, 100% { text-shadow: 0 3px 8px rgba(0,0,0,0.2), 0 0 25px rgba(255, 105, 180, 0.5); }
+            50% { text-shadow: 0 3px 10px rgba(0,0,0,0.3), 0 0 35px rgba(255, 105, 180, 0.7); }
+        }
+
+        body:not(.dark) .decorative-logo {
+            animation: logoPulse 5s ease-in-out infinite;
+        }
+
+        /* ============= 主标题：My blogs（手写体） ============= */
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: normal;
+        }
+
+        h1 .script-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.8em;
+            color: var(--primary);
+            letter-spacing: -1px;
+            text-shadow: 0 2px 6px rgba(67, 97, 238, 0.2);
+        }
+
+        /* ============= 阅读进度条 ============= */
+        #reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #4361ee, #4cc9f0, #ff69b4);
+            width: 0%;
+            z-index: 1000;
+            transition: width 0.1s ease;
+            box-shadow: 0 0 10px rgba(67, 97, 238, 0.5);
+        }
+
+        /* ============= 搜索框 ============= */
+        #search-box {
+            margin: 24px auto 36px;
+            padding: 14px 24px;
+            width: 100%;
+            max-width: 540px;
+            border: 2px solid #e0e0e0;
+            border-radius: 60px;
+            font-size: 1.1em;
+            outline: none;
+            background: white;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            transition: 0.3s;
+        }
+
+        #search-box:focus, #search-box:valid {
+            border-color: var(--primary);
+            box-shadow: 0 8px 24px rgba(67, 97, 238, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* ============= 文章卡片 ============= */
+        .post {
+            background: var(--card);
+            padding: 40px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            margin-bottom: 50px;
+            transition: var(--transition);
+            position: relative;
+            backdrop-filter: blur(6px);
+        }
+
+        .post::before {
+            content: '';
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.4;
+        }
+
+        .post:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+        }
+
+        .post-date {
+            color: #777;
+            font-size: 0.95em;
+            font-weight: 400;
+            margin-bottom: 16px;
+            position: relative;
+            left: 16px;
+        }
+
+        .post-title {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition);
+            position: relative;
+            left: 16px;
+            display: inline-block;
+        }
+
+        .post-title:hover {
+            color: #3a56d4;
+            transform: scale(1.04);
+        }
+
+        .post-excerpt {
+            color: #555;
+            font-size: 1.05em;
+            margin-top: 16px;
+            line-height: 1.7;
+            position: relative;
+            left: 16px;
+        }
+
+        /* ============= 悬浮 TOC（右侧） ============= */
+        #toc-container {
+            position: fixed;
+            top: 130px;
+            right: 40px;
+            width: 240px;
+            max-height: 65vh;
+            overflow-y: auto;
+            background: var(--toc-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: var(--toc-shadow);
+            font-size: 0.98em;
+            z-index: 90;
+            opacity: 0.98;
+            backdrop-filter: blur(8px);
+            scrollbar-width: thin;
+        }
+
+        #toc-container h3 {
+            margin: 0 0 16px;
+            color: var(--primary);
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        #toc-container ul {
+            list-style: none;
+            padding-left: 12px;
+            margin: 0;
+        }
+
+        #toc-container a {
+            display: block;
+            color: #555;
+            text-decoration: none;
+            padding: 6px 8px;
+            border-radius: 6px;
+            transition: 0.3s;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        #toc-container a:hover {
+            background: rgba(67, 97, 238, 0.12);
+            color: var(--primary);
+            transform: translateX(4px);
+        }
+
+        #toc-container a.active {
+            background: rgba(67, 97, 238, 0.2);
+            color: var(--primary);
+            font-weight: 600;
+            box-shadow: 0 2px 6px rgba(67, 97, 238, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            #toc-container {
+                display: none;
+            }
+        }
+
+        /* ============= 樱花花瓣（日间） ============= */
+        .petal {
+            position: fixed;
+            top: -20px;
+            width: 14px;
+            height: 14px;
+            background: #ffb6c1;
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(45deg);
+            opacity: 0.7;
+            pointer-events: none;
+            z-index: -3;
+            filter: blur(0.5px);
+        }
+
+        @keyframes fall-petal {
+            0% { transform: rotate(45deg) translateY(0) translateX(0); opacity: 0; }
+            20% { opacity: 0.8; }
+            100% { 
+                transform: rotate(65deg) translateY(100vh) translateX(var(--drift, 40px)); 
+                opacity: 0; 
+            }
+        }
+
+        /* ============= 泡泡与游鱼（夜间） ============= */
+        .bubble {
+            position: fixed;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9), rgba(200, 200, 255, 0.5));
+            opacity: 0;
+            pointer-events: none;
+            z-index: -3;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+        }
+
+        @keyframes rise-bubble {
+            0% { transform: translateY(100vh); opacity: 0; }
+            30% { opacity: 0.7; }
+            100% { transform: translateY(-15vh); opacity: 0.3; }
+        }
+
+        .fish {
+            position: fixed;
+            width: 36px;
+            height: 16px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50% 10% / 60% 40%;
+            transform: scaleY(1.3);
+            opacity: 0.8;
+            pointer-events: none;
+            z-index: -3;
+        }
+
+        .fish::before {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 16px;
+            bottom: 1px;
+            right: -7px;
+            background: rgba(255, 255, 255, 0.4);
+            clip-path: polygon(0 0, 100% 50%, 0 100%);
+            transform-origin: left center;
+            animation: wiggle 1.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes wiggle {
+            0% { transform: rotate(15deg); }
+            100% { transform: rotate(-15deg); }
+        }
+
+        @keyframes swim-up {
+            0% { transform: translateY(100vh) scaleY(1.3); }
+            100% { transform: translateY(-20vh) scaleY(1.3); }
+        }
+
+        /* ============= 阅读器 ============= */
+        #reader {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10
