@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="zh">
 <head>
@@ -455,10 +456,16 @@
           return res.text();
         })
         .then(md => {
-          contentEl.innerHTML = marked.parse(md);
+          // 使用新的阅读器样式
+          contentEl.innerHTML = `
+            <div style="font-family: 'Inter', 'Noto Serif SC', sans-serif; max-width: 860px; margin: 0 auto; color: #2b2d42; line-height: 1.9; padding: 40px 20px;">
+              <div id="post-content">${md}</div>
+            </div>
+          `;
           
           // 处理代码块
-          contentEl.querySelectorAll('pre code').forEach(block => {
+          const codeBlocks = contentEl.querySelectorAll('pre code');
+          codeBlocks.forEach(block => {
             const lang = block.className.replace('language-', '') || 'text';
             const displayName = { 'cpp': 'C++', 'python': 'Python', 'java': 'Java' }[lang] || lang.toUpperCase();
             
@@ -466,21 +473,47 @@
             const langTag = document.createElement('div');
             langTag.textContent = displayName;
             langTag.className = 'lang-tag';
+            langTag.style.position = 'absolute';
+            langTag.style.top = '12px';
+            langTag.style.left = '12px';
+            langTag.style.background = '#4361ee';
+            langTag.style.color = 'white';
+            langTag.style.padding = '4px 8px';
+            langTag.style.borderRadius = '6px';
+            langTag.style.fontWeight = 'bold';
+            langTag.style.fontSize = '0.8em';
+            
             block.parentNode.style.position = 'relative';
             block.parentNode.insertBefore(langTag, block);
 
             // 添加复制按钮
             const btn = document.createElement('button');
             btn.className = 'copy-btn';
-            btn.textContent = '📄';
+            btn.textContent = 'copy';
+            btn.style.position = 'absolute';
+            btn.style.top = '12px';
+            btn.style.right = '12px';
+            btn.style.background = '#6c757d';
+            btn.style.color = 'white';
+            btn.style.border = 'none';
+            btn.style.padding = '6px 10px';
+            btn.style.fontSize = '0.85em';
+            btn.style.borderRadius = '6px';
+            btn.style.cursor = 'pointer';
+            btn.style.opacity = '0.8';
+            
+            btn.onmouseover = () => btn.style.opacity = '1';
+            btn.onmouseout = () => btn.style.opacity = '0.8';
+            
             btn.onclick = () => {
               navigator.clipboard.writeText(block.textContent).then(() => {
-                btn.textContent = '✅';
-                setTimeout(() => btn.textContent = '📄', 2000);
+                btn.textContent = '✓';
+                setTimeout(() => btn.textContent = 'copy', 2000);
               }).catch(err => {
                 console.error('复制失败:', err);
               });
             };
+            
             block.parentNode.appendChild(btn);
             
             // 代码高亮
@@ -532,3 +565,4 @@
   </script>
 </body>
 </html>
+```
