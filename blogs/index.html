@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Inlovexy's Blog</title>
+  <title>My Blogs</title>
 
-  <!-- 优雅的字体组合 -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+  <!-- 手写字体：仅用于 "My blogs" -->
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;600&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
   <!-- 数学公式 & Markdown & 高亮 -->
@@ -23,491 +23,764 @@
         scale: 1.05,
         matchFontHeight: false,
         displayAlign: 'center'
+      },
+      startup: {
+        ready: function () {
+          MathJax.startup.defaultReady();
+        }
       }
     };
   </script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 
   <style>
     :root {
-      --primary: #e91e63;
-      --text: #2c3e50;
-      --text-light: #7f8c8d;
-      --bg: #f8f9fa;
+      --primary: #4361ee;
+      --primary-light: #4cc9f0;
+      --text: #2b2d42;
+      --bg: #fdfefe;
       --card: #ffffff;
       --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      --radius: 12px;
-      --border: #ecf0f1;
-      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+      --radius: 18px;
+      --border: #e0e0e0;
+      --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      --toc-bg: rgba(255, 255, 255, 0.96);
+      --toc-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
     }
 
     body {
-      font-family: 'Source Sans Pro', sans-serif;
+      font-family: 'Inter', 'Noto Serif SC', sans-serif;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 80px 20px 60px;
+      background: #000 url('https://cdn.luogu.com.cn/upload/image_hosting/biw52x05.png') center/cover fixed;
+      background-blend-mode: multiply;
       color: var(--text);
-      line-height: 1.8;
-      background: #f8f9fa;
-      padding: 0;
-      margin: 0;
-      min-height: 100vh;
+      line-height: 1.9;
+      position: relative;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
     }
 
-    /* ============= 顶部导航 ============= */
-    .header {
+    /* ============= 顶部 Logo（固定在左上角） ============= */
+    .logo {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 26px;
+      left: 26px;
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8em;
+      font-weight: 900;
+      color: #ff69b4;
+      text-decoration: none;
       z-index: 100;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-      padding: 16px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      letter-spacing: -2px;
+      text-shadow: 0 3px 8px rgba(0,0,0,0.2), 0 0 25px rgba(255, 105, 180, 0.5);
+      transform: rotate(-7deg);
+      transition: var(--transition);
+      position: relative;
+      display: inline-block;
+    }
+
+    @keyframes logoPulse {
+      0%, 100% { text-shadow: 0 3px 8px rgba(0,0,0,0.2), 0 0 25px rgba(255, 105, 180, 0.5); }
+      50% { text-shadow: 0 3px 10px rgba(0,0,0,0.3), 0 0 35px rgba(255, 105, 180, 0.7); }
     }
 
     .logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.8em;
-      font-weight: 700;
-      color: var(--primary);
-      text-decoration: none;
-      letter-spacing: -1px;
+      animation: logoPulse 5s ease-in-out infinite;
     }
 
-    .nav-links {
-      display: flex;
-      gap: 30px;
-    }
-
-    .nav-links a {
-      color: var(--text);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 1em;
+    /* ============= 主标题：My blogs（史诗级手写体升级） ============= */
+    h1 {
+      text-align: center;
+      margin-bottom: 40px;
+      font-weight: normal;
       position: relative;
-      padding: 4px 0;
-      transition: var(--transition);
     }
 
-    .nav-links a::after {
+    h1::before {
       content: '';
       position: absolute;
+      top: 50%;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(67, 97, 238, 0.3), rgba(76, 201, 240, 0.3), rgba(255, 105, 180, 0.3), transparent);
+      z-index: -1;
+    }
+
+    h1::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(67, 97, 238, 0.1), rgba(76, 201, 240, 0.1), rgba(255, 105, 180, 0.1), transparent);
+      z-index: -1;
+      transform: translateY(-2px);
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { opacity: 0; }
+      50% { opacity: 0.6; }
+      100% { opacity: 0; }
+    }
+
+    h1 .script-title {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3.4em;
+      color: var(--primary);
+      letter-spacing: -1px;
+      text-shadow: 
+        0 2px 6px rgba(67, 97, 238, 0.2),
+        0 0 20px rgba(76, 201, 240, 0.3);
+      position: relative;
+      display: inline-block;
+      background: linear-gradient(45deg, #4361ee, #4cc9f0, #ff69b4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: titleGlow 3s ease-in-out infinite alternate;
+      position: relative;
+      z-index: 1;
+    }
+
+    @keyframes titleGlow {
+      0% { text-shadow: 0 2px 6px rgba(67, 97, 238, 0.2); }
+      100% { text-shadow: 0 2px 10px rgba(76, 201, 240, 0.5), 0 0 25px rgba(255, 105, 180, 0.4); }
+    }
+
+    /* ============= 阅读进度条（史诗级升级） ============= */
+    #reading-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 6px;
+      background: linear-gradient(90deg, #4361ee, #4cc9f0, #ff69b4);
+      background-size: 200% 100%;
+      width: 0%;
+      z-index: 1000;
+      transition: width 0.1s ease;
+      box-shadow: 0 0 15px rgba(67, 97, 238, 0.7);
+      animation: progressShine 2s infinite;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #reading-progress::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
       bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+      animation: shine 2s infinite;
+    }
+
+    @keyframes progressShine {
+      0% { background-position: 0% 0%; }
+      100% { background-position: 200% 0%; }
+    }
+
+    @keyframes shine {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    /* ============= 搜索框（史诗级升级） ============= */
+    #search-box {
+      margin: 24px auto 36px;
+      padding: 16px 28px;
+      width: 100%;
+      max-width: 540px;
+      border: 2px solid #e0e0e0;
+      border-radius: 60px;
+      font-size: 1.1em;
+      outline: none;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+      transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      position: relative;
+      z-index: 1;
+      backdrop-filter: blur(10px);
+    }
+
+    #search-box::before {
+      content: '🔍';
+      position: absolute;
+      left: 28px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #aaa;
+      font-size: 1.2em;
+      transition: 0.3s;
+    }
+
+    #search-box:focus::before {
+      color: var(--primary);
+    }
+
+    #search-box:focus, #search-box:valid {
+      border-color: var(--primary);
+      box-shadow: 0 12px 30px rgba(67, 97, 238, 0.3);
+      transform: translateY(-3px);
+    }
+
+    /* ============= 文章卡片（史诗级升级） ============= */
+    .post {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 40px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      margin-bottom: 50px;
+      transition: var(--transition);
+      position: relative;
+      backdrop-filter: blur(6px);
+      overflow: hidden;
+      transform: translateY(0);
+      opacity: 0;
+    }
+
+    .post::before {
+      content: '';
+      position: absolute;
+      top: 40px;
+      left: 40px;
+      width: 10px;
+      height: 10px;
+      background: var(--primary);
+      border-radius: 50%;
+      opacity: 0.4;
+      box-shadow: 0 0 15px rgba(67, 97, 238, 0.6);
+    }
+
+    .post::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #4361ee, #4cc9f0, #ff69b4);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+
+    .post:hover {
+      transform: translateY(-12px) scale(1.04);
+      box-shadow: 0 24px 55px rgba(0, 0, 0, 0.25);
+    }
+
+    .post:hover::after {
+      transform: scaleX(1);
+    }
+
+    .post-date {
+      color: #777;
+      font-size: 0.95em;
+      font-weight: 400;
+      margin-bottom: 16px;
+      position: relative;
+      left: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .post-date::before {
+      content: '📅';
+      color: var(--primary);
+    }
+
+    .post-title {
+      font-size: 1.6em;
+      font-weight: 600;
+      color: var(--primary);
+      text-decoration: none;
+      transition: var(--transition);
+      position: relative;
+      left: 16px;
+      display: inline-block;
+      position: relative;
+    }
+
+    .post-title::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
       left: 0;
       width: 0;
       height: 2px;
       background: var(--primary);
-      transition: var(--transition);
-    }
-
-    .nav-links a:hover {
-      color: var(--primary);
-    }
-
-    .nav-links a:hover::after {
-      width: 100%;
-    }
-
-    /* ============= 主内容区域 ============= */
-    .container {
-      max-width: 800px;
-      margin: 120px auto 60px;
-      padding: 0 40px;
-    }
-
-    .title {
-      text-align: center;
-      margin-bottom: 60px;
-    }
-
-    .title h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 3.5em;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 16px;
-      line-height: 1.2;
-    }
-
-    .title p {
-      color: var(--text-light);
-      font-size: 1.2em;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    /* ============= 博客文章列表 ============= */
-    .posts {
-      display: grid;
-      gap: 30px;
-    }
-
-    .post {
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      transition: var(--transition);
-      border: 1px solid var(--border);
-    }
-
-    .post:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-    }
-
-    .post-header {
-      padding: 30px 30px 20px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .post-title {
-      font-size: 1.8em;
-      font-weight: 700;
-      margin-bottom: 12px;
-      color: var(--text);
-      text-decoration: none;
-      display: inline-block;
-      transition: var(--transition);
+      transition: width 0.3s ease;
     }
 
     .post-title:hover {
-      color: var(--primary);
+      color: #3a56d4;
+      transform: scale(1.06);
     }
 
-    .post-meta {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      color: var(--text-light);
-      font-size: 0.9em;
-    }
-
-    .post-meta-item {
-      display: flex;
-      align-items: center;
-      gap: 6px;
+    .post-title:hover::after {
+      width: 100%;
     }
 
     .post-excerpt {
-      padding: 20px 30px 30px;
-      color: var(--text-light);
-      font-size: 1.1em;
+      color: #555;
+      font-size: 1.05em;
+      margin-top: 16px;
       line-height: 1.7;
+      position: relative;
+      left: 16px;
+      transition: 0.3s;
     }
 
-    /* ============= 阅读器 ============= */
-    .reader {
+    .post:hover .post-excerpt {
+      color: #333;
+    }
+
+    /* ============= 悬浮 TOC（右侧，史诗级升级） ============= */
+    #toc-container {
+      position: fixed;
+      top: 130px;
+      right: 40px;
+      width: 260px;
+      max-height: 65vh;
+      overflow-y: auto;
+      background: var(--toc-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: var(--toc-shadow);
+      font-size: 0.98em;
+      z-index: 90;
+      opacity: 0.98;
+      backdrop-filter: blur(10px);
+      scrollbar-width: thin;
+      border: 1px solid rgba(67, 97, 238, 0.2);
+      transition: 0.3s;
+      transform: translateX(20px);
+      opacity: 0;
+    }
+
+    #toc-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #4361ee, #4cc9f0, #ff69b4);
+      border-radius: 16px 16px 0 0;
+    }
+
+    #toc-container h3 {
+      margin: 0 0 18px;
+      color: var(--primary);
+      font-size: 1.2em;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #toc-container h3::before {
+      content: '📚';
+    }
+
+    #toc-container ul {
+      list-style: none;
+      padding-left: 14px;
+      margin: 0;
+    }
+
+    #toc-container a {
+      display: block;
+      color: #555;
+      text-decoration: none;
+      padding: 8px 10px;
+      border-radius: 8px;
+      transition: 0.3s;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      position: relative;
+      padding-left: 30px;
+    }
+
+    #toc-container a::before {
+      content: '•';
+      position: absolute;
+      left: 12px;
+      color: var(--primary);
+      font-size: 1.2em;
+      opacity: 0;
+      transition: 0.3s;
+    }
+
+    #toc-container a:hover {
+      background: rgba(67, 97, 238, 0.15);
+      color: var(--primary);
+      transform: translateX(6px);
+    }
+
+    #toc-container a:hover::before {
+      opacity: 1;
+    }
+
+    #toc-container a.active {
+      background: rgba(67, 97, 238, 0.25);
+      color: var(--primary);
+      font-weight: 600;
+      box-shadow: 0 3px 8px rgba(67, 97, 238, 0.15);
+    }
+
+    #toc-container a.active::before {
+      opacity: 1;
+    }
+
+    @media (max-width: 768px) {
+      #toc-container {
+        display: none;
+      }
+    }
+
+    /* ============= 特效粒子系统 ============= */
+    .particle {
+      position: fixed;
+      pointer-events: none;
+      z-index: -2;
+    }
+
+    /* ============= 光点飘动特效 ============= */
+    .glow-dot {
+      position: fixed;
+      width: 6px;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+      opacity: 0;
+      z-index: -2;
+    }
+
+    @keyframes floatGlow {
+      0% { transform: translateY(0) translateX(0); opacity: 0; }
+      50% { opacity: 0.8; }
+      100% { transform: translateY(-100vh) translateX(50px); opacity: 0; }
+    }
+
+    /* ============= 阅读器（史诗级升级） ============= */
+    #reader {
       display: none;
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: white;
-      z-index: 1000;
+      background: #000 url('https://cdn.luogu.com.cn/upload/image_hosting/biw52x05.png') center/cover fixed;
+      background-blend-mode: multiply;
       overflow-y: auto;
-      padding: 120px 40px 60px;
+      padding: 100px 20px 70px;
       box-sizing: border-box;
+      z-index: 1000;
     }
 
-    .reader-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 40px;
+    #reader::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #4361ee, #4cc9f0, #ff69b4);
+      z-index: 1001;
     }
 
-    .close-btn {
-      background: none;
+    #post-content {
+      max-width: 880px;
+      margin: 0 auto;
+      position: relative;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    #post-content.loaded {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #post-content::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: -20px;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, rgba(67, 97, 238, 0.1), rgba(76, 201, 240, 0.1), rgba(255, 105, 180, 0.1), transparent);
+      z-index: -1;
+    }
+
+    #reader button {
+      padding: 12px 24px;
+      background: var(--primary);
+      color: white;
       border: none;
-      color: var(--text-light);
-      font-size: 1.5em;
+      border-radius: 50px;
       cursor: pointer;
-      padding: 10px;
+      font-family: inherit;
+      font-size: 1.1em;
+      margin-bottom: 60px;
       transition: var(--transition);
+      box-shadow: 0 8px 24px rgba(67, 97, 238, 0.5);
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
     }
 
-    .close-btn:hover {
-      color: var(--primary);
-      transform: rotate(90deg);
+    #reader button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      transition: none;
     }
 
-    .article-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.8em;
-      font-weight: 700;
-      color: var(--text);
-      line-height: 1.3;
-      margin-bottom: 20px;
+    #reader button:hover::before {
+      left: 100%;
+      transition: left 0.8s ease;
     }
 
-    .article-meta {
-      color: var(--text-light);
-      font-size: 0.9em;
-      margin-bottom: 40px;
+    #reader button:hover {
+      background: #3a56d4;
+      transform: scale(1.08);
+      box-shadow: 0 12px 35px rgba(67, 97, 238, 0.6);
     }
 
-    .article-content {
-      line-height: 1.8;
-      color: var(--text);
-    }
-
-    .article-content h1, .article-content h2, .article-content h3 {
-      font-family: 'Playfair Display', serif;
-      color: var(--text);
-      margin: 40px 0 20px;
-    }
-
-    .article-content h1 { font-size: 2.2em; }
-    .article-content h2 { font-size: 1.8em; }
-    .article-content h3 { font-size: 1.5em; }
-
-    .article-content p {
-      margin-bottom: 20px;
-    }
-
-    .article-content img {
-      max-width: 100%;
-      border-radius: 8px;
-      margin: 20px 0;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    /* ============= 代码块 ============= */
+    /* ============= 代码块（史诗级升级） ============= */
     pre {
-      background: #f8f9fa;
-      border: 1px solid #ecf0f1;
-      border-radius: 8px;
-      padding: 20px;
-      margin: 20px 0;
+      position: relative;
+      background: #f8f9ff;
+      padding: 24px;
+      border-radius: 14px;
+      border: 1px solid #e0e0e0;
       overflow-x: auto;
-      font-size: 0.95em;
+      margin: 1.8em 0;
+      transition: 0.4s;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      border-left: 4px solid var(--primary);
     }
 
-    code {
+    pre:hover {
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      transform: translateY(-2px);
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
       font-family: 'Consolas', 'Courier New', monospace;
-      background: #f8f9fa;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-size: 0.95em;
+      font-size: 0.98em;
+      line-height: 1.5;
     }
 
     .copy-btn {
       position: absolute;
-      top: 10px;
-      right: 10px;
-      background: var(--text-light);
+      top: 8px;
+      right: 8px;
+      background: var(--primary);
       color: white;
       border: none;
       padding: 6px 10px;
-      border-radius: 4px;
-      cursor: pointer;
       font-size: 0.8em;
-      opacity: 0.8;
+      border-radius: 6px;
+      cursor: pointer;
+      opacity: 0.9;
+      transition: 0.3s;
+      font-weight: 500;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
     }
 
     .copy-btn:hover {
+      background: #3a56d4;
       opacity: 1;
+      transform: scale(1.05);
+    }
+
+    .lang-tag {
+      position: absolute;
+      top: 8px;
+      left: 8px;
       background: var(--primary);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.8em;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    code {
+      background: #f0f0f0;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 0.98em;
+      border: 1px solid #e0e0e0;
+    }
+
+    /* ============= 链接去下划线 ============= */
+    a {
+      text-decoration: none !important;
+      color: inherit;
+      cursor: pointer;
+      position: relative;
+    }
+
+    a:hover {
+      color: var(--primary);
+    }
+
+    /* ============= 按钮（史诗级升级） ============= */
+    .nav-button {
+      position: fixed;
+      bottom: 24px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 1em;
+      text-decoration: none;
+      z-index: 100;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      border: none;
+      min-width: 120px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .nav-home {
+      left: 24px;
+      background: white;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-home::before {
+      content: '';
+      margin-right: 8px;
+    }
+
+    .nav-home:hover {
+      transform: translateY(-4px) scale(1.06);
+      box-shadow: 0 10px 30px rgba(67, 97, 238, 0.35);
+    }
+
+    /* 特效按钮悬停动画 */
+    .nav-button::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: none;
+    }
+
+    .nav-button:hover::after {
+      left: 100%;
+      transition: left 0.8s ease;
     }
 
     /* ============= 响应式 ============= */
     @media (max-width: 768px) {
-      .header {
-        padding: 16px 20px;
+      .logo { font-size: 2.3em; top: 20px; left: 20px; }
+      body { padding: 70px 16px 50px; }
+      .post { padding: 36px; margin-bottom: 40px; }
+      #toc-container { right: 16px; width: 220px; }
+      .nav-button { 
+        padding: 10px 20px; 
+        font-size: 0.9em; 
+        bottom: 20px; 
+        min-width: 100px;
       }
-
-      .nav-links {
-        gap: 20px;
-      }
-
-      .container {
-        margin-top: 100px;
-        padding: 0 20px;
-      }
-
-      .title h1 {
-        font-size: 2.8em;
-      }
-
-      .title p {
-        font-size: 1.1em;
-      }
-
-      .post-header, .post-excerpt {
-        padding: 25px;
-      }
-
-      .post-title {
-        font-size: 1.6em;
-      }
-
-      .reader {
-        padding: 100px 20px 40px;
-      }
-
-      .article-title {
-        font-size: 2.2em;
-      }
+      #reading-progress { height: 4px; }
+      h1 .script-title { font-size: 2.8em; }
     }
   </style>
 </head>
 <body>
-  <!-- 顶部导航 -->
-  <header class="header">
-    <a href="/" class="logo">Inlovexy</a>
-    <nav class="nav-links">
-      <a href="/">Home</a>
-      <a href="#" class="active">Blog</a>
-    </nav>
-  </header>
 
-  <!-- 主内容 -->
-  <div class="container">
-    <div class="title">
-      <h1>My Blog</h1>
-      <p>记录算法学习的点点滴滴，分享思考与感悟</p>
-    </div>
+  <!-- 顶部进度条 -->
+  <div id="reading-progress"></div>
 
-    <div class="posts">
-      <article class="post">
-        <div class="post-header">
-          <h2 class="post-title" onclick="loadPost('https://raw.githubusercontent.com/Inlovexy/Inlovexy.github.io/main/blogs/posts/2025-08-11-%E6%9E%84%E9%80%A0%E4%B8%93%E7%BB%83.md')">构造专练</h2>
-          <div class="post-meta">
-            <div class="post-meta-item">
-              <i class="far fa-calendar"></i>
-              <span>2025-08-11</span>
-            </div>
-            <div class="post-meta-item">
-              <i class="far fa-clock"></i>
-              <span>5 min read</span>
-            </div>
-          </div>
-        </div>
-        <div class="post-excerpt">
-          构造太菜了，多多练习涨涨脑子。[[POI 2013] GRA-Tower Defense Game](https://www.luogu.com.cn/problem/P3557) 一道水绿，一看是还以为攻击距离为 2 是指只能打到相距为 2 的点，画了一下样例以后发现不就是在一开始的基础上多走一步吗。
-        </div>
-      </article>
+  <!-- Logo（固定在左上角） -->
+  <a href="/" class="logo">Inlovexy</a>
 
-      <article class="post">
-        <div class="post-header">
-          <h2 class="post-title" onclick="loadPost('https://raw.githubusercontent.com/Inlovexy/Inlovexy.github.io/main/blogs/posts/2025-08-10-%E6%9A%91%E5%81%87week3.md')">[暑假 Week3] 算法训练总结</h2>
-          <div class="post-meta">
-            <div class="post-meta-item">
-              <i class="far fa-calendar"></i>
-              <span>2025-08-10</span>
-            </div>
-            <div class="post-meta-item">
-              <i class="far fa-clock"></i>
-              <span>8 min read</span>
-            </div>
-          </div>
-        </div>
-        <div class="post-excerpt">
-          使用三维动态规划解决颜色球移动问题，结合二分查找优化移动代价。数学推导与复杂度分析。
-        </div>
-      </article>
-    </div>
+  <!-- 主标题（史诗级升级） -->
+  <h1><span class="script-title">My blogs</span></h1>
+
+  <!-- 搜索框 -->
+  <input type="text" id="search-box" placeholder="搜索文章标题..." />
+
+  <!-- 博客文章列表 -->
+  <div class="post" data-title="Algorithm Training Summary Week3">
+    <div class="post-date">2025-08-10</div>
+    <a href="javascript:loadPost('https://raw.githubusercontent.com/Inlovexy/Inlovexy.github.io/main/blogs/posts/2025-08-10-%E6%9A%91%E5%81%87week3.md')" class="post-title">
+      [暑假 Week3] 算法训练总结
+    </a>
+    <p class="post-excerpt">
+      使用三维动态规划解决颜色球移动问题，结合二分查找优化移动代价。数学推导与复杂度分析。
+    </p>
+  </div>
+
+  <div class="post" data-title="构造专练">
+    <div class="post-date">2025-08-11</div>
+    <a href="javascript:loadPost('https://raw.githubusercontent.com/Inlovexy/Inlovexy.github.io/main/blogs/posts/2025-08-11-%E6%9E%84%E9%80%A0%E4%B8%93%E7%BB%83.md')" class="post-title">
+      构造专练
+    </a>
+    <p class="post-excerpt">
+      构造太菜了，多多练习涨涨脑子。
+    </p>
   </div>
 
   <!-- 阅读器 -->
-  <div class="reader" id="reader">
-    <div class="reader-header">
-      <button class="close-btn" onclick="closeReader()">&times;</button>
-    </div>
-    <div id="article-content"></div>
+  <div id="reader">
+    <button onclick="closeReader()">back</button>
+    <div id="post-content"></div>
   </div>
 
+  <!-- 悬浮目录 -->
+  <div id="toc-container" style="display: none;">
+    <h3>目录</h3>
+    <ul id="toc-list"></ul>
+  </div>
+
+  <!-- 特效容器 -->
+  <div id="glow-dots"></div>
+
+  <!-- 导航按钮 -->
+  <a href="../" class="nav-button nav-home">back</a>
+
   <script>
-    // 加载文章
-    function loadPost(url) {
-      const reader = document.getElementById('reader');
-      const contentEl = document.getElementById('article-content');
-      reader.style.display = 'block';
-      window.scrollTo(0, 0);
-
-      contentEl.innerHTML = '<p style="color:#7f8c8d; text-align:center; font-size:1.1em">Loading...</p>';
-
-      fetch(url)
-        .then(res => res.text())
-        .then(md => {
-          // 转换 Markdown
-          let html = marked.parse(md);
-          
-          // 添加文章标题
-          const titleMatch = html.match(/<h1>(.*?)<\/h1>/);
-          let title = 'Untitled';
-          if (titleMatch) {
-            title = titleMatch[1];
-            html = html.replace(/<h1>.*?<\/h1>/, '');
-          }
-          
-          contentEl.innerHTML = `
-            <h1 class="article-title">${title}</h1>
-            <div class="article-meta">
-              <span class="post-meta-item"><i class="far fa-calendar"></i> ${getCurrentDate()}</span>
-              <span class="post-meta-item"><i class="far fa-clock"></i> ${estimateReadingTime(md)} min read</span>
-            </div>
-            <div class="article-content">${html}</div>
-          `;
-          
-          // 代码块处理
-          contentEl.querySelectorAll('pre code').forEach(block => {
-            const btn = document.createElement('button');
-            btn.className = 'copy-btn';
-            btn.textContent = 'Copy';
-            btn.onclick = () => {
-              navigator.clipboard.writeText(block.textContent).then(() => {
-                btn.textContent = 'Copied!';
-                setTimeout(() => btn.textContent = 'Copy', 2000);
-              });
-            };
-            block.parentNode.style.position = 'relative';
-            block.parentNode.appendChild(btn);
-            hljs.highlightElement(block);
-          });
-
-          // 数学公式渲染
-          if (window.MathJax) {
-            MathJax.typeset([contentEl]);
-          }
-        })
-        .catch(err => {
-          contentEl.innerHTML = `<p style="color:red; text-align:center">❌ 加载失败：${err.message}</p>`;
-        });
-    }
-
-    function closeReader() {
-      document.getElementById('reader').style.display = 'none';
-    }
-
-    function getCurrentDate() {
-      const now = new Date();
-      return now.getFullYear() + '-' + 
-             String(now.getMonth() + 1).padStart(2, '0') + '-' + 
-             String(now.getDate()).padStart(2, '0');
-    }
-
-    function estimateReadingTime(text) {
-      const wordsPerMinute = 200;
-      const words = text.trim().split(/\s+/).length;
-      const minutes = Math.ceil(words / wordsPerMinute);
-      return minutes;
-    }
-
-    // 页面加载完成
     document.addEventListener('DOMContentLoaded', () => {
       marked.setOptions({
         gfm: true,
@@ -518,6 +791,200 @@
           return hljs.highlight(code, { language: hl }).value;
         }
       });
+
+      // 搜索
+      const search = document.getElementById('search-box');
+      const posts = document.querySelectorAll('.post');
+      search.addEventListener('input', () => {
+        const q = search.value.toLowerCase();
+        posts.forEach(p => {
+          const title = p.dataset.title.toLowerCase();
+          p.style.display = title.includes(q) ? 'block' : 'none';
+        });
+      });
+
+      // 进度条
+      window.addEventListener('scroll', () => {
+        const total = document.body.scrollHeight - window.innerHeight;
+        const progress = total > 0 ? (window.scrollY / total) * 100 : 0;
+        document.getElementById('reading-progress').style.width = `${Math.min(progress, 100)}%`;
+      });
+
+      // 光点飘动特效
+      const glowDots = document.getElementById('glow-dots');
+      const createGlowDot = () => {
+        const dot = document.createElement('div');
+        dot.classList.add('glow-dot', 'particle');
+        dot.style.left = Math.random() * 100 + 'vw';
+        dot.style.opacity = 0.3 + Math.random() * 0.5;
+        dot.style.animation = `floatGlow ${8 + Math.random() * 12}s ease-out ${Math.random() * 5}s forwards`;
+        glowDots.appendChild(dot);
+        setTimeout(() => glowDots.removeChild(dot), 15000);
+      };
+      
+      // 初始创建一些光点
+      for (let i = 0; i < 15; i++) {
+        setTimeout(createGlowDot, i * 300);
+      }
+      
+      // 定期创建新的光点
+      setInterval(createGlowDot, 1500);
+
+      // 文章卡片淡入动画
+      setTimeout(() => {
+        document.querySelectorAll('.post').forEach((post, index) => {
+          setTimeout(() => {
+            post.style.opacity = '1';
+            post.style.transform = 'translateY(0)';
+          }, index * 200);
+        });
+      }, 300);
+
+      // 导航按钮淡入
+      setTimeout(() => {
+        document.querySelector('.nav-button').style.opacity = '1';
+        document.querySelector('.nav-button').style.transform = 'translateY(0)';
+      }, 600);
+
+      // 为所有图片添加淡入动画
+      document.querySelectorAll('img').forEach(img => {
+        img.style.opacity = '0';
+        img.style.transition = 'opacity 0.5s ease';
+        const fadeIn = () => {
+          img.style.opacity = '1';
+        };
+        if (img.complete) {
+          fadeIn();
+        } else {
+          img.addEventListener('load', fadeIn);
+        }
+      });
+    });
+
+    // 加载文章
+    function loadPost(url) {
+      const reader = document.getElementById('reader');
+      const contentEl = document.getElementById('post-content');
+      reader.style.display = 'block';
+      contentEl.innerHTML = '<p style="color:#666; text-align:center; font-size:1.1em">加载中……</p>';
+      contentEl.style.opacity = '0';
+      contentEl.style.transform = 'translateY(20px)';
+
+      fetch(url)
+        .then(res => res.text())
+        .then(md => {
+          contentEl.innerHTML = marked.parse(md);
+          contentEl.querySelectorAll('hr').forEach(hr => hr.remove());
+
+          // 生成目录
+          generateTOC(contentEl);
+
+          // 代码块处理
+          contentEl.querySelectorAll('pre code').forEach(block => {
+            const lang = block.className.replace('language-', '') || 'text';
+            const displayName = { 'cpp': 'C++', 'python': 'Python', 'java': 'Java' }[lang] || lang.toUpperCase();
+            const langTag = document.createElement('div');
+            langTag.textContent = displayName;
+            langTag.className = 'lang-tag';
+            block.parentNode.style.position = 'relative';
+            block.parentNode.insertBefore(langTag, block);
+
+            const btn = document.createElement('button');
+            btn.className = 'copy-btn';
+            btn.textContent = 'copy';
+            btn.onclick = () => {
+              navigator.clipboard.writeText(block.textContent).then(() => {
+                btn.textContent = '✓';
+                setTimeout(() => btn.textContent = 'copy', 2000);
+              });
+            };
+            block.parentNode.appendChild(btn);
+            hljs.highlightElement(block);
+          });
+
+          // 数学公式渲染
+          if (window.MathJax) {
+            MathJax.typesetClear();
+            MathJax.typeset([contentEl]);
+          }
+          
+          // 内容加载完成动画
+          setTimeout(() => {
+            contentEl.style.opacity = '1';
+            contentEl.style.transform = 'translateY(0)';
+          }, 100);
+        })
+        .catch(err => {
+          contentEl.innerHTML = `<p style="color:red; text-align:center">❌ 加载失败：${err.message}</p>`;
+        });
+    }
+
+    // 生成目录
+    function generateTOC(contentEl) {
+      const tocList = document.getElementById('toc-list');
+      tocList.innerHTML = '';
+      const headers = contentEl.querySelectorAll('h1, h2, h3');
+      const items = [];
+
+      headers.forEach((h, idx) => {
+        if (h.tagName === 'H1' && idx === 0) return;
+        const id = `toc-${idx}`;
+        h.id = id;
+        const a = document.createElement('a');
+        a.href = `#${id}`;
+        a.textContent = h.textContent;
+        a.style.paddingLeft = `${(parseInt(h.tagName[1]) - 1) * 20}px`;
+        a.onclick = (e) => { e.preventDefault(); document.getElementById(id).scrollIntoView({ behavior: 'smooth' }); };
+        const li = document.createElement('li');
+        li.appendChild(a);
+        tocList.appendChild(li);
+        items.push({ el: h, link: a });
+      });
+
+      document.getElementById('toc-container').style.display = items.length ? 'block' : 'none';
+      document.getElementById('toc-container').style.opacity = '1';
+      document.getElementById('toc-container').style.transform = 'translateX(0)';
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          const item = items.find(i => i.el === entry.target);
+          if (item) item.link.classList.toggle('active', entry.isIntersecting);
+        });
+      }, { threshold: 0.3 });
+
+      items.forEach(item => observer.observe(item.el));
+    }
+
+    function closeReader() {
+      document.getElementById('reader').style.display = 'none';
+      document.getElementById('toc-container').style.display = 'none';
+      document.getElementById('toc-container').style.opacity = '0';
+      document.getElementById('toc-container').style.transform = 'translateX(20px)';
+    }
+
+    // 点击爆炸粒子
+    document.addEventListener('click', (e) => {
+      const colors = ['#ff69b4', '#4361ee', '#4cc9f0', '#ff99cc'];
+      for (let i = 0; i < 10; i++) {
+        const p = document.createElement('div');
+        p.classList.add('particle');
+        p.style.position = 'absolute';
+        p.style.width = p.style.height = (Math.random() * 8 + 4) + 'px';
+        p.style.background = colors[i % 4];
+        p.style.borderRadius = '50%';
+        p.style.left = e.clientX + 'px';
+        p.style.top = e.clientY + 'px';
+        p.style.transform = `translate(-50%, -50%) translate(${(Math.random() - 0.5) * 50}px, ${(Math.random() - 0.5) * 50}px) scale(0)`;
+        p.style.opacity = 0.9;
+        p.style.pointerEvents = 'none';
+        p.style.boxShadow = `0 0 10px ${colors[i % 4]}`;
+        document.body.appendChild(p);
+        setTimeout(() => {
+          p.style.opacity = 0;
+          p.style.transform = p.style.transform.replace('scale(0)', 'scale(2)');
+        }, 10);
+        setTimeout(() => p.remove(), 800);
+      }
     });
   </script>
 </body>
