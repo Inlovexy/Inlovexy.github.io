@@ -62,7 +62,7 @@
       line-height: 1.9;
       position: relative;
       overflow-x: hidden;
-      scroll-beavior: smooth;
+      scroll-behavior: smooth;
     }
 
     /* ============= 顶部 Logo（固定在左上角） ============= */
@@ -82,6 +82,38 @@
       transition: var(--transition);
       position: relative;
       display: inline-block;
+    }
+
+    .logo::before {
+      content: '';
+      position: absolute;
+      top: -5px;
+      left: -5px;
+      right: -5px;
+      bottom: -5px;
+      border: 2px solid rgba(255, 105, 180, 0.3);
+      border-radius: 50%;
+      animation: pulseRing 2s infinite;
+      z-index: -1;
+    }
+
+    .logo::after {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      right: -10px;
+      bottom: -10px;
+      border: 2px solid rgba(255, 105, 180, 0.1);
+      border-radius: 50%;
+      animation: pulseRing 3s infinite;
+      z-index: -2;
+    }
+
+    @keyframes pulseRing {
+      0% { transform: scale(1) rotate(-7deg); opacity: 0.7; }
+      50% { transform: scale(1.1) rotate(-7deg); opacity: 1; }
+      100% { transform: scale(1) rotate(-7deg); opacity: 0.7; }
     }
 
     @keyframes logoPulse {
@@ -112,9 +144,28 @@
       z-index: -1;
     }
 
+    h1::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(67, 97, 238, 0.1), rgba(76, 201, 240, 0.1), rgba(255, 105, 180, 0.1), transparent);
+      z-index: -1;
+      transform: translateY(-2px);
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { opacity: 0; }
+      50% { opacity: 0.6; }
+      100% { opacity: 0; }
+    }
+
     h1 .script-title {
       font-family: 'Great Vibes', cursive;
-      font-size: 3.2em;
+      font-size: 3.4em;
       color: var(--primary);
       letter-spacing: -1px;
       text-shadow: 
@@ -127,6 +178,8 @@
       -webkit-text-fill-color: transparent;
       background-clip: text;
       animation: titleGlow 3s ease-in-out infinite alternate;
+      position: relative;
+      z-index: 1;
     }
 
     @keyframes titleGlow {
@@ -147,11 +200,29 @@
       transition: width 0.1s ease;
       box-shadow: 0 0 15px rgba(67, 97, 238, 0.7);
       animation: progressShine 2s infinite;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #reading-progress::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+      animation: shine 2s infinite;
     }
 
     @keyframes progressShine {
       0% { background-position: 0% 0%; }
       100% { background-position: 200% 0%; }
+    }
+
+    @keyframes shine {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
     }
 
     /* ============= 搜索框（史诗级升级） ============= */
@@ -169,6 +240,7 @@
       transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
       position: relative;
       z-index: 1;
+      backdrop-filter: blur(10px);
     }
 
     #search-box::before {
@@ -204,6 +276,8 @@
       position: relative;
       backdrop-filter: blur(6px);
       overflow: hidden;
+      transform: translateY(0);
+      opacity: 0;
     }
 
     .post::before {
@@ -233,8 +307,8 @@
     }
 
     .post:hover {
-      transform: translateY(-10px) scale(1.03);
-      box-shadow: 0 22px 50px rgba(0, 0, 0, 0.22);
+      transform: translateY(-12px) scale(1.04);
+      box-shadow: 0 24px 55px rgba(0, 0, 0, 0.25);
     }
 
     .post:hover::after {
@@ -283,7 +357,7 @@
 
     .post-title:hover {
       color: #3a56d4;
-      transform: scale(1.05);
+      transform: scale(1.06);
     }
 
     .post-title:hover::after {
@@ -324,6 +398,8 @@
       scrollbar-width: thin;
       border: 1px solid rgba(67, 97, 238, 0.2);
       transition: 0.3s;
+      transform: translateX(20px);
+      opacity: 0;
     }
 
     #toc-container::before {
@@ -464,6 +540,14 @@
       max-width: 880px;
       margin: 0 auto;
       position: relative;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    #post-content.loaded {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     #post-content::after {
@@ -618,6 +702,8 @@
       border: none;
       min-width: 120px;
       text-align: center;
+      opacity: 0;
+      transform: translateY(20px);
     }
 
     .nav-home {
@@ -760,7 +846,7 @@
       const glowDots = document.getElementById('glow-dots');
       const createGlowDot = () => {
         const dot = document.createElement('div');
-        dot.classList.add('glow-dot');
+        dot.classList.add('glow-dot', 'particle');
         dot.style.left = Math.random() * 100 + 'vw';
         dot.style.opacity = 0.3 + Math.random() * 0.5;
         dot.style.animation = `floatGlow ${8 + Math.random() * 12}s ease-out ${Math.random() * 5}s forwards`;
@@ -775,6 +861,22 @@
       
       // 定期创建新的光点
       setInterval(createGlowDot, 1500);
+
+      // 文章卡片淡入动画
+      setTimeout(() => {
+        document.querySelectorAll('.post').forEach((post, index) => {
+          setTimeout(() => {
+            post.style.opacity = '1';
+            post.style.transform = 'translateY(0)';
+          }, index * 200);
+        });
+      }, 300);
+
+      // 导航按钮淡入
+      setTimeout(() => {
+        document.querySelector('.nav-button').style.opacity = '1';
+        document.querySelector('.nav-button').style.transform = 'translateY(0)';
+      }, 600);
 
       // 为所有图片添加淡入动画
       document.querySelectorAll('img').forEach(img => {
@@ -797,6 +899,8 @@
       const contentEl = document.getElementById('post-content');
       reader.style.display = 'block';
       contentEl.innerHTML = '<p style="color:#666; text-align:center; font-size:1.1em">加载中……</p>';
+      contentEl.style.opacity = '0';
+      contentEl.style.transform = 'translateY(20px)';
 
       fetch(url)
         .then(res => res.text())
@@ -835,6 +939,12 @@
             MathJax.typesetClear();
             MathJax.typeset([contentEl]);
           }
+          
+          // 内容加载完成动画
+          setTimeout(() => {
+            contentEl.style.opacity = '1';
+            contentEl.style.transform = 'translateY(0)';
+          }, 100);
         })
         .catch(err => {
           contentEl.innerHTML = `<p style="color:red; text-align:center">❌ 加载失败：${err.message}</p>`;
@@ -864,6 +974,8 @@
       });
 
       document.getElementById('toc-container').style.display = items.length ? 'block' : 'none';
+      document.getElementById('toc-container').style.opacity = '1';
+      document.getElementById('toc-container').style.transform = 'translateX(0)';
 
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -878,30 +990,32 @@
     function closeReader() {
       document.getElementById('reader').style.display = 'none';
       document.getElementById('toc-container').style.display = 'none';
+      document.getElementById('toc-container').style.opacity = '0';
+      document.getElementById('toc-container').style.transform = 'translateX(20px)';
     }
 
     // 点击爆炸粒子
     document.addEventListener('click', (e) => {
       const colors = ['#ff69b4', '#4361ee', '#4cc9f0', '#ff99cc'];
-      for (let i = 0; i < 8; i++) {
+      for (let i = 0; i < 10; i++) {
         const p = document.createElement('div');
         p.classList.add('particle');
         p.style.position = 'absolute';
-        p.style.width = p.style.height = (Math.random() * 6 + 3) + 'px';
+        p.style.width = p.style.height = (Math.random() * 8 + 4) + 'px';
         p.style.background = colors[i % 4];
         p.style.borderRadius = '50%';
         p.style.left = e.clientX + 'px';
         p.style.top = e.clientY + 'px';
-        p.style.transform = `translate(-50%, -50%) translate(${(Math.random() - 0.5) * 40}px, ${(Math.random() - 0.5) * 40}px) scale(0)`;
+        p.style.transform = `translate(-50%, -50%) translate(${(Math.random() - 0.5) * 50}px, ${(Math.random() - 0.5) * 50}px) scale(0)`;
         p.style.opacity = 0.9;
         p.style.pointerEvents = 'none';
-        p.style.boxShadow = `0 0 8px ${colors[i % 4]}`;
+        p.style.boxShadow = `0 0 10px ${colors[i % 4]}`;
         document.body.appendChild(p);
         setTimeout(() => {
           p.style.opacity = 0;
-          p.style.transform = p.style.transform.replace('scale(0)', 'scale(1.8)');
+          p.style.transform = p.style.transform.replace('scale(0)', 'scale(2)');
         }, 10);
-        setTimeout(() => p.remove(), 700);
+        setTimeout(() => p.remove(), 800);
       }
     });
   </script>
