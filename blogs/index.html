@@ -208,21 +208,6 @@
     }
 
     /* ============= 阅读器 ============= */
-    .reader {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: white;
-      z-index: 1000;
-      overflow-y: auto;
-      padding: 120px 40px 60px;
-      box-sizing: border-box;
-    }
-
-    /* ============= 从第二个HTML文件复制的阅读器样式 ============= */
     #reading-progress {
       position: fixed;
       top: 0;
@@ -249,7 +234,7 @@
       z-index: 1000;
     }
 
-    #post-content {
+    #reader-content {
       max-width: 860px;
       margin: 0 auto;
     }
@@ -374,7 +359,7 @@
         font-size: 1.6em;
       }
 
-      .reader {
+      #reader {
         padding: 100px 20px 40px;
       }
     }
@@ -444,38 +429,47 @@
   <!-- 阅读器 -->
   <div id="reader">
     <button onclick="closeReader()">← 返回列表</button>
-    <div id="post-content"></div>
+    <div id="reader-content"></div>
   </div>
 
   <script>
     // 加载文章
     function loadPost(url) {
       const reader = document.getElementById('reader');
-      const contentEl = document.getElementById('post-content');
+      const contentEl = document.getElementById('reader-content');
+      
+      if (!contentEl) {
+        console.error('reader-content element not found');
+        return;
+      }
+      
       reader.style.display = 'block';
       window.scrollTo(0, 0);
-
       contentEl.innerHTML = '<p style="color:#7f8c8d; text-align:center; font-size:1.1em">Loading...</p>';
 
       fetch(url)
-        .then(res => res.text())
+        .then(res => {
+          if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+          }
+          return res.text();
+        })
         .then(md => {
           contentEl.innerHTML = marked.parse(md);
-          contentEl.querySelectorAll('hr').forEach(hr => hr.remove());
-
-          // 生成目录
-          generateTOC(contentEl);
-
-          // 代码块处理
+          
+          // 处理代码块
           contentEl.querySelectorAll('pre code').forEach(block => {
             const lang = block.className.replace('language-', '') || 'text';
             const displayName = { 'cpp': 'C++', 'python': 'Python', 'java': 'Java' }[lang] || lang.toUpperCase();
+            
+            // 添加语言标签
             const langTag = document.createElement('div');
             langTag.textContent = displayName;
             langTag.className = 'lang-tag';
             block.parentNode.style.position = 'relative';
             block.parentNode.insertBefore(langTag, block);
 
+            // 添加复制按钮
             const btn = document.createElement('button');
             btn.className = 'copy-btn';
             btn.textContent = '📄';
@@ -483,9 +477,13 @@
               navigator.clipboard.writeText(block.textContent).then(() => {
                 btn.textContent = '✅';
                 setTimeout(() => btn.textContent = '📄', 2000);
+              }).catch(err => {
+                console.error('复制失败:', err);
               });
             };
             block.parentNode.appendChild(btn);
+            
+            // 代码高亮
             hljs.highlightElement(block);
           });
 
@@ -496,49 +494,21 @@
           }
         })
         .catch(err => {
+          console.error('加载失败:', err);
           contentEl.innerHTML = `<p style="color:red; text-align:center">❌ 加载失败：${err.message}</p>`;
         });
     }
 
     function closeReader() {
-      document.getElementById('reader').style.display = 'none';
-    }
-
-    function generateTOC(contentEl) {
-      const tocList = document.getElementById('toc-list');
-      tocList.innerHTML = '';
-      const headers = contentEl.querySelectorAll('h1, h2, h3');
-      const items = [];
-
-      headers.forEach((h, idx) => {
-        if (h.tagName === 'H1' && idx === 0) return;
-        const id = `toc-${idx}`;
-        h.id = id;
-        const a = document.createElement('a');
-        a.href = `#${id}`;
-        a.textContent = h.textContent;
-        a.style.paddingLeft = `${(parseInt(h.tagName[1]) - 1) * 18}px`;
-        a.onclick = (e) => { e.preventDefault(); document.getElementById(id).scrollIntoView({ behavior: 'smooth' }); };
-        const li = document.createElement('li');
-        li.appendChild(a);
-        tocList.appendChild(li);
-        items.push({ el: h, link: a });
-      });
-
-      document.getElementById('toc-container').style.display = items.length ? 'block' : 'none';
-
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          const item = items.find(i => i.el === entry.target);
-          if (item) item.link.classList.toggle('active', entry.isIntersecting);
-        });
-      }, { threshold: 0.3 });
-
-      items.forEach(item => observer.observe(item.el));
+      const reader = document.getElementById('reader');
+      if (reader) {
+        reader.style.display = 'none';
+      }
     }
 
     // 页面加载完成
     document.addEventListener('DOMContentLoaded', () => {
+      // 初始化 marked
       marked.setOptions({
         gfm: true,
         breaks: true,
@@ -553,7 +523,10 @@
       window.addEventListener('scroll', () => {
         const total = document.body.scrollHeight - window.innerHeight;
         const progress = total > 0 ? (window.scrollY / total) * 100 : 0;
-        document.getElementById('reading-progress').style.width = `${Math.min(progress, 100)}%`;
+        const progressBar = document.getElementById('reading-progress');
+        if (progressBar) {
+          progressBar.style.width = `${Math.min(progress, 100)}%`;
+        }
       });
     });
   </script>
