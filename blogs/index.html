@@ -285,6 +285,27 @@
       text-indent: 0;
     }
 
+    /* ============= 链接颜色：黑色，仅 hover 时变色 ============= */
+    a {
+      text-decoration: none !important;
+      color: var(--text) !important;
+      cursor: pointer;
+    }
+
+    a:hover {
+      color: var(--primary) !important;
+    }
+
+    /* 外部链接也统一风格 */
+    a[href^="http"] {
+      color: var(--text) !important;
+    }
+
+    a[href^="http"]:hover {
+      color: var(--primary) !important;
+      text-decoration: underline !important;
+    }
+
     /* ============= 代码块 ============= */
     pre {
       position: relative;
@@ -304,34 +325,38 @@
       font-size: 0.95em;
     }
 
+    /* 复制按钮：更小，文字为 COPY */
     .copy-btn {
       position: absolute;
-      top: 12px;
-      right: 12px;
-      background: #6c757d;
+      top: 10px;
+      right: 10px;
+      background: #95a5a6;
       color: white;
       border: none;
-      padding: 6px 10px;
-      font-size: 0.85em;
-      border-radius: 6px;
+      padding: 4px 8px;
+      font-size: 0.75em;
+      font-weight: bold;
+      border-radius: 4px;
       cursor: pointer;
-      opacity: 0.8;
+      opacity: 0.7;
+      transition: all 0.2s ease;
     }
 
     .copy-btn:hover {
-      background: #5a6268;
+      background: #7f8c8d;
       opacity: 1;
+      transform: scale(1.05);
     }
 
     .lang-tag {
       position: absolute;
-      top: 12px;
-      left: 12px;
+      top: 10px;
+      left: 10px;
       background: var(--primary);
       color: white;
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-size: 0.8em;
+      padding: 3px 6px;
+      border-radius: 4px;
+      font-size: 0.75em;
       font-weight: bold;
     }
 
@@ -349,26 +374,6 @@
       margin: 1em auto;
       max-width: 100%;
       border-radius: 8px;
-    }
-
-    /* ============= 链接样式 ============= */
-    a {
-      text-decoration: none !important;
-      color: inherit;
-      cursor: pointer;
-    }
-
-    a:hover {
-      color: var(--primary);
-    }
-
-    a[href^="http"] {
-      color: #4361ee;
-    }
-
-    a[href^="http"]:hover {
-      color: #3a56d4;
-      text-decoration: underline;
     }
 
     /* ============= 响应式 ============= */
@@ -397,6 +402,13 @@
       }
       #reader {
         padding: 100px 20px 40px;
+      }
+      .copy-btn {
+        padding: 3px 6px;
+        font-size: 0.7em;
+      }
+      .lang-tag {
+        font-size: 0.7em;
       }
     }
   </style>
@@ -532,13 +544,15 @@
 
             const btn = document.createElement('button');
             btn.className = 'copy-btn';
-            btn.textContent = '📄';
+            btn.textContent = 'COPY'; // 修改为 COPY
             btn.onclick = () => {
               navigator.clipboard.writeText(block.textContent).then(() => {
-                btn.textContent = '✅';
-                setTimeout(() => btn.textContent = '📄', 2000);
+                btn.textContent = '✓';
+                setTimeout(() => btn.textContent = 'COPY', 2000);
               }).catch(err => {
                 console.error('复制失败:', err);
+                btn.textContent = '✗';
+                setTimeout(() => btn.textContent = 'COPY', 2000);
               });
             };
             block.parentNode.appendChild(btn);
