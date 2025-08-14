@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Inlovexy's Blog</title>
 
-  <!-- 优雅的字体组合 -->
+  <!-- 字体 -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+Pro:wght@300;400;600&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
@@ -261,6 +261,30 @@
       margin: 0 auto;
     }
 
+    /* ============= 关键修复：列表不缩进 ============= */
+    #reader-content ul,
+    #reader-content ol,
+    .post-excerpt ul,
+    .post-excerpt ol {
+      margin-left: 0;
+      padding-left: 0;
+      list-style: none;
+    }
+
+    #reader-content ul > li::before,
+    .post-excerpt ul > li::before {
+      content: "•";
+      margin-right: 0.5em;
+      color: inherit;
+    }
+
+    #reader-content li,
+    .post-excerpt li {
+      margin-left: 0 !important;
+      padding-left: 0 !important;
+      text-indent: 0;
+    }
+
     /* ============= 代码块 ============= */
     pre {
       position: relative;
@@ -319,7 +343,15 @@
       font-size: 0.95em;
     }
 
-    /* ============= 链接去下划线 ============= */
+    /* ============= 图片居中 ============= */
+    #reader-content img {
+      display: block;
+      margin: 1em auto;
+      max-width: 100%;
+      border-radius: 8px;
+    }
+
+    /* ============= 链接样式 ============= */
     a {
       text-decoration: none !important;
       color: inherit;
@@ -330,37 +362,39 @@
       color: var(--primary);
     }
 
+    a[href^="http"] {
+      color: #4361ee;
+    }
+
+    a[href^="http"]:hover {
+      color: #3a56d4;
+      text-decoration: underline;
+    }
+
     /* ============= 响应式 ============= */
     @media (max-width: 768px) {
       .header {
         padding: 16px 20px;
       }
-
       .nav-links {
         gap: 20px;
       }
-
       .container {
         margin-top: 100px;
         padding: 0 20px;
       }
-
       .title h1 {
         font-size: 2.8em;
       }
-
       .title p {
         font-size: 1.1em;
       }
-
       .post-header, .post-excerpt {
         padding: 25px;
       }
-
       .post-title {
         font-size: 1.6em;
       }
-
       #reader {
         padding: 100px 20px 40px;
       }
@@ -485,7 +519,7 @@
         .then(md => {
           contentEl.innerHTML = marked.parse(md);
 
-          // 处理代码块：添加语言标签和复制按钮
+          // 处理代码块
           contentEl.querySelectorAll('pre code').forEach(block => {
             const lang = block.className.replace('language-', '') || 'text';
             const displayName = { 'cpp': 'C++', 'python': 'Python', 'java': 'Java' }[lang] || lang.toUpperCase();
